@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kalabash Cards — Weekly Dashboard 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root{--c1:#1A1A1A;--c2:#2E2E2E;--c3:#444;--g1:#6E6E6E;--g2:#B0B0B0;--g3:#E2E2E2;--off:#F5F5F4;--white:#fff;--teal:#0AA8B8;--teal2:#077A87;--teal-l:#E5F5F7;--gold:#F0A500;--gold2:#C48200;--gold-l:#FFF5E0;--green:#12A05C;--green-l:#E8F8F0;--red:#D63B3B;--red-l:#FDECEC;--r-sm:6px;--r-md:10px;--r-lg:14px;--sh:0 1px 3px rgba(0,0,0,.06);--sh-md:0 4px 12px rgba(0,0,0,.08);}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--off);color:var(--c1);font-size:13px;line-height:1.5}
+.page{max-width:1320px;margin:0 auto;padding:18px}
+.hdr{background:var(--c1);border-radius:var(--r-lg);padding:16px 22px;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;position:relative;overflow:hidden}
+.hdr::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--teal)}
+.hdr::after{content:'';position:absolute;left:4px;top:0;bottom:0;width:2px;background:var(--gold)}
+.hdr-l{padding-left:12px}.brand{font-size:10px;font-weight:600;color:var(--teal);letter-spacing:.12em}
+.hdr-title{font-size:17px;font-weight:500;color:var(--white)}.hdr-sub{font-size:11.5px;color:var(--g2);margin-top:1px}
+.hdr-r{display:flex;align-items:center;gap:10px}
+.badge{display:inline-flex;align-items:center;font-size:10px;font-weight:600;padding:3px 9px;border-radius:20px;white-space:nowrap}
+.b-teal{background:var(--teal-l);color:var(--teal2)}.b-gold{background:var(--gold-l);color:var(--gold2)}.b-green{background:var(--green-l);color:var(--green)}.b-red{background:var(--red-l);color:var(--red)}.b-grey{background:#F0F0F0;color:var(--g1)}.b-dark{background:var(--c2);color:var(--g2)}
+.week-nav{background:var(--white);border-radius:var(--r-lg);border:1px solid var(--g3);padding:14px 18px;margin-bottom:14px;box-shadow:var(--sh)}
+.wnav-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.wnav-label{font-size:10px;font-weight:600;color:var(--g2);letter-spacing:.1em;text-transform:uppercase}
+.wnav-current{font-size:11px;color:var(--c1);font-weight:500}
+.month-row{display:flex;align-items:center;gap:6px;margin-bottom:10px;border-bottom:1px solid var(--g3);padding-bottom:10px}
+.mo-btn{font-size:11px;font-weight:500;padding:5px 16px;border-radius:20px;border:1px solid var(--g3);background:var(--off);color:var(--g1);cursor:pointer;white-space:nowrap;transition:all .15s}
+.mo-btn:hover{background:var(--teal-l);border-color:var(--teal);color:var(--teal2)}
+.mo-btn.mo-active{background:var(--c1);border-color:var(--c1);color:var(--white)}
+.week-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.wk-btn{font-family:'DM Mono',monospace;font-size:10.5px;font-weight:500;padding:6px 14px;border-radius:8px;border:1px solid var(--g3);background:var(--off);color:var(--g1);cursor:pointer;white-space:nowrap;transition:all .15s;display:flex;align-items:center;gap:6px}
+.wk-btn:hover{background:var(--teal-l);border-color:var(--teal);color:var(--teal2)}
+.wk-btn.active{background:var(--c1);border-color:var(--c1);color:var(--white)}
+.wk-btn .wk-dot{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.4;flex-shrink:0}
+.wk-btn.active .wk-dot{opacity:1;background:var(--teal)}
+.slabel{font-size:10px;font-weight:600;color:var(--g2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.slabel::after{content:'';flex:1;height:1px;background:var(--g3)}
+.kpi-row{display:grid;gap:9px;margin-bottom:14px}
+.kpi{background:var(--white);border-radius:var(--r-md);border:1px solid var(--g3);padding:12px 14px;border-top:3px solid var(--g3);box-shadow:var(--sh);transition:transform .15s}
+.kpi:hover{transform:translateY(-2px);box-shadow:var(--sh-md)}.kpi.ok{border-top-color:var(--green)}.kpi.bad{border-top-color:var(--red)}.kpi.warn{border-top-color:var(--gold)}.kpi.teal{border-top-color:var(--teal)}
+.kpi-lbl{font-size:10px;color:var(--g1);margin-bottom:5px;font-weight:500}
+.kpi-val{font-size:22px;font-weight:600;line-height:1;font-family:'DM Mono',monospace}
+.kpi-val.ok{color:var(--green)}.kpi-val.bad{color:var(--red)}.kpi-val.warn{color:var(--gold)}.kpi-val.neut{color:var(--c1)}
+.kpi-meta{margin-top:5px;display:flex;align-items:center;justify-content:space-between}
+.kpi-target{font-size:10px;color:var(--g2)}.kpi-delta{font-size:10px;font-weight:500}
+.kpi-delta.ok{color:var(--green)}.kpi-delta.bad{color:var(--red)}.kpi-delta.warn{color:var(--gold)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.g3c{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px}
+.card{background:var(--white);border-radius:var(--r-lg);border:1px solid var(--g3);padding:15px 17px;box-shadow:var(--sh)}
+.ctitle{font-size:11.5px;font-weight:600;color:var(--c1);display:flex;align-items:center;gap:7px;margin-bottom:12px;flex-wrap:wrap}
+.ctitle-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.ilist{display:flex;flex-direction:column}
+.iitem{display:flex;align-items:flex-start;gap:9px;padding:7px 0;border-bottom:1px solid var(--g3)}.iitem:last-child{border-bottom:none}
+.idot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px}.idot.g{background:var(--green)}.idot.r{background:var(--red)}
+.itext{font-size:12px;color:var(--g1);line-height:1.45}
+.titem{display:flex;align-items:flex-start;gap:9px;padding:7px 0;border-bottom:1px solid var(--g3)}.titem:last-child{border-bottom:none;padding-bottom:0}
+.tbar{width:3px;min-height:34px;border-radius:2px;flex-shrink:0;align-self:stretch}.tbar.t{background:var(--teal)}.tbar.g{background:var(--gold)}.tbar.done{background:var(--green)}
+.tbody{flex:1;min-width:0}.ttitle{font-size:12px;font-weight:500;color:var(--c1)}.tnote{font-size:11px;color:var(--g1);margin-top:2px;line-height:1.4}
+.pipeline{display:flex;align-items:flex-start;margin:4px 0 14px}
+.pip-step{display:flex;flex-direction:column;align-items:center;flex:1}
+.pip-c{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;font-family:'DM Mono',monospace}
+.pip-c.done{background:var(--green);color:var(--white)}.pip-c.todo{background:var(--off);color:var(--g2);border:1.5px solid var(--g3)}
+.pip-lbl{font-size:9px;color:var(--g2);text-align:center;margin-top:3px;line-height:1.3}.pip-lbl.done{color:var(--green);font-weight:500}
+.pip-line{flex:1;height:2px;margin-top:13px}.pip-line.done{background:var(--green)}.pip-line.todo{background:var(--g3)}
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.pcard{background:var(--off);border-radius:var(--r-md);border:1px solid var(--g3);padding:9px 11px;display:flex;align-items:flex-start;gap:8px}
+.pacc{width:3px;min-height:34px;border-radius:2px;flex-shrink:0;align-self:stretch}
+.pname{font-size:12px;font-weight:500;color:var(--c1)}.pnote{font-size:10.5px;color:var(--g1);margin-top:2px;line-height:1.35}
+.aitem{display:flex;align-items:flex-start;gap:9px;padding:7px 0;border-bottom:1px solid var(--g3)}.aitem:last-child{border-bottom:none}
+.pbadge{font-size:9.5px;font-weight:700;border-radius:4px;padding:2px 6px;flex-shrink:0;margin-top:1px;font-family:'DM Mono',monospace}
+.p1{background:var(--red);color:#fff}.p2{background:var(--gold);color:#fff}.p3{background:var(--teal);color:#fff}
+.atitle{font-size:12px;font-weight:500;color:var(--c1)}.anote{font-size:11px;color:var(--g1);margin-top:2px;line-height:1.35}.aowner{font-size:10px;color:var(--g2);margin-top:2px;font-family:'DM Mono',monospace}
+.mcitem{display:flex;align-items:flex-start;gap:9px;padding:8px 11px;background:var(--off);border-radius:var(--r-sm);margin-bottom:5px;border-left:3px solid var(--teal)}.mcitem.pend{border-left-color:var(--gold)}.mcitem:last-child{margin-bottom:0}
+.mcttl{font-size:12px;font-weight:500;color:var(--c1)}.mcnote{font-size:11px;color:var(--g1);margin-top:2px;line-height:1.35}
+.chart-wrap{position:relative;width:100%}
+.footer{text-align:center;font-size:10px;color:var(--g2);font-family:'DM Mono',monospace;margin-top:16px;padding-top:12px;border-top:1px solid var(--g3)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.kpi,.card{animation:fadeUp .22s ease both}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="hdr">
+  <div class="hdr-l">
+    <div class="brand">KALABASH</div>
+    <div class="hdr-title">Cards Weekly Dashboard</div>
+    <div class="hdr-sub" id="hdrSub">Loading…</div>
+  </div>
+  <div class="hdr-r">
+    <span class="badge b-teal">Cards</span>
+    <span class="badge b-dark" id="hdrDate">2026</span>
+    <span class="badge b-dark">Confidential</span>
+  </div>
+</div>
+
+<div class="week-nav">
+  <div class="wnav-top">
+    <span class="wnav-label">Select week</span>
+    <span class="wnav-current" id="navCurrent">May 17–23, 2026</span>
+  </div>
+  <div class="month-row" id="monthBtns"></div>
+  <div class="week-row" id="weekBtns"></div>
+</div>
+
+<div id="dash"></div>
+
+<div class="slabel">Full trend — all weeks</div>
+<div class="g3c">
+  <div class="card">
+    <div class="ctitle"><span class="ctitle-dot" style="background:var(--teal)"></span>Weekly issuance run rate</div>
+    <div class="chart-wrap" style="height:170px"><canvas id="tIss" role="img" aria-label="Issuance trend">Issuance from Jan to May 2026.</canvas></div>
+  </div>
+  <div class="card">
+    <div class="ctitle"><span class="ctitle-dot" style="background:var(--gold)"></span>Total weekly spend & revenue (USD)</div>
+    <div class="chart-wrap" style="height:170px"><canvas id="tSpend" role="img" aria-label="Spend trend">Spend Jan to May 2026.</canvas></div>
+  </div>
+  <div class="card">
+    <div class="ctitle"><span class="ctitle-dot" style="background:var(--red)"></span>Decline rate (%) — target ≤4%</div>
+    <div class="chart-wrap" style="height:170px"><canvas id="tDecline" role="img" aria-label="Decline rate trend">Decline rate Jan to May 2026.</canvas></div>
+  </div>
+</div>
+
+<div class="footer">Kalabash Cards &nbsp;·&nbsp; Weekly Dashboard &nbsp;·&nbsp; 2026 &nbsp;·&nbsp; Confidential</div>
+</div>
+
+<script>
+const W=[
+  {id:"w01",lbl:"Jan 11–17",dt:"Jan 11–17, 2026",iss:86,issPrev:113,phys:0.80,physPrev:0.64,virt:null,merch:null,dorm:null,spend:3148,spendPrev:1273.64,rev:81.27,revPrev:null,dr:null,drRaw:517,drPrev:null,fraud:0,cb:0,status:"jan16"},
+  {id:"w02",lbl:"Jan 18–24",dt:"Jan 18–24, 2026",iss:221,issPrev:86,phys:0.15,physPrev:0.80,virt:null,merch:null,dorm:null,spend:7639,spendPrev:3148,rev:1816,revPrev:81.27,dr:null,drRaw:81,drPrev:null,fraud:0,cb:0,status:"jan23"},
+  {id:"w03",lbl:"Jan 25–31",dt:"Jan 25–31, 2026",iss:112,issPrev:221,phys:0.41,physPrev:null,virt:null,merch:null,dorm:null,spend:6797,spendPrev:7639,rev:49.60,revPrev:1816,dr:0.11,drPrev:null,fraud:0.001,cb:0,status:"jan30"},
+  {id:"w04",lbl:"Feb 1–7",dt:"Feb 1–7, 2026",iss:147,issPrev:112,phys:0.58,physPrev:0.41,virt:null,merch:null,dorm:0.62,spend:8662,spendPrev:6797,rev:240.14,revPrev:49.60,dr:0.09,drPrev:0.11,fraud:0.001,cb:0,status:"feb6"},
+  {id:"w05",lbl:"Feb 8–14",dt:"Feb 8–14, 2026",iss:102,issPrev:196,phys:0.57,physPrev:0.58,virt:null,merch:null,dorm:0.34,spend:9510,spendPrev:8662,rev:498,revPrev:240.14,dr:0.08,drPrev:0.09,fraud:0,cb:0,status:"feb13"},
+  {id:"w06",lbl:"Feb 15–21",dt:"Feb 15–21, 2026",iss:249,issPrev:144,phys:0.44,physPrev:0.46,virt:0.97,merch:null,dorm:0.36,spend:7533,spendPrev:9510,rev:189,revPrev:498,dr:0.04,drPrev:0.08,fraud:0,cb:0,status:"feb20"},
+  {id:"w07",lbl:"Feb 22–28",dt:"Feb 22–28, 2026",iss:328,issPrev:249,phys:0.47,physPrev:0.44,virt:0.97,merch:null,dorm:0.71,spend:16584,spendPrev:7533,rev:402,revPrev:189,dr:0.05,drPrev:0.04,fraud:0,cb:0,status:"feb27"},
+  {id:"w08",lbl:"Mar 1–7",dt:"Mar 1–7, 2026",iss:257,issPrev:328,phys:0.42,physPrev:0.47,virt:0.52,merch:null,dorm:0.58,spend:14882,spendPrev:16584,rev:576,revPrev:402,dr:0.04,drPrev:0.05,fraud:0.01,cb:0,status:"march6"},
+  {id:"w09",lbl:"Mar 8–14",dt:"Mar 8–14, 2026",iss:279,issPrev:257,phys:0.42,physPrev:0.42,virt:0.55,merch:null,dorm:0.58,spend:7810,spendPrev:14882,rev:243,revPrev:576,dr:0.04,drPrev:0.04,fraud:0,cb:0,status:"march12"},
+  {id:"w10",lbl:"Mar 15–21",dt:"Mar 15–21, 2026",iss:253,issPrev:279,phys:0.42,physPrev:0.42,virt:0.55,merch:0.22,dorm:0.58,spend:9763,spendPrev:7810,rev:208,revPrev:243,dr:0.03,drPrev:0.04,fraud:0,cb:0,status:"march20"},
+  {id:"w11",lbl:"Mar 22–28",dt:"Mar 22–28, 2026",iss:109,issPrev:253,phys:0.42,physPrev:0.42,virt:0.55,merch:0.22,dorm:0.57,spend:16133,spendPrev:9763,rev:113,revPrev:208,dr:0.04,drPrev:0.03,fraud:0,cb:0,status:"march27"},
+  {id:"w12",lbl:"Mar 29–Apr 4",dt:"Mar 29–Apr 4, 2026",iss:103,issPrev:109,phys:0.56,physPrev:0.42,virt:0.61,merch:0.28,dorm:0.54,spend:26700,spendPrev:16133,rev:109,revPrev:113,dr:0.03,drPrev:0.04,fraud:0,cb:0,status:"april3"},
+  {id:"w13",lbl:"Apr 5–11",dt:"Apr 5–11, 2026",iss:21,issPrev:103,phys:0.43,physPrev:0.56,virt:0.61,merch:0.28,dorm:0.53,spend:52495,spendPrev:26700,rev:712.8,revPrev:109,dr:0.04,drPrev:0.03,fraud:0,cb:0,status:"april10"},
+  {id:"w14",lbl:"Apr 12–18",dt:"Apr 12–18, 2026",iss:61,issPrev:21,phys:0.43,physPrev:0.43,virt:0.64,merch:0.30,dorm:0.53,spend:81754,spendPrev:52495,rev:null,revPrev:712.8,dr:0.03,drPrev:0.04,fraud:0,cb:0,status:"april17"},
+  {id:"w15",lbl:"Apr 19–25",dt:"Apr 19–25, 2026",iss:50,issPrev:61,phys:0.44,physPrev:0.43,virt:0.64,merch:0.31,dorm:0.53,spend:38114,spendPrev:81754,rev:null,revPrev:null,dr:0.04,drPrev:0.03,fraud:0,cb:0,status:"april24"},
+  {id:"w16",lbl:"Apr 25–May 2",dt:"Apr 25–May 2, 2026",iss:195,issPrev:50,phys:0.44,physPrev:0.44,virt:0.91,merch:0.31,dorm:0.52,spend:53988,spendPrev:38114,rev:null,revPrev:null,dr:0.04,drPrev:0.04,fraud:0,cb:0,status:"may2nd"},
+  {id:"w17",lbl:"May 3–9",dt:"May 3–9, 2026",iss:70,issPrev:195,phys:0.48,physPrev:0.44,virt:0.85,merch:0.30,dorm:0.49,spend:12028,spendPrev:53988,rev:362,revPrev:705,dr:0.04,drPrev:0.04,fraud:0,cb:0,status:"may9th"},
+  {id:"w18",lbl:"May 10–16",dt:"May 10–16, 2026",iss:36,issPrev:70,phys:0.49,physPrev:0.48,virt:0.64,merch:0.30,dorm:0.48,spend:19220,spendPrev:12028,rev:131,revPrev:362,dr:0.07,drPrev:0.04,fraud:0,cb:0,status:"may15th"},
+  {id:"w19",lbl:"May 17–23",dt:"May 17–23, 2026",iss:57,issPrev:36,phys:0.51,physPrev:0.49,virt:0.84,merch:0.31,dorm:0.50,spend:56751,spendPrev:19220,rev:288,revPrev:131,dr:0.09,drPrev:0.07,fraud:0,cb:2,status:"may23rd",curr:true}
+];
+
+const PS={
+  jan16:{ng:[
+    {t:"Berkeley Card Production",n:"50,000 units produced.",s:"Completed"},
+    {t:"Dynamic OTP (CNP)",n:"SMS and Email OTP successful.",s:"Completed"},
+    {t:"BIN Testing",n:"BIN testing completed. 3DS setup to commence.",s:"Completed"},
+    {t:"Blusalt CMS Onboarding",n:"Confirm timeline for PaymentPro access and Blusalt training.",s:"In Progress"},
+    {t:"Wakanow Co-branded Card",n:"Confirm design and quantity. Engage Card Perso for pricing.",s:"In Progress"},
+    {t:"Commercial Card Issuance",n:"Prepaid Card Program advised. Team to select preferred program.",s:"In Progress"},
+    {t:"USD Float — Abbey Mortgage / Spark",n:"Await feedback from Abbey Mortgage Bank on meeting.",s:"Pending"},
+    {t:"Live API Integration with Blusalt",n:"Follow up on live keys since CNS commenced.",s:"Pending"},
+  ],gh:[{t:"Ghana Prepaid Card",n:"Engage GTP and Zenith on next steps to commence project.",s:"In Progress"}],
+  mc:[{t:"IDTP Fraud Protection Tool",n:"Next step depends on card production go-live.",s:"In Progress",p:false}],
+  wins:["Nigeria BIN testing completed","3DS setup to commence"],watch:["CNS not yet complete","USD float meeting not yet held","Live API pending"]},
+
+  jan23:{ng:[
+    {t:"Berkeley / Dynamic OTP",n:"Completed.",s:"Completed"},
+    {t:"Blusalt CMS Onboarding",n:"Confirm timeline for PaymentPro access.",s:"In Progress"},
+    {t:"Wakanow Co-branded Card",n:"Design selected and approved. Share with Ghana team for Mastercard approval.",s:"In Progress"},
+    {t:"Airpeace & Ethiopia Airlines",n:"Continue engagement. Share proposed commercial for internal approval.",s:"In Progress"},
+    {t:"Commercial Card Issuance",n:"Prepaid Card Program advised. Team to select preferred program.",s:"In Progress"},
+  ],gh:[
+    {t:"ICA & BIN Creation",n:"Addendum signed and received. Card program selection pending to complete BIN provisioning.",s:"In Progress"},
+    {t:"Card Purchase / Chip",n:"Card Forte confirmed chip supply. Awaiting Zenith Bank commercials.",s:"In Progress"},
+    {t:"GTP/Onafriq",n:"Project plan shared. Mastercard to provide resource.",s:"In Progress"},
+  ],mc:[
+    {t:"IDTP Fraud Protection Tool",n:"Integration document shared.",s:"In Progress",p:false},
+    {t:"Nigeria Travel Card Contract",n:"Date to change to Nov 2025. First draft in Feb 2026.",s:"In Progress",p:false},
+    {t:"CVP — Ghana Sign-on Bonus",n:"Available once BIN and ICA received.",s:"In Progress",p:false},
+    {t:"Marketing Support Claim",n:"Claim sent to Mastercard. Mbali acknowledging.",s:"In Progress",p:false},
+  ],wins:["Wakanow design selected and approved","Ghana addendum signed"],watch:["CMS access not yet granted","Commercial card program not selected","Live API pending"]},
+
+  jan30:{ng:[
+    {t:"Berkeley / CNS / OTP",n:"Completed.",s:"Completed"},
+    {t:"Blusalt CMS",n:"Continuous platform checks. Reporting template still pending.",s:"In Progress"},
+    {t:"Card Purchase",n:"Production of new stock. Delivery Jan 28–Feb 11.",s:"In Progress"},
+    {t:"Co-branded: Airpeace, United, MinieMoney",n:"Deck, NDA, SLA and card design in progress.",s:"In Progress"},
+    {t:"Commercial Card Issuance",n:"Team to select preferred prepaid card program.",s:"In Progress"},
+  ],gh:[
+    {t:"ICA & BIN",n:"Awaiting Zenith Bank Ghana. Platinum card selected.",s:"In Progress"},
+    {t:"Card Purchase / Chip",n:"Cost confirmed. Further engagement on agreements.",s:"In Progress"},
+    {t:"GTP/Onafriq",n:"Project plan shared. Awaiting Mastercard resource.",s:"In Progress"},
+  ],mc:[
+    {t:"IDTP Fraud Protection Tool",n:"Follow-up on preferred BIN and quantity shared.",s:"In Progress",p:false},
+    {t:"Nigeria Travel Card Contract",n:"Date change to Nov 2025. First draft Feb 2026.",s:"In Progress",p:false},
+    {t:"CVP — Ghana Sign-on Bonus",n:"Available once BIN and ICA confirmed.",s:"In Progress",p:false},
+  ],wins:["Co-branded deck shared for review"],watch:["Live API base URL not available","Card delivery delayed","Bulk platinum upload pending"]},
+
+  feb6:{ng:[
+    {t:"Berkeley / CNS / SLA",n:"All completed.",s:"Completed"},
+    {t:"Blusalt CMS",n:"Continuous checks. Reporting template still pending.",s:"In Progress"},
+    {t:"Card Purchase",n:"New stock production. Delivery Jan 28–Feb 11.",s:"In Progress"},
+    {t:"Co-branded (Airpeace, United, MinieMoney, Hajj)",n:"Deck, NDA, SLA and card design.",s:"In Progress"},
+    {t:"Commercial Card Issuance",n:"Select preferred program.",s:"In Progress"},
+  ],gh:[
+    {t:"ICA & BIN",n:"Awaiting Zenith Bank Ghana feedback. Platinum card selected.",s:"In Progress"},
+    {t:"Chip Configuration — St Topaz",n:"Chip configuration for St Topaz.",s:"In Progress"},
+    {t:"GTP/Onafriq",n:"Project plan shared. Awaiting Mastercard resource.",s:"In Progress"},
+  ],mc:[
+    {t:"IDTP Fraud Protection Tool",n:"Card program and quantity confirmed.",s:"In Progress",p:false},
+    {t:"Nigeria Travel Card Contract",n:"Date change to Nov 2025. First draft Feb 2026.",s:"In Progress",p:false},
+    {t:"CVP — Ghana Sign-on Bonus",n:"Disbursed once ICA and BIN are ready.",s:"In Progress",p:false},
+  ],wins:["Hajj co-branded added to pipeline"],watch:["Card delivery still pending","Chip configuration incomplete","ICA and BIN still awaited"]},
+
+  feb13:{ng:[
+    {t:"Berkeley / CNS / SLA / BIN / 3DS",n:"All completed.",s:"Completed"},
+    {t:"Blusalt CMS",n:"SMS / Card Transaction Statement feature in progress.",s:"In Progress"},
+    {t:"Card Purchase",n:"Production ongoing. New date: 20th Feb.",s:"In Progress"},
+    {t:"Co-branded (Airpeace, United, MinieMoney, Hajj)",n:"Deck to be provided today.",s:"In Progress"},
+    {t:"Commercial Card Issuance",n:"Select preferred program.",s:"In Progress"},
+  ],gh:[
+    {t:"ICA & BIN",n:"ICA and BIN assigned. Go-live date 2nd March on BIN.",s:"In Progress"},
+    {t:"Chip Configuration",n:"To be handled by Zenith Bank.",s:"In Progress"},
+    {t:"GTP/Onafriq",n:"Project plan shared. Mastercard resource pending.",s:"In Progress"},
+  ],mc:[
+    {t:"IDTP Fraud Protection Tool",n:"Confirm alert on customer behalf. Routing to Mastercard page.",s:"In Progress",p:false},
+    {t:"Nigeria Travel Card Contract",n:"First draft to be received in Feb 2026.",s:"In Progress",p:false},
+    {t:"Waiver Claim",n:"To be treated as claim if process fails by Tuesday.",s:"In Progress",p:false},
+  ],wins:["Ghana ICA and BIN assigned","BIN go-live date set (2nd March)"],watch:["Card production delivery delayed to 20th Feb","Waiver claim resolution pending"]},
+
+  feb20:{ng:[
+    {t:"Berkeley / CNS / SLA / BIN / 3DS",n:"All completed.",s:"Completed"},
+    {t:"Blusalt CMS",n:"SMS / Card Transaction Statement ongoing.",s:"In Progress"},
+    {t:"Card Purchase",n:"Card production completed. Inspection today.",s:"In Progress"},
+    {t:"Co-branded (Airpeace, United, MinieMoney, Hajj)",n:"Deck to be provided today.",s:"In Progress"},
+    {t:"Commercial Card Issuance",n:"Select preferred program.",s:"In Progress"},
+  ],gh:[
+    {t:"ICA & BIN",n:"ICA and BIN assigned. Go-live 2nd March.",s:"In Progress"},
+    {t:"Chip",n:"To be handled by Zenith Bank.",s:"In Progress"},
+    {t:"GTP/Onafriq",n:"Project plan shared. Awaiting Mastercard resource.",s:"In Progress"},
+  ],mc:[
+    {t:"IDTP Fraud Protection Tool",n:"Awaiting feedback from Mbali.",s:"In Progress",p:false},
+    {t:"Nigeria Travel Card Contract",n:"First draft in Feb 2026.",s:"In Progress",p:false},
+    {t:"Marketing Support Claim",n:"Marketing invoices shared. Payment feedback next week.",s:"In Progress",p:false},
+  ],wins:["Card production completed (50,000 units)","Inspection scheduled"],watch:["Card stock not yet released","Waiver payment confirmation pending"]},
+
+  feb27:{ng:[
+    {t:"Card Purchase",n:"Card production and inspection completed (50,000 units).",s:"Completed"},
+    {t:"Blusalt CMS",n:"Email live. ATM fees implemented. Other fees still pending.",s:"In Progress"},
+    {t:"Hajj Card",n:"E-proof signed. Awaiting Mastercard approval.",s:"In Progress"},
+    {t:"MinieMoney SLA",n:"SLA completed by Legal.",s:"In Progress"},
+    {t:"Airpeace",n:"Deck shared. Meeting with loyalty team to be scheduled.",s:"In Progress"},
+    {t:"Commercial Card Issuance",n:"Select preferred program.",s:"In Progress"},
+  ],gh:[
+    {t:"ICA & BIN",n:"Assigned. Engage Abena and Kennedy for BIN readiness.",s:"In Progress"},
+    {t:"Perso / SLA",n:"Perso letter shared. Awaiting SLA feedback from Zenith.",s:"In Progress"},
+    {t:"GTP/Onafriq",n:"Engage Mbali once ICA/BIN provided.",s:"In Progress"},
+  ],mc:[
+    {t:"IDTP Fraud Protection Tool",n:"Awaiting Mbali confirmation on customer alerts.",s:"In Progress",p:false},
+    {t:"Nigeria Travel Card Contract",n:"Check in with Mbali on draft.",s:"In Progress",p:false},
+    {t:"Waiver Claim",n:"Processed internally. Confirm payment in MCBS.",s:"In Progress",p:false},
+    {t:"Marketing Support Claim",n:"Feedback by March end.",s:"In Progress",p:false},
+  ],wins:["Card inspection completed (50,000 cards)","MinieMoney SLA completed"],watch:["Hajj Mastercard approval still pending","OIF and other fees still pending"]},
+
+  march6:{ng:[
+    {t:"All card infrastructure",n:"Completed.",s:"Completed"},
+    {t:"Blusalt CMS",n:"Email live. Working on SMS charge modalities.",s:"In Progress"},
+    {t:"Airpeace",n:"Meeting scheduled today at 4:00pm.",s:"In Progress"},
+    {t:"MinieMoney",n:"Follow up with Chinedu for updated SLA.",s:"In Progress"},
+    {t:"Hajj Card",n:"Mastercard approval pending. Cards created on request.",s:"In Progress"},
+    {t:"Commercial Card Issuance",n:"Select preferred program.",s:"In Progress"},
+  ],gh:[
+    {t:"ICA & BIN",n:"Engage Abena and Kennedy for BIN readiness.",s:"In Progress"},
+    {t:"Perso / SLA",n:"Perso letter shared with Abena.",s:"In Progress"},
+    {t:"GTP/Onafriq",n:"Resource assigned. Engage once ICA/BIN provided.",s:"In Progress"},
+  ],mc:[
+    {t:"IDTP Fraud Protection Tool",n:"Awaiting Mbali feedback.",s:"In Progress",p:false},
+    {t:"Nigeria Travel Card Contract",n:"Feedback in next two weeks.",s:"In Progress",p:false},
+    {t:"Waiver Claim",n:"Confirm payment in MCBS.",s:"In Progress",p:false},
+  ],wins:["Email notification live on Blusalt CMS","Airpeace meeting held"],watch:["Hajj Mastercard approval pending","SMS charge modality unresolved"]},
+
+  march12:{ng:[
+    {t:"All card infrastructure",n:"Completed.",s:"Completed"},
+    {t:"Blusalt CMS",n:"Email live. SMS charge modality in progress.",s:"In Progress"},
+    {t:"Airpeace",n:"Card design review ongoing.",s:"In Progress"},
+    {t:"MinieMoney",n:"SLA signed (additions needed). Card design and API pending.",s:"In Progress"},
+    {t:"Hajj Card",n:"Program registration issue raised. Engage Mbali for support.",s:"In Progress"},
+    {t:"Commercial Card Issuance",n:"Select preferred program.",s:"In Progress"},
+  ],gh:[
+    {t:"ICA & BIN",n:"Setup still ongoing / settlement requirements.",s:"In Progress"},
+    {t:"Chip Meeting",n:"Meeting on chip availability today.",s:"In Progress"},
+    {t:"GTP/Onafriq",n:"Resource assigned.",s:"In Progress"},
+  ],mc:[
+    {t:"IDTP Fraud Protection Tool",n:"Awaiting Mbali feedback.",s:"In Progress",p:false},
+    {t:"Nigeria Travel Card Contract",n:"Feedback in next two weeks.",s:"In Progress",p:false},
+  ],wins:["MinieMoney SLA signed","Airpeace card design review underway"],watch:["Hajj program registration issue","Ghana BIN setup still ongoing"]},
+
+  march20:{ng:[
+    {t:"All card infrastructure",n:"Completed.",s:"Completed"},
+    {t:"Blusalt CMS",n:"Email live. SMS charge modality ongoing.",s:"In Progress"},
+    {t:"Airpeace",n:"Card design shared with Airpeace.",s:"In Progress"},
+    {t:"MinieMoney",n:"SLA signed awaiting final legal sign-off.",s:"In Progress"},
+    {t:"Hajj Card",n:"Card design resubmitted to Mastercard.",s:"In Progress"},
+    {t:"Commercial Card Issuance",n:"Select preferred program.",s:"In Progress"},
+  ],gh:[
+    {t:"ICA & BIN",n:"Setup ongoing / settlement requirements.",s:"In Progress"},
+    {t:"Chip (ST-Topaz / Toppan)",n:"Chip discussion ongoing.",s:"In Progress"},
+    {t:"GTP/Onafriq",n:"Engage Souvedna/Mbali. Project plan shared.",s:"In Progress"},
+  ],mc:[
+    {t:"IDTP Fraud Protection Tool",n:"Awaiting Product Team feedback.",s:"In Progress",p:false},
+    {t:"Nigeria Travel Card Contract",n:"Mbali feedback in next two weeks.",s:"In Progress",p:false},
+  ],wins:["Airpeace card design shared","MinieMoney SLA signed"],watch:["Hajj Mastercard approval pending","Ghana BIN and ICA still not live"]},
+
+  march27:{ng:[
+    {t:"Card Purchase & Card Infrastructure",n:"Completed. Inspection of 50,000 units done.",s:"Completed"},
+    {t:"Blusalt CMS",n:"Email live. OIF pending.",s:"In Progress"},
+    {t:"Airpeace",n:"Await feedback on card design, approval and quantity.",s:"In Progress"},
+    {t:"MinieMoney",n:"Await card design and API feedback.",s:"In Progress"},
+    {t:"Hajj Card",n:"Follow-up with Card Forte for e-proof sign-off.",s:"In Progress"},
+    {t:"Commercial Card Issuance",n:"Select preferred program.",s:"In Progress"},
+  ],gh:[
+    {t:"ICA & BIN Creation",n:"Completed.",s:"Completed"},
+    {t:"APW and ABU",n:"Follow up with Zenith Bank and Onafriq on documentation.",s:"In Progress"},
+    {t:"Chip Setup",n:"Chip type confirmed. Setup ongoing.",s:"In Progress"},
+    {t:"GTP/Onafriq",n:"Resource assigned. Continue all tasks.",s:"In Progress"},
+  ],mc:[
+    {t:"IDTP Fraud Protection Tool",n:"Product feedback shared. New implementation feedback needed.",s:"In Progress",p:false},
+    {t:"Nigeria Travel Card Contract",n:"Follow up with Mbali today.",s:"In Progress",p:false},
+    {t:"CVP — Ghana Sign-on Bonus",n:"Request for sign-off this week.",s:"In Progress",p:false},
+    {t:"Waiver Claim",n:"Engaged Blusalt to re-share MCBS fees.",s:"In Progress",p:false},
+  ],wins:["Ghana ICA & BIN creation COMPLETED","Card inspection of 50,000 units completed"],watch:["Hajj e-proof still pending","Chip setup timeline not yet provided","OIF pending"]},
+
+  april3:{ng:[
+    {t:"All card infrastructure",n:"Completed.",s:"Completed"},
+    {t:"Blusalt CMS",n:"Email live. OIF pending.",s:"In Progress"},
+    {t:"Airpeace",n:"Await design, approval and quantity feedback.",s:"In Progress"},
+    {t:"MinieMoney",n:"Await card design and API.",s:"In Progress"},
+    {t:"Hajj Card",n:"E-proof sign-off pending.",s:"In Progress"},
+  ],gh:[
+    {t:"ICA & BIN",n:"Completed.",s:"Completed"},
+    {t:"APW and ABU",n:"Follow up with Zenith and Onafriq.",s:"In Progress"},
+    {t:"Chip Setup",n:"Timeline for completion this week.",s:"In Progress"},
+    {t:"GTP/Onafriq",n:"Resource assigned.",s:"In Progress"},
+  ],mc:[
+    {t:"IDTP Fraud Protection Tool",n:"New feedback around implementation required.",s:"In Progress",p:false},
+    {t:"Nigeria Travel Card Contract",n:"Mbali to provide feedback.",s:"In Progress",p:false},
+    {t:"CVP — Ghana Sign-on Bonus",n:"Request for sign-off this week.",s:"In Progress",p:false},
+    {t:"Waiver Claim",n:"Engaged Blusalt to re-share MCBS fees.",s:"In Progress",p:false},
+  ],wins:["Ghana ICA & BIN confirmed completed"],watch:["Hajj Mastercard e-proof sign-off pending","OIF still pending"]},
+
+  april10:{ng:[
+    {t:"All card infrastructure",n:"Completed.",s:"Completed"},
+    {t:"Blusalt CMS",n:"SMS Alert pending. OIF, income reporting, rate dashboard pending.",s:"In Progress"},
+    {t:"Blusalt / MPI (Cardstel)",n:"New bureau MPI conversation commenced. Test card sent to Kalabash office.",s:"In Progress"},
+    {t:"Airpeace",n:"Await feedback on design and quantity.",s:"In Progress"},
+    {t:"MinieMoney",n:"Await card design and API.",s:"In Progress"},
+    {t:"Hajj Card",n:"E-proof sign-off still pending.",s:"In Progress"},
+  ],gh:[
+    {t:"ICA & BIN",n:"Completed.",s:"Completed"},
+    {t:"CNS Submission",n:"To commence this week.",s:"In Progress"},
+    {t:"Mastercard Setup (PKI / ICA billing)",n:"PKI to be submitted via Mastercard Connect.",s:"In Progress"},
+    {t:"GTP/Onafriq",n:"Resource assigned.",s:"In Progress"},
+  ],mc:[
+    {t:"IDTP Fraud Protection Tool",n:"Enrolling processes to be completed.",s:"In Progress",p:false},
+    {t:"Nigeria Travel Card Contract",n:"New date — End of May.",s:"In Progress",p:false},
+    {t:"CVP — Ghana Sign-on Bonus",n:"Request for sign-off this week.",s:"In Progress",p:false},
+    {t:"Waiver Claim",n:"Engaged Blusalt to re-share MCBS fees.",s:"In Progress",p:false},
+  ],wins:["MPI test card received at Kalabash office","Ghana CNS submission to commence"],watch:["Hajj e-proof still pending","OIF, income reporting still pending"]},
+
+  april17:{ng:[
+    {t:"All card infrastructure",n:"Completed.",s:"Completed"},
+    {t:"Blusalt CMS",n:"SMS Alert pending. OIF, income reporting, rate dashboard pending.",s:"In Progress"},
+    {t:"Blusalt / MPI",n:"Conversation with new bureau MPI. Testing ongoing.",s:"In Progress"},
+    {t:"Airpeace",n:"Meeting target Wednesday 22nd April.",s:"In Progress"},
+    {t:"MinieMoney",n:"Await card design and API.",s:"In Progress"},
+    {t:"Hajj Card",n:"Card design approved — production started.",s:"In Progress"},
+  ],gh:[
+    {t:"ICA & BIN",n:"Completed.",s:"Completed"},
+    {t:"CNS Submission",n:"To be completed this week.",s:"In Progress"},
+    {t:"Mastercard Setup (PKI / ICA billing)",n:"PKI submission via Mastercard Connect.",s:"In Progress"},
+    {t:"GTP/Onafriq",n:"Resource assigned.",s:"In Progress"},
+  ],mc:[
+    {t:"IDTP Fraud Protection Tool",n:"Enrolling processes to complete.",s:"In Progress",p:false},
+    {t:"Nigeria Travel Card Contract",n:"New date — End of May.",s:"In Progress",p:false},
+    {t:"CVP — Ghana Sign-on Bonus",n:"Sign-on bonus this week.",s:"In Progress",p:false},
+    {t:"CVP — World Card",n:"Priceless / Travel Pass integration TBD.",s:"Pending",p:true},
+    {t:"Waiver Claim",n:"Engaged Blusalt to re-share MCBS fees.",s:"In Progress",p:false},
+  ],wins:["Hajj Card design approved — production started","Airpeace meeting scheduled"],watch:["Ghana CNS submission not yet complete","OIF still pending"]},
+
+  april24:{ng:[
+    {t:"All card infrastructure",n:"Completed.",s:"Completed"},
+    {t:"Blusalt CMS",n:"SMS Alert pending. OIF, income reporting, rate dashboard pending.",s:"In Progress"},
+    {t:"Blusalt / MPI",n:"Testing still in progress on Wema Bank terminal.",s:"In Progress"},
+    {t:"Airpeace",n:"Await feedback.",s:"In Progress"},
+    {t:"MinieMoney",n:"Await card design and API.",s:"In Progress"},
+    {t:"Hajj Card",n:"Production started.",s:"In Progress"},
+  ],gh:[
+    {t:"ICA & BIN",n:"Completed.",s:"Completed"},
+    {t:"CNS Submission",n:"To be completed this week.",s:"In Progress"},
+    {t:"Mastercard Setup",n:"PKI submission ongoing.",s:"In Progress"},
+    {t:"GTP/Onafriq",n:"Resource assigned.",s:"In Progress"},
+  ],mc:[
+    {t:"IDTP Fraud Protection Tool",n:"Promo code enrollment — need to discuss.",s:"In Progress",p:false},
+    {t:"Nigeria Travel Card Contract",n:"New date — End of May.",s:"In Progress",p:false},
+    {t:"CVP — Ghana Sign-on Bonus",n:"Sign-on bonus in progress.",s:"In Progress",p:false},
+    {t:"CVP — World Card",n:"Priceless / Travel Pass integration TBD.",s:"Pending",p:true},
+    {t:"Waiver Claim",n:"Mbali pushing internally.",s:"In Progress",p:false},
+  ],wins:["Hajj Card production started"],watch:["Ghana CNS not complete","MPI Blusalt testing ongoing","OIF still pending"]},
+
+  may2nd:{ng:[
+    {t:"All card infrastructure",n:"Completed.",s:"Completed"},
+    {t:"Blusalt CMS",n:"SMS Alert pending. OIF, income reporting, rate dashboard pending.",s:"In Progress"},
+    {t:"Blusalt / MPI",n:"Testing ongoing.",s:"In Progress"},
+    {t:"Airpeace",n:"Await feedback.",s:"In Progress"},
+    {t:"MinieMoney",n:"Await card design and API.",s:"In Progress"},
+    {t:"Hajj Card",n:"Production started.",s:"In Progress"},
+  ],gh:[
+    {t:"ICA & BIN",n:"Completed.",s:"Completed"},
+    {t:"CNS Submission",n:"To be completed this week.",s:"In Progress"},
+    {t:"Mastercard Setup",n:"PKI submission ongoing.",s:"In Progress"},
+    {t:"GTP/Onafriq",n:"Resource assigned.",s:"In Progress"},
+  ],mc:[
+    {t:"IDTP Fraud Protection Tool",n:"Promo code enrollment — need to discuss.",s:"In Progress",p:false},
+    {t:"Nigeria Travel Card Contract",n:"New date — End of May.",s:"In Progress",p:false},
+    {t:"CVP — Ghana Sign-on Bonus",n:"In progress.",s:"In Progress",p:false},
+    {t:"CVP — World Card",n:"Priceless / Travel Pass TBD.",s:"Pending",p:true},
+    {t:"Waiver Claim",n:"Mbali pushing internally.",s:"In Progress",p:false},
+  ],wins:["Virtual activation surged to 91%","Issuance +290% WoW (50 → 195)"],watch:["Ghana CNS still pending","MPI test on Wema terminal not done","Airpeace still pending"]},
+
+  may9th:{ng:[
+    {t:"Berkeley / CNS / SLA / BIN / 3DS / Card Purchase",n:"All completed. 50,000 cards inspected.",s:"Completed"},
+    {t:"Blusalt CMS",n:"SMS Alert opt-in/out feature in development. OIF pending.",s:"In Progress"},
+    {t:"Blusalt / MPI",n:"Meeting scheduled this week. Card test successful.",s:"In Progress"},
+    {t:"MinieMoney",n:"Card production commenced. API integration started.",s:"In Progress"},
+    {t:"Hajj Card",n:"Production started. Ready end of week or early next week.",s:"In Progress"},
+  ],gh:[
+    {t:"ICA & BIN Creation",n:"Completed.",s:"Completed"},
+    {t:"CNS Submission",n:"CNS process to be completed this week.",s:"In Progress"},
+    {t:"3DS Setup",n:"Zenith Bank to commence 3DS this week.",s:"In Progress"},
+    {t:"Card Production — Card Forte",n:"Card design approval to commence.",s:"In Progress"},
+    {t:"Mastercard Setup (ISSM)",n:"Moved to post-implementation stage.",s:"In Progress"},
+    {t:"GTP/Onafriq",n:"Resource assigned.",s:"In Progress"},
+  ],mc:[
+    {t:"IDTP Fraud Protection Tool",n:"Promo code enrollment ongoing.",s:"In Progress",p:false},
+    {t:"Nigeria Travel Card Contract",n:"Contract review meeting held. Target mid-May.",s:"In Progress",p:false},
+    {t:"CVP — Ghana Sign-on Bonus",n:"In progress.",s:"In Progress",p:false},
+    {t:"CVP — World Card",n:"Priceless / Travel Pass TBD.",s:"Pending",p:true},
+    {t:"Waiver Claim",n:"Align with finance for payout.",s:"In Progress",p:false},
+  ],wins:["MPI card test successful","MinieMoney card production commenced","Hajj Card production started"],watch:["Ghana CNS still in progress","3DS not yet started","Airpeace still pending"]},
+
+  may23rd:{ng:[
+    {t:"Berkeley / CNS / SLA / BIN Testing / 3DS / Card Purchase",n:"All completed. 50,000 cards inspected.",s:"Completed"},
+    {t:"Blusalt CMS Optimisation",n:"SMS Alert option in progress. Reporting dashboard to show all fee income still pending.",s:"In Progress"},
+    {t:"Blusalt / MPI Integration",n:"Wema Bank terminal test completed successfully.",s:"Completed"},
+    {t:"Airpeace",n:"Still pending. Scope: card design, commercial conversation, SLA, reward system.",s:"In Progress"},
+    {t:"MinieMoney",n:"Card production commenced. API documentation shared. Production expected in 4–6 weeks.",s:"In Progress"},
+    {t:"Hajj Card Programme",n:"Card production to be completed this week. CVP and fulfilment package in the works.",s:"In Progress"},
+  ],gh:[
+    {t:"ICA & BIN Creation",n:"Completed.",s:"Completed"},
+    {t:"CNS Submission",n:"CNS completed for physical card production.",s:"Completed"},
+    {t:"Mastercard ISSM",n:"ISSM completed. Implementation workbook to be completed.",s:"Completed"},
+    {t:"3DS Setup",n:"3DS configuration commenced this week. Scope of work signed. Duration: 1–10 business days.",s:"In Progress"},
+    {t:"PVT / Production Certificate",n:"Virtual card creation to be done today. Production certificate to be shared with Zenith and Card Forte.",s:"In Progress"},
+    {t:"Card Production — Card Forte",n:"Card design approval to commence. E-proof to be signed.",s:"In Progress"},
+    {t:"GTP / Onafriq",n:"PVT and Card Perso file tasks in progress. Virtual card creation next.",s:"In Progress"},
+  ],mc:[
+    {t:"IDTP Fraud Protection Tool",n:"Meeting with Carelle — to be scheduled.",s:"In Progress",p:false},
+    {t:"Nigeria Travel Card Contract",n:"Contract review meeting with Mastercard — date revised to mid-June.",s:"In Progress",p:false},
+    {t:"CVP — Ghana Card Sign-on Bonus",n:"Sign-on bonus work in progress.",s:"In Progress",p:false},
+    {t:"CVP — World Card (Priceless / Travel Pass)",n:"Priceless / Travel Pass integration into Kalabash App. TBD.",s:"Pending",p:true},
+    {t:"Mastercard Waiver Claim",n:"Mbali pushing internally. Align with Finance for payout.",s:"In Progress",p:false},
+  ],wins:[
+    "Issuance up to 57 from 36 — +58% WoW",
+    "Total spend surged to $56,751 — +195% WoW",
+    "Revenue up to $288 — +120% WoW",
+    "Virtual activation recovered to 84% (from 64%)",
+    "Ghana 3DS configuration commenced — scope of work signed",
+    "Ghana ISSM completed",
+    "Transactions per month improved to 7 (from 5)",
+    "Wema Bank terminal test completed successfully"
+  ],watch:[
+    "Decline rate worsened to 9% — breach vs ≤4% target (up from 7%)",
+    "Chargeback ratio at 2% — NEW breach vs ≤0.7% target",
+    "Dormant cards increased to 50% — breach vs ≤10% target",
+    "Monthly issuance: 57 vs 2,083 target — significant gap remains",
+    "Total spend: $56,751 vs $833k target",
+    "Total card revenue: $288 vs $16k target",
+  ],plans:[
+    {cat:"Acquisition", action:"Follow up with prospects on expense and co-branded cards (IDP, IELTS)"},
+    {cat:"Activation & Spend", action:"Targeted communication to new sales (Growth Activation) cardholders through Cardunit"},
+    {cat:"Revenue", action:"Follow up with Blusalt on fees reporting dashboard"},
+    {cat:"Revenue", action:"Advance interchange discussion with Wema Bank"},
+    {cat:"Hajj", action:"Conclude on the fulfilment letter"},
+    {cat:"Partnerships", action:"Engage independently sourced partners"},
+    {cat:"Partnerships", action:"Check-in with Gabriel for update"},
+  ]},
+  may15th:{ng:[
+    {t:"Berkeley / CNS / SLA / BIN Testing / 3DS / Card Purchase",n:"All completed. 50,000 cards inspected.",s:"Completed"},
+    {t:"Blusalt CMS Optimisation",n:"SMS Alert opt-in/out. OIF, income reporting, rate dashboard pending.",s:"In Progress"},
+    {t:"Blusalt / MPI Integration",n:"Physical meeting with Kalabash team this week. Wema terminal test pending.",s:"In Progress"},
+    {t:"Mastercard Contract — Nigeria",n:"Contract review held. Target mid-May. Follow up with Mbali.",s:"In Progress"},
+    {t:"Mastercard Waiver Claim",n:"Mbali pushing. Align with Finance. Blusalt to re-share MCBS fees.",s:"In Progress"},
+    {t:"CVP — World Card",n:"Priceless / Travel Pass integration TBD.",s:"Pending"},
+  ],gh:[
+    {t:"ICA & BIN Creation",n:"Completed.",s:"Completed"},
+    {t:"CNS Submission",n:"COMPLETED this week.",s:"Completed"},
+    {t:"Mastercard ISSM",n:"Completed. Moving to PVT & workbook completion.",s:"Completed"},
+    {t:"3DS Setup — Zenith Bank Ghana",n:"Zenith Bank Ghana to commence 3DS this week.",s:"In Progress"},
+    {t:"Virtual Test Card Creation",n:"Virtual card to be created for testing via Onafriq.",s:"In Progress"},
+    {t:"Card Production — Card Forte",n:"Card design approval and e-proof sign-off pending.",s:"In Progress"},
+    {t:"GTP / Onafriq Engagement",n:"Resource assigned. Virtual card creation next.",s:"In Progress"},
+    {t:"CVP — Ghana Sign-on Bonus",n:"Sign-on bonus approval in progress this week.",s:"In Progress"},
+  ],mc:[
+    {t:"IDTP Fraud Protection Tool",n:"Meeting held with Carelle. Timeline depends on card production go-live.",s:"In Progress",p:false},
+    {t:"Nigeria Travel Card Contract",n:"Contract review meeting completed. Target mid-May.",s:"In Progress",p:false},
+    {t:"CVP — Ghana Card Sign-on Bonus",n:"Requesting sign-off from stakeholders this week.",s:"In Progress",p:false},
+    {t:"CVP — World Card (Priceless / Travel Pass)",n:"Priceless / Travel Pass integration into Kalabash App. TBD.",s:"Pending",p:true},
+    {t:"Mastercard Waiver Claim",n:"Mbali pushing internally. Finance to align for payout.",s:"In Progress",p:false},
+  ],wins:[
+    "Ghana ICA & BIN creation COMPLETED — project moves to CNS & 3DS phase",
+    "Ghana CNS process COMPLETED this week",
+    "Nigeria Travel Card: Berkeley, SLA, BIN Testing & 3DS all completed",
+    "Hajj Card in production — CVP & fulfilment package in progress",
+    "MinieMoney: card production commenced; API documentation shared",
+    "Mastercard ISSM completed for Ghana card setup"
+  ],watch:[
+    "Monthly issuance run rate: 36 vs. 2,083 target — urgent attention needed",
+    "Total spend: $19,220 vs. $833k target — significant gap remains",
+    "Total card revenue: $131 vs. $16k target",
+    "Dormant card rate at 48% — well above ≤10% target",
+    "Decline rate spiked to 7% — breach vs. ≤4% target",
+    "Virtual card activation dropped to 64% from 85%"
+  ]}
+};
+
+// ── Helpers ──
+const pct=v=>v==null?'—':(v*100).toFixed(0)+'%';
+const fmtUSD=v=>v==null?'—':'$'+v.toLocaleString();
+function delta(cur,prev){
+  if(cur==null||prev==null) return{txt:'—',cls:''};
+  const d=cur-prev, p=prev!==0?((d/prev)*100).toFixed(0):0;
+  if(d>0) return{txt:`↑ ${Math.abs(p)}% WoW`,cls:'ok'};
+  if(d<0) return{txt:`↓ ${Math.abs(p)}% WoW`,cls:'bad'};
+  return{txt:'No change',cls:''};
+}
+function sCls(v,target,lower){
+  if(v==null) return '';
+  return lower?(v<=target?'ok':'bad'):(v>=target?'ok':'bad');
+}
+
+// ── Build two-tier nav (months + weeks) ──
+const months = ['January','February','March','April','May'];
+const monthMap = {
+  'January':  W.filter(w=>w.lbl.startsWith('Jan')),
+  'February': W.filter(w=>w.lbl.startsWith('Feb')),
+  'March':    W.filter(w=>w.lbl.startsWith('Mar')),
+  'April':    W.filter(w=>w.lbl.startsWith('Apr')),
+  'May':      W.filter(w=>w.lbl.startsWith('May')),
+};
+let activeMo = 'May';
+
+const moEl = document.getElementById('monthBtns');
+const wkEl = document.getElementById('weekBtns');
+
+function buildMonthBtns(){
+  moEl.innerHTML='';
+  months.forEach(mo=>{
+    const b=document.createElement('button');
+    b.className='mo-btn'+(mo===activeMo?' mo-active':'');
+    b.textContent=mo+' ('+monthMap[mo].length+')';
+    b.onclick=()=>{activeMo=mo;buildMonthBtns();buildWeekBtns();};
+    moEl.appendChild(b);
+  });
+}
+
+function buildWeekBtns(){
+  wkEl.innerHTML='';
+  const ws=monthMap[activeMo]||[];
+  ws.forEach(w=>{
+    const b=document.createElement('button');
+    b.className='wk-btn'+(w.curr?' active':'');
+    b.dataset.id=w.id;
+    // Short label: just the dates part
+    const shortLbl = w.lbl.replace(/Jan |Feb |Mar |Apr |May /g,'').replace(/ 2026/,'');
+    b.innerHTML=`<span class="wk-dot"></span>${w.lbl}${w.curr?' <span style="color:var(--teal);font-size:9px">NOW</span>':''}`;
+    b.onclick=()=>{
+      document.querySelectorAll('.wk-btn').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      document.getElementById('navCurrent').textContent=w.dt;
+      renderWeek(w);
+    };
+    wkEl.appendChild(b);
+  });
+}
+
+buildMonthBtns();
+buildWeekBtns();
+
+// ── Render week ──
+function renderWeek(w){
+  document.getElementById('hdrSub').textContent='Week of '+w.dt;
+  document.getElementById('hdrDate').textContent=w.dt;
+  const ps=PS[w.status]||PS.may15th;
+
+  const issCls=w.iss>=200?'ok':w.iss>=100?'warn':'bad';
+  const spCls=w.spend>=50000?'ok':w.spend>=15000?'warn':'bad';
+  const revCls=w.rev==null?'':w.rev>=500?'ok':w.rev>=200?'warn':'bad';
+  const drCls=w.dr==null?'':w.dr<=0.04?'ok':w.dr<=0.06?'warn':'bad';
+  const dormCls=w.dorm==null?'':w.dorm<=0.10?'ok':w.dorm<=0.30?'warn':'bad';
+  const dIss=delta(w.iss,w.issPrev), dSp=delta(w.spend,w.spendPrev), dRev=delta(w.rev,w.revPrev);
+
+  function tlist(items){
+    return items.map(it=>`
+    <div class="titem">
+      <div class="tbar ${it.s==='Completed'?'done':it.s==='Pending'?'g':'t'}"></div>
+      <div class="tbody"><div class="ttitle">${it.t}</div><div class="tnote">${it.n}</div></div>
+      <span class="badge ${it.s==='Completed'?'b-green':it.s==='Pending'?'b-gold':'b-teal'}" style="flex-shrink:0;font-size:9px">${it.s}</span>
+    </div>`).join('');
+  }
+
+  // Pipeline — dynamic based on week
+  const pip=[
+    {lbl:'ICA &\nBIN', done:w.id>='w11'},
+    {lbl:'CNS', done:w.id>='w18'},
+    {lbl:'ISSM', done:w.id>='w18'},
+    {lbl:'3DS\n(Zenith)', done:false},
+    {lbl:'Test\nCard', done:false},
+    {lbl:'Card\nProd.', done:false},
+    {lbl:'Go\nLive', done:false},
+  ];
+  let pipH='<div class="pipeline">';
+  pip.forEach((p,i)=>{
+    pipH+=`<div class="pip-step"><div class="pip-c ${p.done?'done':'todo'}">${p.done?'✓':i+1}</div><div class="pip-lbl ${p.done?'done':''}">${p.lbl.replace('\n','<br>')}</div></div>`;
+    if(i<pip.length-1) pipH+=`<div class="pip-line ${p.done?'done':'todo'}"></div>`;
+  });
+  pipH+='</div>';
+
+  const partners=[
+    {name:'Hajj Card Programme', tag:'In Progress', tc:'b-teal', col:'var(--teal)',
+     tasks:ps.ng ? ps.ng.filter(t=>t.t.toLowerCase().includes('hajj')).map(t=>t.n) : [],
+     fallback:['Production started — cards ready end of week / early next week','CVP and fulfilment package being prepared','Fulfilment letter to be concluded']},
+    {name:'MinieMoney', tag:'In Progress', tc:'b-teal', col:'var(--teal2)',
+     tasks:ps.ng ? ps.ng.filter(t=>t.t.toLowerCase().includes('miniemoney')||t.t.toLowerCase().includes('minimoney')).map(t=>t.n) : [],
+     fallback:['Card production has commenced','API documentation shared with MinieMoney team','Card production & API integration running in parallel']},
+    {name:'Card Forte — Expense Cards', tag:'Prospect', tc:'b-gold', col:'var(--gold)',
+     tasks:[],
+     fallback:['Card Forte exploring expense card proposition with Kalabash','Initial discussions underway — scope & commercial terms TBD','Next step: align on product structure and engagement roadmap']},
+    {name:'Airpeace', tag:'Pending', tc:'b-grey', col:'var(--g2)',
+     tasks:ps.ng ? ps.ng.filter(t=>t.t.toLowerCase().includes('airpeace')).map(t=>t.n) : [],
+     fallback:['Commercial discussions still pending','Scope: card design, commercial terms, SLA, reward system','Follow up required to progress engagement']},
+  ];
+
+  document.getElementById('dash').innerHTML=`
+<div class="slabel">KPI Scorecard — ${w.dt}</div>
+<div class="kpi-row" style="grid-template-columns:repeat(8,1fr)">
+  <div class="kpi ${issCls}">
+    <div class="kpi-lbl">Monthly issuance run rate</div>
+    <div class="kpi-val ${issCls}">${w.iss}</div>
+    <div class="kpi-meta"><span class="kpi-target">Target: 2,083</span><span class="kpi-delta ${dIss.cls}">${dIss.txt}</span></div>
+  </div>
+  <div class="kpi ${sCls(w.phys,0.20,false)}">
+    <div class="kpi-lbl">Physical activation</div>
+    <div class="kpi-val ${sCls(w.phys,0.20,false)}">${pct(w.phys)}</div>
+    <div class="kpi-meta"><span class="kpi-target">Target: ≥20%</span><span class="kpi-delta ${sCls(w.phys,0.20,false)}">${w.phys>=0.20?'✔ On target':'↓ Below'}</span></div>
+  </div>
+  <div class="kpi ${w.virt==null?'teal':sCls(w.virt,0.20,false)}">
+    <div class="kpi-lbl">Virtual activation</div>
+    <div class="kpi-val ${w.virt==null?'neut':sCls(w.virt,0.20,false)}">${pct(w.virt)}</div>
+    <div class="kpi-meta"><span class="kpi-target">Target: ≥20%</span><span class="kpi-delta" style="color:var(--g2)">${w.virt==null?'Not tracked yet':''}</span></div>
+  </div>
+  <div class="kpi ${w.merch==null?'teal':sCls(w.merch,0.20,false)}">
+    <div class="kpi-lbl">Merchant activation</div>
+    <div class="kpi-val ${w.merch==null?'neut':sCls(w.merch,0.20,false)}">${pct(w.merch)}</div>
+    <div class="kpi-meta"><span class="kpi-target">Target: ≥20%</span><span class="kpi-delta" style="color:var(--g2)">${w.merch==null?'Not tracked yet':''}</span></div>
+  </div>
+  <div class="kpi ${dormCls}">
+    <div class="kpi-lbl">Dormant cards</div>
+    <div class="kpi-val ${dormCls}">${pct(w.dorm)}</div>
+    <div class="kpi-meta"><span class="kpi-target">Target: ≤10%</span><span class="kpi-delta ${dormCls}">${w.dorm==null?'—':w.dorm<=0.10?'✔ On target':'⚠ Breach'}</span></div>
+  </div>
+  <div class="kpi ${spCls}">
+    <div class="kpi-lbl">Total spend (USD)</div>
+    <div class="kpi-val ${spCls}">$${w.spend.toLocaleString()}</div>
+    <div class="kpi-meta"><span class="kpi-target">Target: $833k</span><span class="kpi-delta ${dSp.cls}">${dSp.txt}</span></div>
+  </div>
+  <div class="kpi ${revCls}">
+    <div class="kpi-lbl">Total revenue (USD)</div>
+    <div class="kpi-val ${revCls}">${fmtUSD(w.rev)}</div>
+    <div class="kpi-meta"><span class="kpi-target">Target: $16k</span><span class="kpi-delta ${dRev.cls}">${dRev.txt}</span></div>
+  </div>
+  <div class="kpi ${drCls}">
+    <div class="kpi-lbl">Decline rate</div>
+    <div class="kpi-val ${drCls}">${w.dr!=null?pct(w.dr):w.drRaw!=null?w.drRaw+' (count)':'—'}</div>
+    <div class="kpi-meta"><span class="kpi-target">Target: ≤4%</span><span class="kpi-delta ${drCls}">${w.dr==null?'—':w.dr<=0.04?'✔ On target':'⚠ Breach'}</span></div>
+  </div>
+</div>
+
+<div class="g2">
+  <div class="card">
+    <div class="ctitle"><span class="ctitle-dot" style="background:var(--green)"></span>Wins this week</div>
+    <div class="ilist">${(ps.wins||[]).map(x=>`<div class="iitem"><div class="idot g"></div><div class="itext">${x}</div></div>`).join('')||'<div class="iitem"><div class="itext" style="color:var(--g2)">No wins recorded.</div></div>'}</div>
+  </div>
+  <div class="card">
+    <div class="ctitle"><span class="ctitle-dot" style="background:var(--red)"></span>Watch items</div>
+    <div class="ilist">${(ps.watch||[]).map(x=>`<div class="iitem"><div class="idot r"></div><div class="itext">${x}</div></div>`).join('')||'<div class="iitem"><div class="itext" style="color:var(--g2)">No watch items.</div></div>'}</div>
+  </div>
+</div>
+
+${ps.plans && ps.plans.length ? `
+<div class="slabel">Plans for the week</div>
+<div style="background:var(--white);border-radius:var(--r-lg);border:1px solid var(--g3);padding:15px 17px;box-shadow:var(--sh);margin-bottom:14px">
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px">
+    ${ps.plans.map(p=>`
+    <div style="display:flex;align-items:flex-start;gap:9px;padding:9px 12px;background:var(--off);border-radius:var(--r-md);border-left:3px solid var(--teal)">
+      <div>
+        <div style="font-size:9.5px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px">${p.cat}</div>
+        <div style="font-size:12px;color:var(--c3);line-height:1.4">${p.action}</div>
+      </div>
+    </div>`).join('')}
+  </div>
+</div>` : ''}
+
+<div class="g2">
+  <div class="card">
+    <div class="ctitle"><span class="ctitle-dot" style="background:var(--teal)"></span>Nigeria — Travel Card <span class="badge b-teal" style="font-size:9px">In progress</span></div>
+    <div>${tlist(ps.ng||[])}</div>
+  </div>
+  <div class="card">
+    <div class="ctitle"><span class="ctitle-dot" style="background:var(--gold)"></span>Ghana — Prepaid Card (Cedi) <span class="badge b-gold" style="font-size:9px">3 of 7 milestones</span></div>
+    ${pipH}
+    <div>${tlist((ps.gh||[]).filter(g=>g.s!=='Completed'))}</div>
+  </div>
+</div>
+
+<div class="slabel">Partnerships & Co-branded</div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px">
+  ${partners.map(p=>{
+    const items = p.tasks.length ? p.tasks : p.fallback;
+    return `
+    <div class="card" style="padding:14px 16px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="width:3px;height:32px;border-radius:2px;background:${p.col};flex-shrink:0"></div>
+          <span style="font-size:12px;font-weight:600;color:var(--c1)">${p.name}</span>
+        </div>
+        <span class="badge ${p.tc}" style="font-size:9px">${p.tag}</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:0">
+        ${items.map(task=>`
+        <div style="display:flex;align-items:flex-start;gap:7px;padding:6px 0;border-bottom:1px solid var(--g3)">
+          <div style="width:5px;height:5px;border-radius:50%;background:${p.col};flex-shrink:0;margin-top:5px;opacity:.7"></div>
+          <span style="font-size:11px;color:var(--g1);line-height:1.4">${task}</span>
+        </div>`).join('')}
+      </div>
+    </div>`;
+  }).join('')}
+</div>`;
+
+  // Append Mastercard section separately
+  document.getElementById('dash').innerHTML += `
+<div class="slabel">Mastercard Engagement</div>
+<div class="card" style="margin-bottom:14px">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+    ${(ps.mc||[]).map(m=>`
+    <div class="mcitem ${m.p?'pend':''}">
+      <div style="flex:1;min-width:0"><div class="mcttl">${m.t}</div><div class="mcnote">${m.n}</div></div>
+      <span class="badge ${m.p?'b-gold':'b-teal'}" style="font-size:9px;flex-shrink:0">${m.s}</span>
+    </div>`).join('')}
+  </div>
+</div>`;
+}
+
+// ── Trend charts ──
+const lbl=W.map(w=>w.lbl);
+const gc='rgba(0,0,0,0.05)', lc='#6E6E6E';
+const fnt={family:"'DM Sans',sans-serif",size:10};
+const base={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+  scales:{x:{ticks:{color:lc,font:fnt,maxRotation:45,autoSkip:false},grid:{display:false}},
+          y:{ticks:{color:lc,font:fnt},grid:{color:gc},border:{display:false}}}};
+
+new Chart(document.getElementById('tIss'),{type:'bar',data:{labels:lbl,datasets:[
+  {label:'Issuance',data:W.map(w=>w.iss),backgroundColor:W.map(w=>w.iss>=200?'#12A05C':w.iss>=100?'#F0A500':'#D63B3B'),borderRadius:4},
+  {type:'line',label:'Target',data:W.map(()=>2083),borderColor:'rgba(0,0,0,0.2)',borderWidth:1.5,borderDash:[4,3],pointRadius:0,fill:false}
+]},options:{...base,scales:{...base.scales,y:{...base.scales.y,ticks:{...base.scales.y.ticks,callback:v=>v.toLocaleString()}}}}});
+
+new Chart(document.getElementById('tSpend'),{type:'bar',data:{labels:lbl,datasets:[
+  {label:'Spend',data:W.map(w=>w.spend),backgroundColor:'#0AA8B8',borderRadius:4},
+  {type:'line',label:'Revenue',data:W.map(w=>w.rev),borderColor:'#F0A500',borderWidth:2,pointRadius:3,fill:false,pointBackgroundColor:'#F0A500',spanGaps:true}
+]},options:{...base,scales:{...base.scales,y:{...base.scales.y,ticks:{...base.scales.y.ticks,callback:v=>'$'+(v>=1000?(v/1000).toFixed(0)+'k':v)}}}}});
+
+new Chart(document.getElementById('tDecline'),{type:'line',data:{labels:lbl,datasets:[
+  {label:'Decline %',data:W.map(w=>w.dr!=null?parseFloat((w.dr*100).toFixed(2)):null),
+   borderColor:'#D63B3B',borderWidth:2,pointRadius:3,fill:false,tension:.3,
+   pointBackgroundColor:W.map(w=>w.dr!=null&&w.dr>0.04?'#D63B3B':'#12A05C'),spanGaps:true},
+  {type:'line',label:'Target (4%)',data:W.map(()=>4),borderColor:'rgba(0,0,0,0.2)',borderWidth:1.5,borderDash:[4,3],pointRadius:0,fill:false}
+]},options:{...base,scales:{...base.scales,y:{...base.scales.y,ticks:{...base.scales.y.ticks,callback:v=>v+'%'}}}}});
+
+// Initial render
+renderWeek(W[W.length-1]);
+</script>
+</body>
+</html>
