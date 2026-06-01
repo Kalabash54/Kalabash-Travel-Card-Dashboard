@@ -98,7 +98,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--off);color:var(--c1);font
 <div class="week-nav">
   <div class="wnav-top">
     <span class="wnav-label">Select week</span>
-    <span class="wnav-current" id="navCurrent">May 17–23, 2026</span>
+    <span class="wnav-current" id="navCurrent">May 24–30, 2026</span>
   </div>
   <div class="month-row" id="monthBtns"></div>
   <div class="week-row" id="weekBtns"></div>
@@ -145,7 +145,8 @@ const W=[
   {id:"w16",lbl:"Apr 25–May 2",dt:"Apr 25–May 2, 2026",iss:195,issPrev:50,phys:0.44,physPrev:0.44,virt:0.91,merch:0.31,dorm:0.52,spend:53988,spendPrev:38114,rev:null,revPrev:null,dr:0.04,drPrev:0.04,fraud:0,cb:0,status:"may2nd"},
   {id:"w17",lbl:"May 3–9",dt:"May 3–9, 2026",iss:70,issPrev:195,phys:0.48,physPrev:0.44,virt:0.85,merch:0.30,dorm:0.49,spend:12028,spendPrev:53988,rev:362,revPrev:705,dr:0.04,drPrev:0.04,fraud:0,cb:0,status:"may9th"},
   {id:"w18",lbl:"May 10–16",dt:"May 10–16, 2026",iss:36,issPrev:70,phys:0.49,physPrev:0.48,virt:0.64,merch:0.30,dorm:0.48,spend:19220,spendPrev:12028,rev:131,revPrev:362,dr:0.07,drPrev:0.04,fraud:0,cb:0,status:"may15th"},
-  {id:"w19",lbl:"May 17–23",dt:"May 17–23, 2026",iss:57,issPrev:36,phys:0.51,physPrev:0.49,virt:0.84,merch:0.31,dorm:0.50,spend:56751,spendPrev:19220,rev:288,revPrev:131,dr:0.09,drPrev:0.07,fraud:0,cb:2,status:"may23rd",curr:true}
+  {id:"w19",lbl:"May 17–23",dt:"May 17–23, 2026",iss:57,issPrev:36,phys:0.51,physPrev:0.49,virt:0.84,merch:0.31,dorm:0.50,spend:56751,spendPrev:19220,rev:288,revPrev:131,dr:0.09,drPrev:0.07,fraud:0,cb:2,status:"may23rd"},
+  {id:"w20",lbl:"May 24–30",dt:"May 24–30, 2026",iss:23,issPrev:57,phys:0.51,physPrev:0.51,virt:0.70,merch:0.31,dorm:0.48,spend:19306,spendPrev:56751,rev:581,revPrev:288,dr:0.20,drPrev:0.09,fraud:0,cb:2,status:"may30th",curr:true}
 ];
 
 const PS={
@@ -489,6 +490,51 @@ const PS={
     {cat:"Activation & Spend", action:"Targeted communication to new sales (Growth Activation) cardholders through Cardunit"},
     {cat:"Revenue", action:"Follow up with Blusalt on fees reporting dashboard"},
     {cat:"Revenue", action:"Advance interchange discussion with Wema Bank"},
+    {cat:"Hajj", action:"Conclude on the fulfilment letter"},
+    {cat:"Partnerships", action:"Engage independently sourced partners"},
+    {cat:"Partnerships", action:"Check-in with Gabriel for update"},
+  ]},
+  may30th:{ng:[
+    {t:"Berkeley / CNS / SLA / BIN Testing / 3DS / Card Purchase",n:"All completed. 50,000 cards inspected.",s:"Completed"},
+    {t:"Blusalt CMS Optimisation",n:"Income Report and Rate dashboard still pending. Reporting Dashboard to show all fee income.",s:"In Progress"},
+    {t:"Blusalt / MPI Integration",n:"Physical meeting with Kalabash Team to be scheduled.",s:"In Progress"},
+    {t:"Airpeace",n:"Card design, commercial conversation, SLA and reward system leverage still pending.",s:"In Progress"},
+    {t:"MinieMoney",n:"Commenced process for new request of 1,000 USD cards. Card production 4–6 weeks. Card API ongoing.",s:"In Progress"},
+    {t:"Hajj Card Programme",n:"Card production to be completed this week. CVP and fulfilment package in the works.",s:"In Progress"},
+  ],gh:[
+    {t:"ICA & BIN Creation",n:"ICA and BIN assigned.",s:"Completed"},
+    {t:"Change Notification Submission (CNS)",n:"CNS completed for physical card production.",s:"Completed"},
+    {t:"Mastercard ISSM",n:"ISSM completed. Implementation workbook to be completed by Ghana team.",s:"Completed"},
+    {t:"3DS Setup",n:"3DS configuration commenced. Scope of work signed. Duration: 1–10 business days.",s:"In Progress"},
+    {t:"Production Validation Testing / Certificate",n:"Virtual card creation to be done. Production certificate to be shared with Zenith and Card perso file.",s:"In Progress"},
+    {t:"Card Production — Card Forte",n:"Card design approval to commence this week.",s:"In Progress"},
+    {t:"GTP / Onafriq",n:"PVT and Card Perso file. Virtual card creation and testing.",s:"In Progress"},
+  ],mc:[
+    {t:"IDTP Fraud Protection Tool",n:"Shared updated process flow with Mastercard. Awaiting their feedback.",s:"In Progress",p:false},
+    {t:"Nigeria Travel Card Contract",n:"Contract review meeting with Mastercard — targeting mid-June.",s:"In Progress",p:false},
+    {t:"CVP — Ghana Card Sign-on Bonus",n:"Sign-on bonus in progress.",s:"In Progress",p:false},
+    {t:"CVP — World Card (Priceless / Travel Pass)",n:"Priceless / Travel Pass integration into Kalabash App. TBD.",s:"Pending",p:true},
+    {t:"Mastercard Waiver Claim",n:"Mbali still pushing internally. Align with Finance for payout.",s:"In Progress",p:false},
+  ],wins:[
+    "Revenue surged to $581 — +102% WoW (from $288)",
+    "Dormant cards improved to 48% — down from 50%",
+    "Virtual card churn improved to 13% (below ≤20% target)",
+    "Physical card churn improved to 3% (below ≤20% target)",
+    "Ghana 3DS configuration commenced — scope of work signed",
+    "Ghana ISSM completed — implementation workbook in progress",
+    "MinieMoney new 1,000 USD card request commenced",
+  ],watch:[
+    "Decline rate spiked to 20% — critical breach vs ≤4% target (up from 9%)",
+    "Monthly issuance: 23 — down 60% WoW, far below 2,083 target",
+    "Total spend: $19,306 — down 66% WoW vs $833k target",
+    "Chargeback ratio remains at 2% — breach vs ≤0.7% target",
+    "Virtual activation dropped to 70% from 84%",
+    "Avg spend per active card: $44 — down from $72",
+  ],plans:[
+    {cat:"Acquisition", action:"Follow up with prospects on expense and co-branded cards (IDP, IELTS)"},
+    {cat:"Activation & Spend", action:"Targeted communication to New Sales (Growth Activation) cardholders through Cardunit"},
+    {cat:"Revenue", action:"Follow up with Blusalt on fees reporting dashboard"},
+    {cat:"Revenue", action:"Interchange discussion with Wema Bank"},
     {cat:"Hajj", action:"Conclude on the fulfilment letter"},
     {cat:"Partnerships", action:"Engage independently sourced partners"},
     {cat:"Partnerships", action:"Check-in with Gabriel for update"},
