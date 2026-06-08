@@ -98,7 +98,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--off);color:var(--c1);font
 <div class="week-nav">
   <div class="wnav-top">
     <span class="wnav-label">Select week</span>
-    <span class="wnav-current" id="navCurrent">May 24–30, 2026</span>
+    <span class="wnav-current" id="navCurrent">Jun 1–6, 2026</span>
   </div>
   <div class="month-row" id="monthBtns"></div>
   <div class="week-row" id="weekBtns"></div>
@@ -106,19 +106,24 @@ body{font-family:'DM Sans',sans-serif;background:var(--off);color:var(--c1);font
 
 <div id="dash"></div>
 
-<div class="slabel">Full trend — all weeks</div>
-<div class="g3c">
-  <div class="card">
-    <div class="ctitle"><span class="ctitle-dot" style="background:var(--teal)"></span>Weekly issuance run rate</div>
-    <div class="chart-wrap" style="height:170px"><canvas id="tIss" role="img" aria-label="Issuance trend">Issuance from Jan to May 2026.</canvas></div>
+<div class="slabel">Performance trends</div>
+<div class="card" style="margin-bottom:14px;padding:16px 18px">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+    <div style="display:flex;align-items:center;gap:10px">
+      <button id="trendBackBtn" onclick="trendBack()" style="display:none;font-size:11px;font-weight:500;padding:4px 12px;border-radius:6px;border:1px solid var(--g3);background:var(--off);color:var(--c3);cursor:pointer">← Back to months</button>
+      <span id="trendTitle" style="font-size:12px;font-weight:600;color:var(--c1)">Monthly overview — click a bar to drill into weekly view</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px">
+      <span style="display:flex;align-items:center;gap:5px;font-size:10.5px;color:var(--g1)"><span style="width:10px;height:10px;border-radius:2px;background:#0AA8B8;display:inline-block"></span>Spend</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:10.5px;color:var(--g1)"><span style="width:10px;height:10px;border-radius:50%;background:#F0A500;display:inline-block"></span>Revenue</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:10.5px;color:var(--g1)"><span style="width:10px;height:10px;border-radius:2px;background:#12A05C;display:inline-block"></span>Issuance</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:10.5px;color:var(--g1)"><span style="width:10px;height:10px;border-radius:50%;background:#D63B3B;display:inline-block"></span>Decline %</span>
+    </div>
   </div>
-  <div class="card">
-    <div class="ctitle"><span class="ctitle-dot" style="background:var(--gold)"></span>Total weekly spend & revenue (USD)</div>
-    <div class="chart-wrap" style="height:170px"><canvas id="tSpend" role="img" aria-label="Spend trend">Spend Jan to May 2026.</canvas></div>
-  </div>
-  <div class="card">
-    <div class="ctitle"><span class="ctitle-dot" style="background:var(--red)"></span>Decline rate (%) — target ≤4%</div>
-    <div class="chart-wrap" style="height:170px"><canvas id="tDecline" role="img" aria-label="Decline rate trend">Decline rate Jan to May 2026.</canvas></div>
+  <div style="display:grid;grid-template-columns:1.4fr 1fr 0.9fr;gap:14px">
+    <div><div style="font-size:10px;font-weight:500;color:var(--g1);margin-bottom:6px">Total spend & revenue (USD)</div><div style="height:190px;position:relative"><canvas id="tSpend" role="img" aria-label="Spend and revenue trend">Spend and revenue trend 2026.</canvas></div></div>
+    <div><div style="font-size:10px;font-weight:500;color:var(--g1);margin-bottom:6px">Issuance run rate</div><div style="height:190px;position:relative"><canvas id="tIss" role="img" aria-label="Issuance trend">Issuance trend 2026.</canvas></div></div>
+    <div><div style="font-size:10px;font-weight:500;color:var(--g1);margin-bottom:6px">Decline rate (%) — target ≤4%</div><div style="height:190px;position:relative"><canvas id="tDecline" role="img" aria-label="Decline rate trend">Decline rate trend 2026.</canvas></div></div>
   </div>
 </div>
 
@@ -146,7 +151,8 @@ const W=[
   {id:"w17",lbl:"May 3–9",dt:"May 3–9, 2026",iss:70,issPrev:195,phys:0.48,physPrev:0.44,virt:0.85,merch:0.30,dorm:0.49,spend:12028,spendPrev:53988,rev:362,revPrev:705,dr:0.04,drPrev:0.04,fraud:0,cb:0,status:"may9th"},
   {id:"w18",lbl:"May 10–16",dt:"May 10–16, 2026",iss:36,issPrev:70,phys:0.49,physPrev:0.48,virt:0.64,merch:0.30,dorm:0.48,spend:19220,spendPrev:12028,rev:131,revPrev:362,dr:0.07,drPrev:0.04,fraud:0,cb:0,status:"may15th"},
   {id:"w19",lbl:"May 17–23",dt:"May 17–23, 2026",iss:57,issPrev:36,phys:0.51,physPrev:0.49,virt:0.84,merch:0.31,dorm:0.50,spend:56751,spendPrev:19220,rev:288,revPrev:131,dr:0.09,drPrev:0.07,fraud:0,cb:2,status:"may23rd"},
-  {id:"w20",lbl:"May 24–30",dt:"May 24–30, 2026",iss:23,issPrev:57,phys:0.51,physPrev:0.51,virt:0.70,merch:0.31,dorm:0.48,spend:19306,spendPrev:56751,rev:581,revPrev:288,dr:0.20,drPrev:0.09,fraud:0,cb:2,status:"may30th",curr:true}
+  {id:"w20",lbl:"May 24–30",dt:"May 24–30, 2026",iss:23,issPrev:57,phys:0.51,physPrev:0.51,virt:0.70,merch:0.31,dorm:0.48,spend:19306,spendPrev:56751,rev:581,revPrev:288,dr:0.20,drPrev:0.09,fraud:0,cb:2,status:"may30th"},
+  {id:"w21",lbl:"Jun 1–6",dt:"Jun 1–6, 2026",iss:42,issPrev:23,phys:0.51,physPrev:0.51,virt:0.70,merch:0.32,dorm:0.48,spend:18203,spendPrev:19306,rev:401,revPrev:581,dr:0.13,drPrev:0.20,fraud:0,cb:1,status:"june6th",curr:true}
 ];
 
 const PS={
@@ -539,6 +545,52 @@ const PS={
     {cat:"Partnerships", action:"Engage independently sourced partners"},
     {cat:"Partnerships", action:"Check-in with Gabriel for update"},
   ]},
+  june6th:{ng:[
+    {t:"Berkeley / CNS / SLA / BIN Testing / 3DS / Card Purchase",n:"All completed. 50,000 cards inspected.",s:"Completed"},
+    {t:"Hajj Card Production",n:"Card production completed.",s:"Completed"},
+    {t:"Blusalt CMS Optimisation",n:"Income report and rate dashboard still pending. Reporting dashboard to show all fee income.",s:"In Progress"},
+    {t:"Blusalt / MPI Integration",n:"Meeting with MPI to be scheduled. Physical meeting with Kalabash team.",s:"In Progress"},
+    {t:"Airpeace",n:"Card design, commercial conversation, SLA and reward system leverage still pending.",s:"In Progress"},
+    {t:"MinieMoney",n:"Awaiting payment confirmation. Card production 4–6 weeks (NGN). Card API ongoing.",s:"In Progress"},
+    {t:"Hajj CVP & Fulfilment",n:"CVP and fulfilment package in the works.",s:"In Progress"},
+  ],gh:[
+    {t:"ICA & BIN Creation",n:"ICA and BIN assigned.",s:"Completed"},
+    {t:"Change Notification Submission (CNS)",n:"CNS completed for physical card production.",s:"Completed"},
+    {t:"3DS Setup",n:"3DS configuration completed. Scope of work was signed.",s:"Completed"},
+    {t:"Mastercard ISSM",n:"ISSM completed. Implementation workbook to be completed by Ghana team.",s:"Completed"},
+    {t:"Production Validation Testing",n:"Virtual card testing commenced (3DS and non-3DS). EMV Certificate still pending.",s:"In Progress"},
+    {t:"Card Production — Card Forte",n:"Card design rework commenced. To be shared with Ghana team.",s:"In Progress"},
+    {t:"GTP / Onafriq",n:"EMV Certificate and virtual card testing (3DS and non-3DS).",s:"In Progress"},
+  ],mc:[
+    {t:"IDTP Fraud Protection Tool",n:"Shared available timeslot for meeting. Awaiting feedback.",s:"In Progress",p:false},
+    {t:"Nigeria Travel Card Contract",n:"Contract review meeting with Mastercard this week (Tuesday). Targeting mid-June.",s:"In Progress",p:false},
+    {t:"CVP — Ghana Card Sign-on Bonus",n:"Sign-on bonus in progress.",s:"In Progress",p:false},
+    {t:"CVP — World Card (Priceless / Travel Pass)",n:"Priceless / Travel Pass integration into Kalabash App. TBD.",s:"Pending",p:true},
+    {t:"Waiver Claim / IDP",n:"Mbali still pushing internally. IDP payment expected before end of June.",s:"In Progress",p:false},
+  ],wins:[
+    "Issuance improved to 42 — +83% WoW from 23",
+    "Hajj Card production COMPLETED",
+    "Ghana 3DS configuration COMPLETED",
+    "Decline rate improved to 13% — down from 20%",
+    "Chargeback ratio improved to 1% — down from 2%",
+    "Merchant activation improved to 32%",
+    "Avg spend per active card: $48 — up from $44",
+  ],watch:[
+    "Decline rate still 13% — above ≤4% target (improved but breach continues)",
+    "Monthly issuance: 42 vs 2,083 target — significant gap remains",
+    "Total spend: $18,203 — down 6% WoW vs $833k target",
+    "Total card revenue: $401 — down 31% WoW vs $16k target",
+    "Transactions per month dropped to 4 — down from 7",
+    "Revenue per active card: $2 — down from $4",
+  ],plans:[
+    {cat:"Acquisition", action:"Follow up with prospects on expense and co-branded cards (IDP, IELTS)"},
+    {cat:"Activation & Spend", action:"Targeted communication to New Sales (Growth Activation) cardholders through Cardunit"},
+    {cat:"Revenue", action:"Follow up with Blusalt on fees reporting dashboard"},
+    {cat:"Revenue", action:"Interchange discussion with Wema Bank"},
+    {cat:"Hajj", action:"Conclude on the fulfilment letter"},
+    {cat:"Partnerships", action:"Engage independently sourced partners"},
+    {cat:"Partnerships", action:"Check-in with Gabriel for update"},
+  ]},
   may15th:{ng:[
     {t:"Berkeley / CNS / SLA / BIN Testing / 3DS / Card Purchase",n:"All completed. 50,000 cards inspected.",s:"Completed"},
     {t:"Blusalt CMS Optimisation",n:"SMS Alert opt-in/out. OIF, income reporting, rate dashboard pending.",s:"In Progress"},
@@ -594,15 +646,16 @@ function sCls(v,target,lower){
 }
 
 // ── Build two-tier nav (months + weeks) ──
-const months = ['January','February','March','April','May'];
+const months = ['January','February','March','April','May','June'];
 const monthMap = {
   'January':  W.filter(w=>w.lbl.startsWith('Jan')),
   'February': W.filter(w=>w.lbl.startsWith('Feb')),
   'March':    W.filter(w=>w.lbl.startsWith('Mar')),
   'April':    W.filter(w=>w.lbl.startsWith('Apr')),
   'May':      W.filter(w=>w.lbl.startsWith('May')),
+  'June':     W.filter(w=>w.lbl.startsWith('Jun')),
 };
-let activeMo = 'May';
+let activeMo = 'June';
 
 const moEl = document.getElementById('monthBtns');
 const wkEl = document.getElementById('weekBtns');
@@ -815,30 +868,145 @@ ${ps.plans && ps.plans.length ? `
 </div>`;
 }
 
-// ── Trend charts ──
-const lbl=W.map(w=>w.lbl);
+// ── Trend charts — monthly/weekly drill-down ──
 const gc='rgba(0,0,0,0.05)', lc='#6E6E6E';
 const fnt={family:"'DM Sans',sans-serif",size:10};
-const base={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
-  scales:{x:{ticks:{color:lc,font:fnt,maxRotation:45,autoSkip:false},grid:{display:false}},
-          y:{ticks:{color:lc,font:fnt},grid:{color:gc},border:{display:false}}}};
 
-new Chart(document.getElementById('tIss'),{type:'bar',data:{labels:lbl,datasets:[
-  {label:'Issuance',data:W.map(w=>w.iss),backgroundColor:W.map(w=>w.iss>=200?'#12A05C':w.iss>=100?'#F0A500':'#D63B3B'),borderRadius:4},
-  {type:'line',label:'Target',data:W.map(()=>2083),borderColor:'rgba(0,0,0,0.2)',borderWidth:1.5,borderDash:[4,3],pointRadius:0,fill:false}
-]},options:{...base,scales:{...base.scales,y:{...base.scales.y,ticks:{...base.scales.y.ticks,callback:v=>v.toLocaleString()}}}}});
+// Month groupings
+const MONTHS=[
+  {name:'January', short:'Jan', weeks:W.filter(w=>w.lbl.startsWith('Jan'))},
+  {name:'February', short:'Feb', weeks:W.filter(w=>w.lbl.startsWith('Feb'))},
+  {name:'March', short:'Mar', weeks:W.filter(w=>w.lbl.startsWith('Mar'))},
+  {name:'April', short:'Apr', weeks:W.filter(w=>w.lbl.startsWith('Apr'))},
+  {name:'May', short:'May', weeks:W.filter(w=>w.lbl.startsWith('May'))},
+  {name:'June', short:'Jun', weeks:W.filter(w=>w.lbl.startsWith('Jun'))},
+].filter(m=>m.weeks.length>0);
 
-new Chart(document.getElementById('tSpend'),{type:'bar',data:{labels:lbl,datasets:[
-  {label:'Spend',data:W.map(w=>w.spend),backgroundColor:'#0AA8B8',borderRadius:4},
-  {type:'line',label:'Revenue',data:W.map(w=>w.rev),borderColor:'#F0A500',borderWidth:2,pointRadius:3,fill:false,pointBackgroundColor:'#F0A500',spanGaps:true}
-]},options:{...base,scales:{...base.scales,y:{...base.scales.y,ticks:{...base.scales.y.ticks,callback:v=>'$'+(v>=1000?(v/1000).toFixed(0)+'k':v)}}}}});
+function moSum(weeks, key){ return weeks.reduce((a,w)=>a+(w[key]||0),0); }
+function moAvg(weeks, key){ const v=weeks.filter(w=>w[key]!=null); return v.length?v.reduce((a,w)=>a+w[key],0)/v.length:null; }
+function drColor(v){ return v==null?'#B0B0B0':v>0.08?'#D63B3B':v>0.04?'#F0A500':'#12A05C'; }
+function issColor(v){ return v>=200?'#12A05C':v>=100?'#F0A500':'#D63B3B'; }
 
-new Chart(document.getElementById('tDecline'),{type:'line',data:{labels:lbl,datasets:[
-  {label:'Decline %',data:W.map(w=>w.dr!=null?parseFloat((w.dr*100).toFixed(2)):null),
-   borderColor:'#D63B3B',borderWidth:2,pointRadius:3,fill:false,tension:.3,
-   pointBackgroundColor:W.map(w=>w.dr!=null&&w.dr>0.04?'#D63B3B':'#12A05C'),spanGaps:true},
-  {type:'line',label:'Target (4%)',data:W.map(()=>4),borderColor:'rgba(0,0,0,0.2)',borderWidth:1.5,borderDash:[4,3],pointRadius:0,fill:false}
-]},options:{...base,scales:{...base.scales,y:{...base.scales.y,ticks:{...base.scales.y.ticks,callback:v=>v+'%'}}}}});
+let trendMode='monthly', trendMo=null;
+let chartSpend=null, chartIss=null, chartDecline=null;
+
+const baseOpts=(ytick)=>({
+  responsive:true, maintainAspectRatio:false,
+  animation:{duration:350},
+  plugins:{legend:{display:false}, tooltip:{
+    backgroundColor:'#1A1A1A', titleColor:'#fff', bodyColor:'#B0B0B0',
+    padding:10, cornerRadius:8, displayColors:false
+  }},
+  scales:{
+    x:{ticks:{color:lc,font:fnt,maxRotation:0},grid:{display:false},border:{display:false}},
+    y:{ticks:{color:lc,font:fnt,callback:ytick},grid:{color:gc},border:{display:false}}
+  }
+});
+
+function buildTrendData(){
+  if(trendMode==='monthly'){
+    const labels=MONTHS.map(m=>m.short);
+    const spend=MONTHS.map(m=>moSum(m.weeks,'spend'));
+    const rev=MONTHS.map(m=>moSum(m.weeks,'rev'));
+    const iss=MONTHS.map(m=>moSum(m.weeks,'iss'));
+    const dr=MONTHS.map(m=>{ const v=moAvg(m.weeks,'dr'); return v!=null?parseFloat((v*100).toFixed(1)):null; });
+    return {labels,spend,rev,iss,dr,
+      spendBg:MONTHS.map(()=>'#0AA8B8'),
+      issBg:MONTHS.map(m=>{ const v=moSum(m.weeks,'iss'); return issColor(v); }),
+      drBg:dr.map(v=>drColor(v!=null?v/100:null))};
+  } else {
+    const ws=trendMo.weeks;
+    const labels=ws.map(w=>w.lbl.replace(trendMo.short+' ','').replace(/Jan |Feb |Mar |Apr |May |Jun /,''));
+    const spend=ws.map(w=>w.spend||0);
+    const rev=ws.map(w=>w.rev);
+    const iss=ws.map(w=>w.iss);
+    const dr=ws.map(w=>w.dr!=null?parseFloat((w.dr*100).toFixed(1)):null);
+    return {labels,spend,rev,iss,dr,
+      spendBg:ws.map(()=>'#0AA8B8'),
+      issBg:ws.map(w=>issColor(w.iss)),
+      drBg:dr.map(v=>drColor(v!=null?v/100:null))};
+  }
+}
+
+function onBarClick(chart, evt, mo){
+  if(trendMode==='monthly'){
+    trendMode='weekly'; trendMo=mo;
+    document.getElementById('trendBackBtn').style.display='inline-flex';
+    document.getElementById('trendTitle').textContent=mo.name+' — weekly breakdown';
+    renderTrends();
+  }
+}
+
+function trendBack(){
+  trendMode='monthly'; trendMo=null;
+  document.getElementById('trendBackBtn').style.display='none';
+  document.getElementById('trendTitle').textContent='Monthly overview — click a bar to drill into weekly view';
+  renderTrends();
+}
+
+function renderTrends(){
+  const d=buildTrendData();
+
+  // Destroy old charts
+  [chartSpend,chartIss,chartDecline].forEach(c=>{ if(c) c.destroy(); });
+
+  // Click handler for monthly → weekly drill
+  const clickPlugin={id:'clickBar',afterEvent:(chart,args)=>{
+    if(args.event.type!=='click') return;
+    const pts=chart.getElementsAtEventForMode(args.event.native,'nearest',{intersect:true},true);
+    if(!pts.length) return;
+    const idx=pts[0].index;
+    if(trendMode==='monthly') onBarClick(chart, args.event, MONTHS[idx]);
+  }};
+
+  // Spend chart
+  chartSpend=new Chart(document.getElementById('tSpend'),{
+    type:'bar',
+    plugins:[clickPlugin],
+    data:{labels:d.labels,datasets:[
+      {label:'Spend',data:d.spend,backgroundColor:d.spendBg,borderRadius:5,borderSkipped:false,order:2},
+      {type:'line',label:'Revenue',data:d.rev,borderColor:'#F0A500',borderWidth:2.5,
+       pointRadius:4,pointBackgroundColor:'#F0A500',fill:false,spanGaps:true,order:1,tension:.3}
+    ]},
+    options:{...baseOpts(v=>'$'+(v>=1000?(v/1000).toFixed(0)+'k':v)),
+      onClick:(e,els)=>{
+        if(trendMode==='monthly'&&els.length){ onBarClick(null,e,MONTHS[els[0].index]); }
+      },
+      onHover:(e,els)=>{ e.native.target.style.cursor=els.length&&trendMode==='monthly'?'pointer':'default'; }
+    }
+  });
+
+  // Issuance chart
+  chartIss=new Chart(document.getElementById('tIss'),{
+    type:'bar',
+    plugins:[clickPlugin],
+    data:{labels:d.labels,datasets:[
+      {label:'Issuance',data:d.iss,backgroundColor:d.issBg,borderRadius:5,borderSkipped:false},
+      {type:'line',label:'Target',data:d.labels.map(()=>trendMode==='monthly'?2083*trendMo?.weeks?.length||2083:2083),
+       borderColor:'rgba(0,0,0,0.15)',borderWidth:1.5,borderDash:[4,3],pointRadius:0,fill:false}
+    ]},
+    options:{...baseOpts(v=>v.toLocaleString()),
+      onClick:(e,els)=>{
+        if(trendMode==='monthly'&&els.length){ onBarClick(null,e,MONTHS[els[0].index]); }
+      },
+      onHover:(e,els)=>{ e.native.target.style.cursor=els.length&&trendMode==='monthly'?'pointer':'default'; }
+    }
+  });
+
+  // Decline chart
+  chartDecline=new Chart(document.getElementById('tDecline'),{
+    type:'line',
+    data:{labels:d.labels,datasets:[
+      {label:'Decline %',data:d.dr,borderColor:'#D63B3B',borderWidth:2,
+       pointRadius:4,pointBackgroundColor:d.drBg,fill:false,tension:.35,spanGaps:true},
+      {label:'Target 4%',data:d.labels.map(()=>4),
+       borderColor:'rgba(0,0,0,0.15)',borderWidth:1.5,borderDash:[4,3],pointRadius:0,fill:false}
+    ]},
+    options:{...baseOpts(v=>v+'%')}
+  });
+}
+
+renderTrends();
 
 // Initial render
 renderWeek(W[W.length-1]);
