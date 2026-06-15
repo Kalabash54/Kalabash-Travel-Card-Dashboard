@@ -98,7 +98,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--off);color:var(--c1);font
 <div class="week-nav">
   <div class="wnav-top">
     <span class="wnav-label">Select week</span>
-    <span class="wnav-current" id="navCurrent">Jun 1–6, 2026</span>
+    <span class="wnav-current" id="navCurrent">Jun 7–13, 2026</span>
   </div>
   <div class="month-row" id="monthBtns"></div>
   <div class="week-row" id="weekBtns"></div>
@@ -152,7 +152,8 @@ const W=[
   {id:"w18",lbl:"May 10–16",dt:"May 10–16, 2026",iss:36,issPrev:70,phys:0.49,physPrev:0.48,virt:0.64,merch:0.30,dorm:0.48,spend:19220,spendPrev:12028,rev:131,revPrev:362,dr:0.07,drPrev:0.04,fraud:0,cb:0,status:"may15th"},
   {id:"w19",lbl:"May 17–23",dt:"May 17–23, 2026",iss:57,issPrev:36,phys:0.51,physPrev:0.49,virt:0.84,merch:0.31,dorm:0.50,spend:56751,spendPrev:19220,rev:288,revPrev:131,dr:0.09,drPrev:0.07,fraud:0,cb:2,status:"may23rd"},
   {id:"w20",lbl:"May 24–30",dt:"May 24–30, 2026",iss:23,issPrev:57,phys:0.51,physPrev:0.51,virt:0.70,merch:0.31,dorm:0.48,spend:19306,spendPrev:56751,rev:581,revPrev:288,dr:0.20,drPrev:0.09,fraud:0,cb:2,status:"may30th"},
-  {id:"w21",lbl:"Jun 1–6",dt:"Jun 1–6, 2026",iss:42,issPrev:23,phys:0.51,physPrev:0.51,virt:0.70,merch:0.32,dorm:0.48,spend:18203,spendPrev:19306,rev:401,revPrev:581,dr:0.13,drPrev:0.20,fraud:0,cb:1,status:"june6th",curr:true}
+  {id:"w21",lbl:"Jun 1–6",dt:"Jun 1–6, 2026",iss:42,issPrev:23,phys:0.51,physPrev:0.51,virt:0.70,merch:0.32,dorm:0.48,spend:18203,spendPrev:19306,rev:401,revPrev:581,dr:0.13,drPrev:0.20,fraud:0,cb:1,status:"june6th"},
+  {id:"w22",lbl:"Jun 7–13",dt:"Jun 7–13, 2026",iss:64,issPrev:42,phys:0.52,physPrev:0.51,virt:0.71,merch:0.31,dorm:0.49,spend:13079,spendPrev:18203,rev:140,revPrev:401,dr:0.12,drPrev:0.13,fraud:0,cb:1,status:"june13th",curr:true}
 ];
 
 const PS={
@@ -591,6 +592,52 @@ const PS={
     {cat:"Partnerships", action:"Engage independently sourced partners"},
     {cat:"Partnerships", action:"Check-in with Gabriel for update"},
   ]},
+  june13th:{ng:[
+    {t:"Berkeley / CNS / SLA / BIN Testing / 3DS / Card Purchase",n:"All completed. 50,000 cards inspected.",s:"Completed"},
+    {t:"Pilgrim Card Production",n:"Card production completed.",s:"Completed"},
+    {t:"Blusalt CMS Optimisation",n:"Income report and rate dashboard still pending. Update to be provided this week.",s:"In Progress"},
+    {t:"Blusalt / MPI Integration",n:"Meeting with MPI to be scheduled. No date in view. Physical meeting with Kalabash team.",s:"In Progress"},
+    {t:"Airpeace",n:"Still pending due to current situation with Airpeace. Card design, commercial conversation, SLA and reward system pending.",s:"In Progress"},
+    {t:"MinieMoney",n:"Awaiting payment confirmation. RPP still pending Mastercard approval. Card API shared.",s:"In Progress"},
+    {t:"Pilgrim Card CVP & Fulfilment",n:"Fulfilment package in the works. No dedicated CVP in Saudi Arabia with Mastercard. Continue to engage Gabriel on deals with partners.",s:"In Progress"},
+  ],gh:[
+    {t:"ICA & BIN Creation",n:"ICA and BIN assigned.",s:"Completed"},
+    {t:"Change Notification Submission (CNS)",n:"CNS completed for physical card production.",s:"Completed"},
+    {t:"3DS Setup",n:"3DS configuration completed. Certificates successfully downloaded.",s:"Completed"},
+    {t:"Mastercard ISSM",n:"ISSM completed. Implementation workbook to be completed by Ghana team.",s:"Completed"},
+    {t:"Certificate Installation",n:"Installation process kicks off tomorrow morning. Certificates downloaded and ready.",s:"In Progress"},
+    {t:"Card Production — Card Forte",n:"Card production files to be shared with Card Forte before end of this week.",s:"In Progress"},
+    {t:"GTP / Onafriq",n:"EMV Certificate and virtual card testing (3DS and non-3DS). Virtual card creation and testing.",s:"In Progress"},
+  ],mc:[
+    {t:"IDTP Fraud Protection Tool",n:"Names shared for API documentation access. Check in for feedback.",s:"In Progress",p:false},
+    {t:"Nigeria Travel Card Contract",n:"Contract review meeting rescheduled for June 23rd.",s:"In Progress",p:false},
+    {t:"CVP — Ghana Card Sign-on Bonus",n:"Sign-on bonus in progress.",s:"In Progress",p:false},
+    {t:"CVP — World Card (Priceless / Travel Pass)",n:"Priceless / Travel Pass integration into Kalabash App. TBD.",s:"Pending",p:true},
+    {t:"Waiver Claim / IDP",n:"Mbali still pushing internally. IDP final processing. Payment expected before end of June.",s:"In Progress",p:false},
+  ],wins:[
+    "Issuance improved to 64 — +52% WoW from 42",
+    "Decline rate improved to 12% — down from 13%",
+    "Transactions per month improved to 8 — up from 4",
+    "Physical activation improved to 52%",
+    "Virtual activation improved to 71%",
+    "Pilgrim Card production COMPLETED",
+    "Ghana 3DS COMPLETED — certificates successfully downloaded",
+  ],watch:[
+    "Decline rate still 12% — above ≤4% target (improving but breach continues)",
+    "Total spend: $13,079 — down 28% WoW vs $833k target",
+    "Total card revenue: $140 — down 65% WoW vs $16k target",
+    "Avg spend per active card: $16 — down sharply from $48",
+    "Dormant cards: 49% — above ≤10% target",
+    "Chargeback ratio: 1% — above ≤0.7% target",
+  ],plans:[
+    {cat:"Acquisition", action:"Continue engagements with prospects for co-branded cards"},
+    {cat:"Activation & Spend", action:"Targeted communication to New Sales (Growth Activation) cardholders through Cardunit"},
+    {cat:"Activation & Spend", action:"Send out communication to dormant cards"},
+    {cat:"Revenue", action:"Follow up with Blusalt on fees reporting dashboard"},
+    {cat:"Revenue", action:"Interchange discussion with Blusalt and Wema Bank"},
+    {cat:"Pilgrim Card", action:"Conclude on the fulfilment letter"},
+    {cat:"Pilgrim Card", action:"Engage independently sourced partners. Check-in with Gabriel for update"},
+  ]},
   may15th:{ng:[
     {t:"Berkeley / CNS / SLA / BIN Testing / 3DS / Card Purchase",n:"All completed. 50,000 cards inspected.",s:"Completed"},
     {t:"Blusalt CMS Optimisation",n:"SMS Alert opt-in/out. OIF, income reporting, rate dashboard pending.",s:"In Progress"},
@@ -734,7 +781,7 @@ function renderWeek(w){
   pipH+='</div>';
 
   const partners=[
-    {name:'Hajj Card Programme', tag:'In Progress', tc:'b-teal', col:'var(--teal)',
+    {name:'Pilgrim Card Programme', tag:'In Progress', tc:'b-teal', col:'var(--teal)',
      tasks:ps.ng ? ps.ng.filter(t=>t.t.toLowerCase().includes('hajj')).map(t=>t.n) : [],
      fallback:['Production started — cards ready end of week / early next week','CVP and fulfilment package being prepared','Fulfilment letter to be concluded']},
     {name:'MinieMoney', tag:'In Progress', tc:'b-teal', col:'var(--teal2)',
