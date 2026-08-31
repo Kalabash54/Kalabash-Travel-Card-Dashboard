@@ -10,16 +10,18 @@
 <style>
 :root{--c1:#1A1A1A;--c2:#2E2E2E;--c3:#444;--g1:#6E6E6E;--g2:#B0B0B0;--g3:#E2E2E2;--off:#F5F5F4;--white:#fff;--teal:#0AA8B8;--teal2:#077A87;--teal-l:#E5F5F7;--gold:#F0A500;--gold2:#C48200;--gold-l:#FFF5E0;--green:#12A05C;--green-l:#E8F8F0;--red:#D63B3B;--red-l:#FDECEC;--r-sm:6px;--r-md:10px;--r-lg:14px;--sh:0 1px 3px rgba(0,0,0,.06);--sh-md:0 4px 12px rgba(0,0,0,.08);}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans',sans-serif;background:var(--off);color:var(--c1);font-size:13px;line-height:1.5}
+body{font-family:'DM Sans',sans-serif;background:#ffffff;color:var(--c1);font-size:13px;line-height:1.5}
 .page{max-width:1320px;margin:0 auto;padding:18px}
-.hdr{background:var(--c1);border-radius:var(--r-lg);padding:16px 22px;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;position:relative;overflow:hidden}
+.hdr{background:#07478C;border-radius:var(--r-lg);padding:16px 22px;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;position:relative;overflow:hidden}
+.hdr::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--green)}
+.hdr::after{content:'';position:absolute;left:4px;top:0;bottom:0;width:2px;background:var(--white)}
 .hdr::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--teal)}
 .hdr::after{content:'';position:absolute;left:4px;top:0;bottom:0;width:2px;background:var(--gold)}
 .hdr-l{padding-left:12px}.brand{font-size:10px;font-weight:600;color:var(--teal);letter-spacing:.12em}
 .hdr-title{font-size:17px;font-weight:500;color:var(--white)}.hdr-sub{font-size:11.5px;color:var(--g2);margin-top:1px}
 .hdr-r{display:flex;align-items:center;gap:10px}
 .badge{display:inline-flex;align-items:center;font-size:10px;font-weight:600;padding:3px 9px;border-radius:20px;white-space:nowrap}
-.b-teal{background:var(--teal-l);color:var(--teal2)}.b-gold{background:var(--gold-l);color:var(--gold2)}.b-green{background:var(--green-l);color:var(--green)}.b-red{background:var(--red-l);color:var(--red)}.b-grey{background:#F0F0F0;color:var(--g1)}.b-dark{background:var(--c2);color:var(--g2)}
+.b-teal{background:var(--teal-l);color:var(--teal2)}.b-gold{background:var(--gold-l);color:var(--gold2)}.b-green{background:var(--green-l);color:var(--green)}.b-red{background:var(--red-l);color:var(--red)}.b-grey{background:#F0F0F0;color:var(--g1)}.b-dark{background:#0A5A9C;color:var(--white)}
 .week-nav{background:var(--white);border-radius:var(--r-lg);border:1px solid var(--g3);padding:14px 18px;margin-bottom:14px;box-shadow:var(--sh)}
 .wnav-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .wnav-label{font-size:10px;font-weight:600;color:var(--g2);letter-spacing:.1em;text-transform:uppercase}
@@ -74,6 +76,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--off);color:var(--c1);font
 .mcitem{display:flex;align-items:flex-start;gap:9px;padding:8px 11px;background:var(--off);border-radius:var(--r-sm);margin-bottom:5px;border-left:3px solid var(--teal)}.mcitem.pend{border-left-color:var(--gold)}.mcitem:last-child{margin-bottom:0}
 .mcttl{font-size:12px;font-weight:500;color:var(--c1)}.mcnote{font-size:11px;color:var(--g1);margin-top:2px;line-height:1.35}
 .chart-wrap{position:relative;width:100%}
+.tab-bar{display:flex;gap:0;margin-bottom:14px;background:var(--white);border-radius:var(--r-lg);border:1px solid var(--g3);overflow:hidden;box-shadow:var(--sh)}
+.tab-btn{flex:1;padding:11px 20px;font-size:12px;font-weight:600;border:none;background:var(--white);color:var(--g1);cursor:pointer;transition:all .18s;border-right:1px solid var(--g3);letter-spacing:.01em;font-family:'DM Sans',sans-serif}
+.tab-btn:last-child{border-right:none}
+.tab-btn:hover{background:var(--teal-l);color:var(--teal2)}
+.tab-btn.tab-active{background:#07478C;color:var(--white)}
+.tab-pane{display:none}
+.tab-pane.active{display:block}
 .footer{text-align:center;font-size:10px;color:var(--g2);font-family:'DM Mono',monospace;margin-top:16px;padding-top:12px;border-top:1px solid var(--g3)}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .kpi,.card{animation:fadeUp .22s ease both}
@@ -85,7 +94,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--off);color:var(--c1);font
 <div class="hdr">
   <div class="hdr-l">
     <div class="brand">KALABASH</div>
-    <div class="hdr-title">Cards Weekly Dashboard</div>
+    <div class="hdr-title">Cards Dashboard</div>
     <div class="hdr-sub" id="hdrSub">Loading…</div>
   </div>
   <div class="hdr-r">
@@ -95,10 +104,19 @@ body{font-family:'DM Sans',sans-serif;background:var(--off);color:var(--c1);font
   </div>
 </div>
 
+<!-- Tab navigation -->
+<div class="tab-bar">
+  <button class="tab-btn tab-active" onclick="switchTab('weekly',this)">📋 Weekly Dashboard</button>
+  <button class="tab-btn" onclick="switchTab('executive',this)">📊 Executive Dashboard</button>
+</div>
+
+<!-- TAB 1: Weekly Dashboard -->
+<div id="tab-weekly" class="tab-pane active">
+
 <div class="week-nav">
   <div class="wnav-top">
     <span class="wnav-label">Select week</span>
-    <span class="wnav-current" id="navCurrent">Jun 28–Jul 4, 2026</span>
+    <span class="wnav-current" id="navCurrent">Aug 23–29, 2026</span>
   </div>
   <div class="month-row" id="monthBtns"></div>
   <div class="week-row" id="weekBtns"></div>
@@ -106,7 +124,87 @@ body{font-family:'DM Sans',sans-serif;background:var(--off);color:var(--c1);font
 
 <div id="dash"></div>
 
-<div class="slabel">Performance trends</div>
+</div><!-- end tab-weekly -->
+
+<!-- TAB 2: Executive Dashboard -->
+<div id="tab-executive" class="tab-pane">
+
+<div class="slabel">Monthly Transaction Count & Spend — Inception to Date</div>
+<div class="card" style="margin-bottom:14px;padding:0;overflow:hidden">
+  <table style="width:100%;border-collapse:collapse;font-size:11px;font-family:'DM Sans',sans-serif">
+    <thead>
+      <tr style="background:#07478C;color:#fff">
+        <th style="padding:9px 12px;text-align:left;font-weight:600;font-size:10px;letter-spacing:.06em;white-space:nowrap" rowspan="2">Month</th>
+        <th style="padding:9px 10px;text-align:right;font-weight:600;font-size:10px;white-space:nowrap;border-bottom:1px solid #0A5A9C" rowspan="2">Total Txn Count</th>
+        <th colspan="2" style="padding:9px 10px;text-align:center;font-weight:700;font-size:10px;border-bottom:1px solid #0A5A9C;border-left:1px solid #0A5A9C">USD</th>
+        <th colspan="2" style="padding:9px 10px;text-align:center;font-weight:700;font-size:10px;border-bottom:1px solid #0A5A9C;border-left:1px solid #0A5A9C">NGN</th>
+      </tr>
+      <tr style="background:#0A5A9C;color:#fff">
+        <th style="padding:6px 10px;text-align:right;font-weight:600;font-size:9.5px;border-left:1px solid #1A6AAC">Count</th>
+        <th style="padding:6px 10px;text-align:right;font-weight:600;font-size:9.5px">Settlement Amt</th>
+        <th style="padding:6px 10px;text-align:right;font-weight:600;font-size:9.5px;border-left:1px solid #1A6AAC">Count</th>
+        <th style="padding:6px 10px;text-align:right;font-weight:600;font-size:9.5px">Settlement Amt (₦)</th>
+      </tr>
+    </thead>
+    <tbody id="txnTableBody"></tbody>
+    <tfoot>
+      <tr style="background:#07478C;color:#fff;font-weight:700">
+        <td style="padding:9px 12px;font-size:11px">Grand Total</td>
+        <td style="padding:9px 10px;text-align:right;font-size:12px">22,983</td>
+        <td style="padding:9px 10px;text-align:right;font-size:12px;border-left:1px solid #0A5A9C">6,462</td>
+        <td style="padding:9px 10px;text-align:right;font-size:12px">$549,471</td>
+        <td style="padding:9px 10px;text-align:right;font-size:12px;border-left:1px solid #0A5A9C">16,497</td>
+        <td style="padding:9px 10px;text-align:right;font-size:12px">₦279,851,496</td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+<div class="slabel">Card Issuance Performance Table — Inception to Date</div>
+<div class="card" style="margin-bottom:14px;padding:0;overflow:hidden">
+  <table style="width:100%;border-collapse:collapse;font-size:11px;font-family:'DM Sans',sans-serif">
+    <thead>
+      <tr style="background:#07478C;color:#fff">
+        <th style="padding:9px 12px;text-align:left;font-weight:600;font-size:10px;letter-spacing:.06em;white-space:nowrap">Metric</th>
+        <th style="padding:9px 8px;text-align:right;font-weight:600;font-size:10px;white-space:nowrap">Oct '25</th>
+        <th style="padding:9px 8px;text-align:right;font-weight:600;font-size:10px;white-space:nowrap">Nov '25</th>
+        <th style="padding:9px 8px;text-align:right;font-weight:600;font-size:10px;white-space:nowrap">Dec '25</th>
+        <th style="padding:9px 8px;text-align:right;font-weight:600;font-size:10px;white-space:nowrap">Jan '26</th>
+        <th style="padding:9px 8px;text-align:right;font-weight:600;font-size:10px;white-space:nowrap">Feb '26</th>
+        <th style="padding:9px 8px;text-align:right;font-weight:600;font-size:10px;white-space:nowrap">Mar '26</th>
+        <th style="padding:9px 8px;text-align:right;font-weight:600;font-size:10px;white-space:nowrap">Apr '26</th>
+        <th style="padding:9px 8px;text-align:right;font-weight:600;font-size:10px;white-space:nowrap">May '26</th>
+        <th style="padding:9px 8px;text-align:right;font-weight:600;font-size:10px;white-space:nowrap">Jun '26</th>
+        <th style="padding:9px 8px;text-align:right;font-weight:600;font-size:10px;white-space:nowrap">Jul '26</th>
+        <th style="padding:9px 8px;text-align:right;font-weight:600;font-size:10px;white-space:nowrap">Aug '26</th>
+        <th style="padding:9px 10px;text-align:right;font-weight:700;font-size:10px;white-space:nowrap;background:#0A5A9C">Total</th>
+      </tr>
+    </thead>
+    <tbody id="perfTableBody"></tbody>
+  </table>
+</div>
+
+
+<div class="slabel">Monthly KPI Summary — Actuals (Jan–Jun 2026)</div>
+<div class="card" style="margin-bottom:14px;padding:0;overflow:hidden">
+  <table style="width:100%;border-collapse:collapse;font-size:11px;font-family:'DM Sans',sans-serif">
+    <thead>
+      <tr style="background:#07478C;color:#fff">
+        <th style="padding:8px 12px;text-align:left;font-weight:600;font-size:10px;letter-spacing:.06em">KPI</th>
+        <th style="padding:8px 10px;text-align:right;font-weight:600;font-size:10px">Target</th>
+        <th style="padding:8px 10px;text-align:right;font-weight:600;font-size:10px">Jan</th>
+        <th style="padding:8px 10px;text-align:right;font-weight:600;font-size:10px">Feb</th>
+        <th style="padding:8px 10px;text-align:right;font-weight:600;font-size:10px">Mar</th>
+        <th style="padding:8px 10px;text-align:right;font-weight:600;font-size:10px">Apr</th>
+        <th style="padding:8px 10px;text-align:right;font-weight:600;font-size:10px">May</th>
+        <th style="padding:8px 10px;text-align:right;font-weight:600;font-size:10px">Jun</th>
+      </tr>
+    </thead>
+    <tbody id="monthlyKpiBody"></tbody>
+  </table>
+</div>
+
+<div class="slabel">Performance trends — click a bar to drill into weekly view</div>
 <div class="card" style="margin-bottom:14px;padding:16px 18px">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
     <div style="display:flex;align-items:center;gap:10px">
@@ -127,7 +225,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--off);color:var(--c1);font
   </div>
 </div>
 
-<div class="footer">Kalabash Cards &nbsp;·&nbsp; Weekly Dashboard &nbsp;·&nbsp; 2026 &nbsp;·&nbsp; Confidential</div>
+</div><!-- end tab-executive -->
+
+<div class="footer">Kalabash Cards &nbsp;·&nbsp; Dashboard &nbsp;·&nbsp; 2026 &nbsp;·&nbsp; Confidential</div>
 </div>
 
 <script>
@@ -156,7 +256,15 @@ const W=[
   {id:"w22",lbl:"Jun 7–13",dt:"Jun 7–13, 2026",iss:64,issPrev:42,phys:0.52,physPrev:0.51,virt:0.71,merch:0.31,dorm:0.49,spend:13079,spendPrev:18203,rev:140,revPrev:401,dr:0.12,drPrev:0.13,fraud:0,cb:1,status:"june13th"},
   {id:"w23",lbl:"Jun 14–20",dt:"Jun 14–20, 2026",iss:80,issPrev:64,phys:0.52,physPrev:0.52,virt:0.71,merch:0.31,dorm:0.46,spend:25659,spendPrev:13079,rev:694,revPrev:140,dr:0.12,drPrev:0.12,fraud:0,cb:1,status:"june20th"},
   {id:"w24",lbl:"Jun 21–27",dt:"Jun 21–27, 2026",iss:45,issPrev:80,phys:0.52,physPrev:0.52,virt:0.71,merch:0.31,dorm:0.46,spend:10934,spendPrev:25659,rev:470,revPrev:694,dr:0.054,drPrev:0.12,fraud:0,cb:0,status:"june27th"},
-  {id:"w25",lbl:"Jun 28–Jul 4",dt:"Jun 28–Jul 4, 2026",iss:61,issPrev:45,phys:0.52,physPrev:0.52,virt:0.71,merch:0.32,dorm:0.56,spend:17336,spendPrev:10934,rev:51,revPrev:470,dr:0.048,drPrev:0.054,fraud:0,cb:2,status:"jul4th",curr:true}
+  {id:"w25",lbl:"Jun 28–Jul 4",dt:"Jun 28–Jul 4, 2026",iss:61,issPrev:45,phys:0.52,physPrev:0.52,virt:0.71,merch:0.32,dorm:0.56,spend:17336,spendPrev:10934,rev:51,revPrev:470,dr:0.048,drPrev:0.054,fraud:0,cb:2,status:"jul4th"},
+  {id:"w26",lbl:"Jul 5–11",dt:"Jul 5–11, 2026",iss:38,issPrev:61,phys:0.52,physPrev:0.52,virt:0.71,merch:0.30,dorm:0.46,spend:17739,spendPrev:17336,rev:1345,revPrev:51,dr:0.16,drPrev:0.048,fraud:0,cb:0,status:"jul11th"},
+  {id:"w27",lbl:"Jul 12–18",dt:"Jul 12–18, 2026",iss:39,issPrev:38,phys:0.53,physPrev:0.52,virt:0.71,merch:0.31,dorm:0.46,spend:50435,spendPrev:17739,rev:184,revPrev:1345,dr:0.02,drPrev:0.16,fraud:0,cb:0,status:"jul18th"},
+  {id:"w28",lbl:"Jul 19–25",dt:"Jul 19–25, 2026",iss:410,issPrev:39,phys:0.53,physPrev:0.53,virt:0.74,merch:0.32,dorm:0.44,spend:25110,spendPrev:50435,rev:924,revPrev:184,dr:0.03,drPrev:0.02,fraud:0,cb:0,status:"jul26th"},
+  {id:"w29",lbl:"Jul 26–Aug 1",dt:"Jul 26–Aug 1, 2026",iss:37,issPrev:410,phys:0.534,physPrev:0.53,virt:0.74,merch:0.30,dorm:0.40,spend:19796,spendPrev:25110,rev:1147,revPrev:924,dr:0.04,drPrev:0.03,fraud:0.01,cb:0,status:"aug1st"},
+  {id:"w30",lbl:"Aug 2–8",dt:"Aug 2–8, 2026",iss:72,issPrev:37,phys:0.53,physPrev:0.534,virt:0.74,merch:0.31,dorm:0.41,spend:42305,spendPrev:19796,rev:1075,revPrev:1147,dr:0.03,drPrev:0.04,fraud:0,cb:2,status:"aug8th"},
+  {id:"w31",lbl:"Aug 9–15",dt:"Aug 9–15, 2026",iss:101,issPrev:72,phys:0.572,physPrev:0.53,virt:0.75,merch:0.31,dorm:0.40,spend:65027,spendPrev:42305,rev:1290,revPrev:1075,dr:0.11,drPrev:0.03,fraud:0,cb:1,status:"aug15th"},
+  {id:"w32",lbl:"Aug 16–22",dt:"Aug 16–22, 2026",iss:55,issPrev:101,phys:0.57,physPrev:0.572,virt:0.75,merch:0.31,dorm:0.42,spend:102845,spendPrev:65027,rev:1486,revPrev:1290,dr:0.04,drPrev:0.11,fraud:0,cb:1,status:"aug22nd"},
+  {id:"w33",lbl:"Aug 23–29",dt:"Aug 23–29, 2026",iss:79,issPrev:55,phys:0.58,physPrev:0.57,virt:0.75,merch:0.31,dorm:0.38,spend:56528,spendPrev:102845,rev:33,revPrev:1486,dr:0.04,drPrev:0.04,fraud:0,cb:1,status:"aug29th",curr:true}
 ];
 
 const PS={
@@ -775,6 +883,337 @@ const PS={
     {cat:"Revenue", action:"Interchange discussion with Blusalt and Wema Bank"},
     {cat:"Pilgrim Card", action:"Conclude on the fulfilment letter. Engage independently sourced partners. Check-in with Gabriel"},
   ]},
+  jul11th:{ng:[
+    {t:"Berkeley / CNS / SLA / BIN Testing / 3DS / Card Purchase",n:"All completed. 50,000 cards inspected.",s:"Completed"},
+    {t:"Pilgrim Card (Hajj) — Production & Fulfilment",n:"Card production and fulfilment package COMPLETED. CVP for Saudi Market in progress.",s:"Completed"},
+    {t:"MinieMoney — Card Design",n:"RPP approved. Card design APPROVED. Sample cards in progress — ready on or before July 21st.",s:"Completed"},
+    {t:"MinieMoney — Sample Cards",n:"Sample card production in progress. USD card payment pending.",s:"In Progress"},
+    {t:"Blusalt CMS Optimisation",n:"Income report and rate dashboard still pending. Reporting dashboard to show all fee income.",s:"In Progress"},
+    {t:"MPI Engagement",n:"NDA and SLA shared with Legal team for review.",s:"In Progress"},
+    {t:"Bellagio",n:"Follow up to continue the conversation with Bellagio team.",s:"In Progress"},
+    {t:"CVP — Saudi Market (Pilgrim Card)",n:"CVP sourcing for Saudi Market in progress.",s:"In Progress"},
+  ],gh:[
+    {t:"ICA & BIN Creation",n:"ICA and BIN assigned.",s:"Completed"},
+    {t:"Change Notification Submission (CNS)",n:"CNS completed for physical card production.",s:"Completed"},
+    {t:"3DS Setup — Cardinal Commerce",n:"3DS configuration completed on Cardinal Commerce side.",s:"Completed"},
+    {t:"Production Certificates Integration",n:"Production certificates integration completed.",s:"Completed"},
+    {t:"Mastercard Setup",n:"Mastercard activity completed on the project.",s:"Completed"},
+    {t:"Card Production — Card Forte",n:"20 test cards delivered. Zenith Bank requesting 10 more. Engaging for additional sample cards to meet Zenith Bank standard and share updated Mastercard LOA.",s:"In Progress"},
+    {t:"Zenith Bank — Production Validation Testing",n:"Virtual card testing (3DS and non-3DS) commenced. Pilot cards shared for production. Mastercard BIN Program ID setup in progress.",s:"In Progress"},
+  ],mc:[
+    {t:"IDTP Fraud Protection Tool",n:"Awaiting feedback from Product Team.",s:"In Progress",p:false},
+    {t:"Nigeria Travel Card Contract",n:"Contract review meeting rescheduled — date TBD.",s:"In Progress",p:false},
+    {t:"CVP — Ghana Card Sign-on Bonus",n:"Sign-on bonus in progress.",s:"In Progress",p:false},
+    {t:"CVP — World Card (Priceless / Travel Pass)",n:"Priceless / Travel Pass integration into Kalabash App. TBD.",s:"Pending",p:true},
+    {t:"Waiver Claim / IDP",n:"Mbali still pushing internally. No update yet from Mbali on payment.",s:"In Progress",p:false},
+  ],wins:[
+    "MinieMoney card design APPROVED — sample cards due by July 21st",
+    "Revenue recovered strongly: $51 → $1,345 (+182% WoW)",
+    "Merchant activation surged: 32% → 71%",
+    "Dormant cards improved: 56% → 46%",
+    "Chargeback ratio improved: 2% → 0%",
+    "Ghana: 20 test cards delivered to Zenith Bank Ghana",
+    "Ghana Mastercard setup fully completed",
+  ],watch:[
+    "Decline rate SPIKED to 16% — critical breach vs ≤4% target (up from 4.8%)",
+    "Issuance dropped: 61 → 38 (↓ 38%)",
+    "Transactions dropped: 12 → 7 per month",
+    "Virtual card activation not tracked this week — needs investigation",
+    "Monthly issuance: 38 vs 2,083 target — significant gap",
+    "Mastercard contract meeting still without a confirmed date",
+  ],plans:[
+    {cat:"Acquisition", action:"Continue engagements with prospects for co-branded cards"},
+    {cat:"Activation & Spend", action:"Targeted communication to New Sales (Growth Activation) cardholders through Cardunit"},
+    {cat:"Activation & Spend", action:"Send out communication to dormant cards"},
+    {cat:"Revenue", action:"Follow up with Blusalt on fees reporting dashboard"},
+    {cat:"Revenue", action:"Interchange discussion with Blusalt and Wema Bank"},
+    {cat:"Pilgrim Card", action:"Engage independently sourced partners. Check-in with Gabriel for CVP sourcing update"},
+  ]},
+  jul18th:{ng:[
+    {t:"MinieMoney — Sample Cards",n:"Sample cards COMPLETED. Card production commenced. Card readiness on or before August 25th. USD card payment pending.",s:"In Progress"},
+    {t:"Blusalt CMS Optimisation",n:"Income report and rate dashboard still pending. Reporting dashboard to show all fee income.",s:"In Progress"},
+    {t:"MPI Engagement",n:"NDA and SLA shared with Legal team for review.",s:"In Progress"},
+    {t:"Bellagio",n:"Follow up to continue the conversation with Bellagio team.",s:"In Progress"},
+    {t:"CVP — Saudi Market (Pilgrim Card)",n:"CVP sourcing for Saudi Market in progress.",s:"In Progress"},
+  ],gh:[
+    {t:"ICA & BIN Creation",n:"ICA and BIN assigned.",s:"Completed"},
+    {t:"Change Notification Submission (CNS)",n:"CNS completed for physical card production.",s:"Completed"},
+    {t:"3DS Setup — Cardinal Commerce",n:"3DS configuration completed on Cardinal Commerce side.",s:"Completed"},
+    {t:"Production Certificates Integration",n:"Production certificates integration completed.",s:"Completed"},
+    {t:"Mastercard Setup",n:"Mastercard activity completed on the project.",s:"Completed"},
+    {t:"Card Production — Card Forte",n:"Updated LOA shared with Card Forte for validation. 20 test cards delivered — Zenith requesting 10 more.",s:"In Progress"},
+    {t:"Zenith Bank — Production Validation Testing",n:"Implementation workbook with Zenith Ghana team. Program ID setup for 3DS still ongoing. Pilot cards shared but yet to be produced. Internal activity by Zenith Bank.",s:"In Progress"},
+  ],mc:[
+    {t:"IDTP Fraud Protection Tool",n:"Awaiting feedback from Product Team.",s:"In Progress",p:false},
+    {t:"Nigeria Travel Card Contract",n:"Document sign-off completed. Mbali to schedule meeting based on our availability.",s:"In Progress",p:false},
+    {t:"CVP — Ghana Card Sign-on Bonus",n:"Sign-on bonus in progress.",s:"In Progress",p:false},
+    {t:"CVP — World Card (Priceless / Travel Pass)",n:"Priceless / Travel Pass integration into Kalabash App. TBD.",s:"Pending",p:true},
+    {t:"Waiver Claim / IDP",n:"IDP refund pushed back to Program Manager. Team investigating — Mbali escalated to Peter for proper follow-up.",s:"In Progress",p:false},
+  ],wins:[
+    "Decline rate dropped to 2% — FIRST TIME below ≤4% target 🎉",
+    "Total spend jumped to $50,435 — +184% WoW",
+    "Avg spend per active card: $50 — up from $20",
+    "MinieMoney sample cards COMPLETED — production commenced",
+    "Mastercard contract document sign-off completed",
+    "Physical activation improved to 53%",
+    "Chargeback maintained at 0%",
+  ],watch:[
+    "Revenue dropped: $1,345 → $184 (-86%) — investigate urgently",
+    "Monthly issuance: 39 vs 2,083 target — significant gap",
+    "Dormant cards: 46% — above ≤10% target",
+    "Transactions: 6 per month — below 6–10 range",
+    "Ghana PVT: Program ID setup for 3DS still ongoing",
+    "Waiver Claim / IDP: No confirmed payment date yet",
+  ],plans:[
+    {cat:"Acquisition", action:"Continue engagements with prospects for co-branded cards"},
+    {cat:"Activation & Spend", action:"Growth Activation and dormant card engagement — targeted comms via Cardunit in collaboration with Marketing"},
+    {cat:"Revenue", action:"Follow up with Blusalt on fees reporting dashboard"},
+    {cat:"Revenue", action:"Interchange discussion with Blusalt and Wema Bank"},
+    {cat:"Pilgrim Card", action:"List collated — to be finetuned and commence engagement this week. Check-in with Gabriel for CVP sourcing update"},
+  ]},
+  jul26th:{ng:[
+    {t:"Blusalt CMS Optimisation",n:"Income report and rate dashboard still pending. Reporting dashboard to show all fee income.",s:"In Progress"},
+    {t:"MPI Engagement",n:"NDA and SLA shared with Legal team for review.",s:"In Progress"},
+    {t:"Credit Card Implementation",n:"SOP completed. Credit card dashboard go-live pending.",s:"In Progress"},
+  ],gh:[
+    {t:"ICA & BIN Creation",n:"ICA and BIN assigned.",s:"Completed"},
+    {t:"Change Notification Submission (CNS)",n:"CNS completed for physical card production.",s:"Completed"},
+    {t:"3DS Setup — Cardinal Commerce",n:"3DS configuration completed on Cardinal Commerce side.",s:"Completed"},
+    {t:"Production Certificates Integration",n:"Production certificates integration completed.",s:"Completed"},
+    {t:"Mastercard Setup",n:"Mastercard activity completed on the project.",s:"Completed"},
+    {t:"Card Forte — Vendor LOA",n:"Updated LOA process concluded. Vendor cannot be used based on chip type feedback from Zenith Bank.",s:"Completed"},
+    {t:"MDP / Toppan — Card Production",n:"Commenced engagement with MDP and Toppan for St Topaz 1.2L chip. Approval raised for MDP. Toppan onboarding (NDA required) in progress.",s:"In Progress"},
+    {t:"PPM / Card Design Approval",n:"PPM still in progress with Mastercard. Awaiting approval to proceed with card design.",s:"In Progress"},
+    {t:"Zenith Bank — Production Validation Testing",n:"Implementation workbook with Zenith Ghana team. Program ID setup for 3DS still ongoing. Pilot cards shared but yet to be produced.",s:"In Progress"},
+  ],mc:[
+    {t:"IDTP Fraud Protection Tool",n:"Awaiting feedback from Product Team.",s:"In Progress",p:false},
+    {t:"Nigeria Travel Card Contract",n:"Meeting proposed for this week Wednesday at 11:30am. Awaiting Mbali's confirmation.",s:"In Progress",p:false},
+    {t:"CVP — Ghana Card Sign-on Bonus",n:"Sign-on bonus in progress.",s:"In Progress",p:false},
+    {t:"CVP — World Card (Priceless / Travel Pass)",n:"Priceless / Travel Pass integration into Kalabash App. TBD.",s:"Pending",p:true},
+    {t:"Waiver Claim / IDP",n:"Mbali escalated to Peter (Program Manager), Country Manager and Wema Bank RM. IDP refund still in progress.",s:"In Progress",p:false},
+  ],wins:[
+    "Issuance surged to 410 — +952% WoW (MinieMoney production live!)",
+    "Revenue up 332% WoW: $184 → $2,980",
+    "Decline rate at 3% — below ≤4% target for second consecutive week",
+    "Virtual activation improved to 74%",
+    "Dormant cards improved to 44% — down from 46%",
+    "MinieMoney sample cards completed — production commenced (Aug 25th)",
+    "Resolved Paystack channel issue — Kalabash Travel Cards now live on Paystack and Flutterwave",
+    "Chargeback at 0% — maintained",
+  ],watch:[
+    "Total spend dropped: $50,435 → $25,110 (↓ 50%)",
+    "Avg spend per card: $23.60 — down from $50",
+    "Monthly issuance 410 largely driven by MinieMoney — travel card base still low",
+    "Ghana card production vendor pivoting to MDP/Toppan — timeline impact",
+    "Mastercard contract meeting still not confirmed",
+    "Waiver Claim / IDP still unresolved despite escalations",
+  ],plans:[
+    {cat:"Acquisition", action:"Continue engagements with prospects for co-branded cards"},
+    {cat:"Activation & Spend", action:"Growth Activation and dormant card engagement — targeted comms via Cardunit in collaboration with Marketing"},
+    {cat:"Revenue", action:"Follow up with Blusalt on fees reporting dashboard"},
+    {cat:"Revenue", action:"Interchange discussion with Blusalt and Wema Bank"},
+    {cat:"Pilgrim Card", action:"Engage independently sourced partners. Check-in with Gabriel for CVP sourcing update"},
+  ]},
+  aug1st:{ng:[
+    {t:"Blusalt CMS Optimisation",n:"Report dashboard review — follow-up for completion. Reporting dashboard to show all fee income.",s:"In Progress"},
+    {t:"MPI Engagement",n:"NDA and SLA shared with Legal team for review.",s:"In Progress"},
+    {t:"Credit Card Implementation",n:"Credit card is LIVE. SOP completed. Dashboard live. Request monitoring ongoing.",s:"Completed"},
+  ],gh:[
+    {t:"ICA & BIN Creation",n:"ICA and BIN assigned.",s:"Completed"},
+    {t:"Change Notification Submission (CNS)",n:"CNS completed for physical card production.",s:"Completed"},
+    {t:"3DS Setup — Cardinal Commerce",n:"3DS configuration completed on Cardinal Commerce side.",s:"Completed"},
+    {t:"Production Certificates Integration",n:"Production certificates integration completed. Credentials shared by Onafriq.",s:"Completed"},
+    {t:"Mastercard Setup",n:"Mastercard activity completed on the project.",s:"Completed"},
+    {t:"MDP / Toppan Engagement",n:"Engagement with MDP and Toppan completed. MDP selected as card production vendor.",s:"Completed"},
+    {t:"PPM / Card Design Approval",n:"PPM APPROVED. Ghana Card APPROVED by Mastercard. Card design confirmed and cleared to proceed.",s:"Completed"},
+    {t:"Pilot Card Personalisation",n:"Engagement with perso vendor ongoing. Kalabash perso script being created. Follow up with Zenith Bank Ghana.",s:"In Progress"},
+    {t:"Card Production — MDP",n:"Commenced engagement with MDP. Awaiting card design feedback from Mastercard before sharing design.",s:"In Progress"},
+    {t:"Zenith Bank — Production Validation Testing",n:"Implementation workbook with Zenith Ghana team. Program ID setup for 3DS ongoing. Pilot cards shared but yet to be produced.",s:"In Progress"},
+  ],mc:[
+    {t:"IDTP Fraud Protection Tool",n:"Awaiting feedback from Product Team.",s:"In Progress",p:false},
+    {t:"Nigeria Travel Card Contract",n:"New meeting time to be advised by the Mastercard team.",s:"In Progress",p:false},
+    {t:"CVP — Ghana Card Sign-on Bonus",n:"Sign-on bonus in progress.",s:"In Progress",p:false},
+    {t:"CVP — World Card (Priceless / Travel Pass)",n:"Priceless / Travel Pass integration into Kalabash App. TBD.",s:"Pending",p:true},
+    {t:"Waiver Claim / IDP",n:"$100k IDP refund from Mastercard still pending. Continue to follow up with Mastercard team until funds are fully refunded.",s:"In Progress",p:false},
+  ],wins:[
+    "Credit Card is now LIVE — dashboard go-live confirmed ✅",
+    "Ghana Card APPROVED by Mastercard — PPM approved and card design cleared ✅",
+    "Revenue up 24% WoW: $924 → $1,147",
+    "Dormant cards improved significantly: 44% → 40%",
+    "Transactions up: 7 → 8 per month",
+    "MDP selected as Ghana card production vendor",
+    "Decline rate at 4% — on the target boundary",
+  ],watch:[
+    "Issuance dropped: 410 → 37 (MinieMoney boost was one-off)",
+    "Fraud rate recorded for first time: 1% — needs monitoring",
+    "Decline rate at 4% — right at target boundary, needs to stay below",
+    "Total spend: $19,796 vs $833k target",
+    "Ghana card design still pending Mastercard approval",
+    "Waka Prime card design awaiting Blusalt feedback on name/ID handling",
+  ],plans:[
+    {cat:"Acquisition", action:"Continue engagements with prospects for co-branded cards"},
+    {cat:"Activation & Spend", action:"Growth Activation and dormant card engagement — targeted comms via Cardunit in collaboration with Marketing"},
+    {cat:"Revenue", action:"Follow up with Blusalt on fees reporting dashboard"},
+    {cat:"Revenue", action:"Interchange discussion with Blusalt and Wema Bank"},
+    {cat:"Pilgrim Card", action:"Deck prepared — commence engagement with shortlisted vendors. Check-in with Gabriel for CVP sourcing update"},
+  ]},
+  aug8th:{ng:[
+    {t:"Blusalt CMS Optimisation",n:"Report dashboard review — follow-up for completion. Reporting dashboard to show all fee income.",s:"In Progress"},
+    {t:"MPI Engagement",n:"NDA and SLA shared with Legal team for review.",s:"In Progress"},
+    {t:"Credit Card Implementation",n:"Credit card is LIVE. SOP completed. Dashboard live.",s:"Completed"},
+  ],gh:[
+    {t:"ICA & BIN Creation",n:"ICA and BIN assigned.",s:"Completed"},
+    {t:"Change Notification Submission (CNS)",n:"CNS completed for physical card production.",s:"Completed"},
+    {t:"3DS Setup — Cardinal Commerce",n:"3DS configuration completed on Cardinal Commerce side.",s:"Completed"},
+    {t:"Production Certificates Integration",n:"Credentials shared by Onafriq. Completed.",s:"Completed"},
+    {t:"Mastercard Setup",n:"Mastercard activity completed on the project.",s:"Completed"},
+    {t:"MDP / Toppan Engagement",n:"Engagement completed. MDP selected as card production vendor.",s:"Completed"},
+    {t:"PPM / Card Design Approval",n:"PPM APPROVED. Ghana Card design APPROVED by Mastercard.",s:"Completed"},
+    {t:"Pilot Card Personalisation",n:"Perso vendor engagement ongoing. Kalabash perso script being created. 2–3 weeks to implement.",s:"In Progress"},
+    {t:"Card Production — MDP",n:"Card proof signed. Awaiting scheme approval.",s:"In Progress"},
+    {t:"MDP — Wakanow Ghana Card",n:"Card design scheme approval in progress. e-Proof to be signed.",s:"In Progress"},
+    {t:"Zenith Bank — Production Validation Testing",n:"Implementation workbook with Zenith Ghana team. Program ID setup for 3DS ongoing.",s:"In Progress"},
+  ],mc:[
+    {t:"IDTP Fraud Protection Tool",n:"Awaiting feedback from Product Team.",s:"In Progress",p:false},
+    {t:"Nigeria Travel Card Contract",n:"Awaiting updated time and date for meeting.",s:"In Progress",p:false},
+    {t:"CVP — Ghana Card Sign-on Bonus",n:"Sign-on bonus in progress.",s:"In Progress",p:false},
+    {t:"CVP — World Card (Priceless / Travel Pass)",n:"Priceless / Travel Pass integration into Kalabash App. TBD.",s:"Pending",p:true},
+    {t:"Waiver Claim / IDP",n:"$100k IDP refund from Mastercard still pending. Continue to follow up.",s:"In Progress",p:false},
+  ],wins:[
+    "Issuance up 95% WoW (37 → 72)",
+    "Total spend up 114% WoW: $19,796 → $42,305",
+    "Avg spend per card up: $19 → $41",
+    "Decline rate improved to 3% — below ≤4% target",
+    "Fraud rate cleared: 1% → 0%",
+    "Merchant activation improved to 31%",
+  ],watch:[
+    "Chargeback jumped: 0% → 2% — breach vs ≤0.7% target",
+    "Revenue: $1,075 — down 6% WoW",
+    "Dormant: 41% — above ≤10% target",
+    "Mastercard contract meeting still without confirmed date",
+    "Ghana perso script creation still in progress (2–3 weeks)",
+  ],plans:[
+    {cat:"Acquisition", action:"Continue engagements with prospects for co-branded cards"},
+    {cat:"Activation & Spend", action:"Growth Activation and dormant card engagement — targeted comms via Cardunit in collaboration with Marketing"},
+    {cat:"Revenue", action:"Follow up with Blusalt on fees reporting dashboard"},
+    {cat:"Revenue", action:"Interchange discussion with Blusalt and Wema Bank"},
+    {cat:"Pilgrim Card", action:"Engage independently sourced partners. Check-in with Gabriel for CVP sourcing update"},
+  ]},
+  aug15th:{ng:[
+    {t:"Blusalt CMS Optimisation",n:"Report dashboard review — follow-up for completion. Reporting dashboard to show all fee income.",s:"In Progress"},
+    {t:"MPI Engagement",n:"NDA and SLA shared with Legal team for review.",s:"In Progress"},
+    {t:"Credit Card Implementation",n:"Credit card is LIVE. SOP completed. Dashboard live.",s:"Completed"},
+  ],gh:[
+    {t:"ICA & BIN Creation",n:"ICA and BIN assigned.",s:"Completed"},
+    {t:"Change Notification Submission (CNS)",n:"CNS completed for physical card production.",s:"Completed"},
+    {t:"3DS Setup — Cardinal Commerce",n:"3DS configuration completed on Cardinal Commerce side.",s:"Completed"},
+    {t:"Production Certificates Integration",n:"Credentials shared by Onafriq. Completed.",s:"Completed"},
+    {t:"Mastercard Setup",n:"Mastercard activity completed on the project.",s:"Completed"},
+    {t:"MDP / Toppan Engagement",n:"Engagement completed. MDP selected as card production vendor.",s:"Completed"},
+    {t:"PPM / Card Design Approval",n:"PPM APPROVED. Ghana Card design APPROVED by Mastercard.",s:"Completed"},
+    {t:"Pilot Card Personalisation",n:"Perso vendor engagement ongoing. Kalabash perso script being created. Implementation to take 2–3 weeks.",s:"In Progress"},
+    {t:"Card Production — MDP",n:"Card proof signed. Awaiting scheme approval.",s:"In Progress"},
+    {t:"MDP — e-Proof Sign-off",n:"e-Proof signed off. Card design approval obtained from Mastercard.",s:"Completed"},
+    {t:"Zenith Bank — Production Validation Testing",n:"Implementation workbook with Zenith Ghana team. All internal activities by Zenith Bank.",s:"In Progress"},
+  ],mc:[
+    {t:"IDTP Fraud Protection Tool",n:"Awaiting feedback from Product Team.",s:"In Progress",p:false},
+    {t:"Nigeria Travel Card Contract",n:"Awaiting updated time and date for the meeting from Mastercard.",s:"In Progress",p:false},
+    {t:"CVP — Ghana Card Sign-on Bonus",n:"Sign-on bonus in progress.",s:"In Progress",p:false},
+    {t:"CVP — World Card (Priceless / Travel Pass)",n:"Priceless / Travel Pass integration into Kalabash App. TBD.",s:"Pending",p:true},
+    {t:"Waiver Claim / IDP",n:"$100k IDP refund from Mastercard still pending. Wema Bank engaged from Mastercard. Continue to follow up.",s:"In Progress",p:false},
+  ],wins:[
+    "Issuance up 40% WoW (72 → 101)",
+    "Total spend surged to $65,027 — +54% WoW",
+    "Avg spend per card: $61 — up from $41",
+    "Physical activation improved to 57.2%",
+    "Virtual activation improved to 75%",
+    "Dormant cards improved: 41% → 40%",
+    "Ghana MDP e-proof signed off — card design approved by Mastercard",
+    "Chargeback improved: 2% → 1%",
+  ],watch:[
+    "Decline rate spiked to 11% — breach vs ≤4% target (up from 3%)",
+    "Revenue: $1,290 — down 17% WoW from $1,557",
+    "Dormant: 40% — still above ≤10% target",
+    "Chargeback: 1% — still above ≤0.7% target",
+    "Mastercard contract meeting still without confirmed date",
+  ],plans:[
+    {cat:"Activation & Spend", action:"Growth Activation and dormant card engagement — targeted comms via Cardunit in collaboration with Marketing"},
+    {cat:"Pilgrim Card", action:"Engage independently sourced partners. Check-in with Gabriel for CVP sourcing update"},
+  ]},
+  aug22nd:{ng:[
+    {t:"Blusalt CMS Optimisation",n:"Report dashboard review — follow-up for completion. Reporting dashboard to show all fee income.",s:"In Progress"},
+    {t:"MPI Engagement",n:"NDA and SLA shared with Legal team for review.",s:"In Progress"},
+    {t:"Credit Card Implementation",n:"Credit card is LIVE. SOP completed. Dashboard live.",s:"Completed"},
+  ],gh:[
+    {t:"ICA & BIN Creation",n:"ICA and BIN assigned.",s:"Completed"},
+    {t:"Change Notification Submission (CNS)",n:"CNS completed for physical card production.",s:"Completed"},
+    {t:"3DS Setup, Production Certificates, Mastercard Setup",n:"All completed on Cardinal Commerce and Onafriq side.",s:"Completed"},
+    {t:"MDP / Toppan — Vendor Selection",n:"Engagement completed. MDP selected as card production vendor.",s:"Completed"},
+    {t:"PPM / Card Design Approval",n:"PPM APPROVED. Ghana Card design APPROVED by Mastercard. e-Proof signed off.",s:"Completed"},
+    {t:"Physical Card Production — MDP",n:"Engagement with MDP commenced. Production to be completed September 30th. Awaiting official completion date from MDP.",s:"In Progress"},
+    {t:"Final Testing (Funded Transaction)",n:"Positive and negative testing, distribution account funding and card funding. Awaiting distribution account creation from Onafriq.",s:"In Progress"},
+    {t:"Pilot Card Personalisation",n:"Perso vendor engagement ongoing. Kalabash perso script being created. 2–3 weeks to implement.",s:"In Progress"},
+    {t:"Zenith Bank — Production Validation Testing",n:"Implementation workbook with Zenith Ghana team. All internal activities by Zenith Bank.",s:"In Progress"},
+  ],mc:[
+    {t:"IDTP Fraud Protection Tool",n:"Awaiting feedback from Product Team.",s:"In Progress",p:false},
+    {t:"Nigeria Travel Card Contract",n:"Awaiting updated time and date for the meeting.",s:"In Progress",p:false},
+    {t:"CVP — Ghana Card Sign-on Bonus",n:"Sign-on bonus in progress.",s:"In Progress",p:false},
+    {t:"CVP — World Card (Priceless / Travel Pass)",n:"Priceless / Travel Pass integration into Kalabash App. TBD.",s:"Pending",p:true},
+    {t:"Waiver Claim / IDP",n:"$100k IDP refund from Mastercard still pending. Wema Bank engaged from Mastercard. Continue to follow up.",s:"In Progress",p:false},
+  ],wins:[
+    "Total spend surged to $102,845 — +58% WoW (best spend week yet)",
+    "Avg spend per card: $94 — up from $61",
+    "Revenue up 15% WoW: $1,290 → $1,486",
+    "Decline rate dropped to 4% — from 11% (back at target boundary)",
+    "Fraud rate: 0% maintained",
+    "Transactions: 8 per month — within 6–10 target",
+  ],watch:[
+    "Issuance dropped: 101 → 55 (↓ 46%)",
+    "Dormant cards: 42% — up from 40% (above ≤10% target)",
+    "Chargeback: 1% — above ≤0.7% target",
+    "FAAN recce commencing — hardware procurement and card invoice still pending",
+    "Ghana physical card production completion date still TBD",
+    "Mastercard contract meeting still without confirmed date",
+  ],plans:[
+    {cat:"Activation & Spend", action:"Growth Activation and dormant card engagement — targeted comms via Cardunit in collaboration with Marketing"},
+    {cat:"Pilgrim Card", action:"Engage independently sourced partners. Check-in with Gabriel for CVP sourcing update"},
+  ]},
+  aug29th:{ng:[
+    {t:"Blusalt CMS Optimisation",n:"Report dashboard review — follow-up for completion. Reporting dashboard to show all fee income.",s:"In Progress"},
+    {t:"MPI Engagement",n:"NDA and SLA shared with Legal team for review.",s:"In Progress"},
+    {t:"Credit Card Implementation",n:"Credit card is LIVE. SOP completed. Dashboard live.",s:"Completed"},
+  ],gh:[
+    {t:"ICA & BIN, CNS, 3DS, Certs, Mastercard Setup, MDP, PPM",n:"All milestones COMPLETED.",s:"Completed"},
+    {t:"Physical Card Production — MDP",n:"Production to be completed September 21st. 50% payment still pending.",s:"In Progress"},
+    {t:"Final Testing (Funded Transaction)",n:"Card funding and transaction testing in progress.",s:"In Progress"},
+    {t:"Pilot Card Personalisation",n:"Perso vendor engagement ongoing. Kalabash perso script being created. 2–3 weeks to implement.",s:"In Progress"},
+    {t:"Addition of Kalabash Card Design",n:"Raised with Zenith Bank. Corporate communications reviewing request.",s:"In Progress"},
+    {t:"Zenith Bank — Production Validation Testing",n:"All internal activities by Zenith Bank.",s:"In Progress"},
+  ],mc:[
+    {t:"IDTP Fraud Protection Tool",n:"Awaiting feedback from Product Team.",s:"In Progress",p:false},
+    {t:"Nigeria Travel Card Contract",n:"Awaiting updated time and date for the meeting.",s:"In Progress",p:false},
+    {t:"CVP — Ghana Card Sign-on Bonus",n:"Sign-on bonus in progress.",s:"In Progress",p:false},
+    {t:"CVP — World Card (Priceless / Travel Pass)",n:"Priceless / Travel Pass integration into Kalabash App. TBD.",s:"Pending",p:true},
+    {t:"Waiver Claim / IDP",n:"$100k IDP refund from Mastercard still pending. Continue to follow up.",s:"In Progress",p:false},
+  ],wins:[
+    "Issuance up 44% WoW (55 → 79)",
+    "Dormant cards improved significantly: 42% → 38%",
+    "Physical activation improved to 58%",
+    "Transactions improved: 8 → 8.5 per month",
+    "Decline rate held at 4% — on target",
+    "FAAN recce COMPLETED — kiosk deployment commenced",
+    "Waka Prime — KIV: to commence issuance with Kalabash World Travel Card",
+  ],watch:[
+    "Revenue dropped sharply: $1,486 → $33 — investigate urgently",
+    "Total spend down 45% WoW: $102,845 → $56,528",
+    "Chargeback: 1% — above ≤0.7% target",
+    "Ghana card production: Sep 21 completion, 50% payment still pending",
+    "Mastercard contract meeting still without confirmed date",
+    "$100k IDP refund still outstanding",
+  ],plans:[
+    {cat:"Activation & Spend", action:"Growth Activation and dormant card engagement — targeted comms via Cardunit in collaboration with Marketing"},
+    {cat:"Pilgrim Card", action:"Engage independently sourced partners. Check-in with Gabriel for CVP sourcing update"},
+  ]},
   may15th:{ng:[
     {t:"Berkeley / CNS / SLA / BIN Testing / 3DS / Card Purchase",n:"All completed. 50,000 cards inspected.",s:"Completed"},
     {t:"Blusalt CMS Optimisation",n:"SMS Alert opt-in/out. OIF, income reporting, rate dashboard pending.",s:"In Progress"},
@@ -805,7 +1244,7 @@ const PS={
     "MinieMoney: card production commenced; API documentation shared",
     "Mastercard ISSM completed for Ghana card setup"
   ],watch:[
-    "Monthly issuance run rate: 36 vs. 2,083 target — urgent attention needed",
+    "Weekly issuance: 36 vs. 2,083 target — urgent attention needed",
     "Total spend: $19,220 vs. $833k target — significant gap remains",
     "Total card revenue: $131 vs. $16k target",
     "Dormant card rate at 48% — well above ≤10% target",
@@ -830,7 +1269,7 @@ function sCls(v,target,lower){
 }
 
 // ── Build two-tier nav (months + weeks) ──
-const months = ['January','February','March','April','May','June','July'];
+const months = ['January','February','March','April','May','June','July','August'];
 const monthMap = {
   'January':  W.filter(w=>w.lbl.startsWith('Jan')),
   'February': W.filter(w=>w.lbl.startsWith('Feb')),
@@ -838,9 +1277,10 @@ const monthMap = {
   'April':    W.filter(w=>w.lbl.startsWith('Apr')),
   'May':      W.filter(w=>w.lbl.startsWith('May')),
   'June':     W.filter(w=>w.lbl.startsWith('Jun')),
-  'July':     W.filter(w=>w.lbl.startsWith('Jul')),
+  'July':     W.filter(w=>w.lbl.startsWith('Jul')||w.lbl.includes('Jul')),
+  'August':   W.filter(w=>w.lbl.startsWith('Aug')||w.lbl.includes('Aug')),
 };
-let activeMo = 'July';
+let activeMo = 'August';
 
 const moEl = document.getElementById('monthBtns');
 const wkEl = document.getElementById('weekBtns');
@@ -920,11 +1360,14 @@ function renderWeek(w){
 
   const partners=[
     {name:'MinieMoney', tag:'In Progress', tc:'b-teal', col:'var(--teal)',
-     tasks:ps.ng ? ps.ng.filter(t=>t.t.toLowerCase().includes('miniemoney')||t.t.toLowerCase().includes('minimoney')).map(t=>t.n) : [],
-     fallback:['Awaiting payment confirmation for USD cards','RPP still pending Mastercard approval · Card API shared','Card production in progress']},
-    {name:'Card Forte — Expense Cards', tag:'Prospect', tc:'b-gold', col:'var(--gold)',
      tasks:[],
-     fallback:['Card Forte exploring expense card proposition with Kalabash','Initial discussions underway — scope & commercial terms TBD','Next step: align on product structure and engagement roadmap']},
+     fallback:['RPP approved · Card design approved · Sample cards completed','Card production completed · Card issuance commencing','API integrations still ongoing']},
+    {name:'Waka Prime', tag:'KIV', tc:'b-gold', col:'var(--gold)',
+     tasks:[],
+     fallback:['RPP approved · Card design reviewed and invoice shared','Waka Prime to commence issuance with existing Kalabash World Travel Card','Card design scheme approval — KIV pending Waka Prime decision']},
+    {name:'Pilgrim Card — CVP', tag:'In Progress', tc:'b-teal', col:'var(--teal)',
+     tasks:[],
+     fallback:['Deck prepared — commence engagement with shortlisted vendors','List collated and finetuned for Saudi Market','Check-in with Gabriel for CVP sourcing update']},
     {name:'Airport Kiosk Deployments', tag:'In Progress', tc:'b-teal', col:'var(--teal2)',
      tasks:[],
      fallback:['Card kiosk deployment at designated airport locations','Go-live planning and deployment timeline in progress','Kiosk setup and configuration underway']},
@@ -934,12 +1377,28 @@ function renderWeek(w){
   ];
 
   document.getElementById('dash').innerHTML=`
+<div class="card" style="margin-bottom:14px;padding:0;overflow:hidden;border-left:4px solid #07478C">
+  <div style="background:#07478C;padding:10px 16px;display:flex;align-items:center;justify-content:space-between">
+    <span style="font-size:12px;font-weight:700;color:#fff;letter-spacing:.04em">EXECUTIVE SUMMARY</span>
+    <span style="font-size:10px;color:#54D8FF">${w.dt}</span>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:0">
+    <div style="padding:12px 16px;border-right:1px solid var(--g3)">
+      <div style="font-size:9.5px;font-weight:700;color:var(--green);letter-spacing:.08em;margin-bottom:8px">✔ WINS THIS WEEK</div>
+      ${(ps.wins||[]).map(x=>`<div style="display:flex;gap:7px;padding:4px 0;border-bottom:1px solid var(--g3)"><span style="color:var(--green);flex-shrink:0;font-size:11px">●</span><span style="font-size:11px;color:var(--c1)">${x}</span></div>`).join('')||'<div style="font-size:11px;color:var(--g2)">No wins recorded.</div>'}
+    </div>
+    <div style="padding:12px 16px">
+      <div style="font-size:9.5px;font-weight:700;color:var(--red);letter-spacing:.08em;margin-bottom:8px">⚠ WATCH ITEMS</div>
+      ${(ps.watch||[]).map(x=>`<div style="display:flex;gap:7px;padding:4px 0;border-bottom:1px solid var(--g3)"><span style="color:var(--red);flex-shrink:0;font-size:11px">●</span><span style="font-size:11px;color:var(--c1)">${x}</span></div>`).join('')||'<div style="font-size:11px;color:var(--g2)">No watch items.</div>'}
+    </div>
+  </div>
+</div>
 <div class="slabel">KPI Scorecard — ${w.dt}</div>
 <div class="kpi-row" style="grid-template-columns:repeat(8,1fr)">
   <div class="kpi ${issCls}">
-    <div class="kpi-lbl">Monthly issuance run rate</div>
+    <div class="kpi-lbl">Weekly issuance</div>
     <div class="kpi-val ${issCls}">${w.iss}</div>
-    <div class="kpi-meta"><span class="kpi-target">Target: 2,083</span><span class="kpi-delta ${dIss.cls}">${dIss.txt}</span></div>
+    <div class="kpi-meta"><span class="kpi-target">Target: 2,083/mo</span><span class="kpi-delta ${dIss.cls}">${dIss.txt}</span></div>
   </div>
   <div class="kpi ${sCls(w.phys,0.20,false)}">
     <div class="kpi-lbl">Physical activation</div>
@@ -980,31 +1439,6 @@ function renderWeek(w){
 
 <div class="g2">
   <div class="card">
-    <div class="ctitle"><span class="ctitle-dot" style="background:var(--green)"></span>Wins this week</div>
-    <div class="ilist">${(ps.wins||[]).map(x=>`<div class="iitem"><div class="idot g"></div><div class="itext">${x}</div></div>`).join('')||'<div class="iitem"><div class="itext" style="color:var(--g2)">No wins recorded.</div></div>'}</div>
-  </div>
-  <div class="card">
-    <div class="ctitle"><span class="ctitle-dot" style="background:var(--red)"></span>Watch items</div>
-    <div class="ilist">${(ps.watch||[]).map(x=>`<div class="iitem"><div class="idot r"></div><div class="itext">${x}</div></div>`).join('')||'<div class="iitem"><div class="itext" style="color:var(--g2)">No watch items.</div></div>'}</div>
-  </div>
-</div>
-
-${ps.plans && ps.plans.length ? `
-<div class="slabel">Plans for the week</div>
-<div style="background:var(--white);border-radius:var(--r-lg);border:1px solid var(--g3);padding:15px 17px;box-shadow:var(--sh);margin-bottom:14px">
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px">
-    ${ps.plans.map(p=>`
-    <div style="display:flex;align-items:flex-start;gap:9px;padding:9px 12px;background:var(--off);border-radius:var(--r-md);border-left:3px solid var(--teal)">
-      <div>
-        <div style="font-size:9.5px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px">${p.cat}</div>
-        <div style="font-size:12px;color:var(--c3);line-height:1.4">${p.action}</div>
-      </div>
-    </div>`).join('')}
-  </div>
-</div>` : ''}
-
-<div class="g2">
-  <div class="card">
     <div class="ctitle"><span class="ctitle-dot" style="background:var(--teal)"></span>Nigeria — Travel Card <span class="badge b-teal" style="font-size:9px">In progress</span></div>
     <div>${tlist(ps.ng||[])}</div>
   </div>
@@ -1037,7 +1471,21 @@ ${ps.plans && ps.plans.length ? `
       </div>
     </div>`;
   }).join('')}
-</div>`;
+</div>
+
+${ps.plans && ps.plans.length ? `
+<div class="slabel">Plans for the week</div>
+<div style="background:var(--white);border-radius:var(--r-lg);border:1px solid var(--g3);padding:15px 17px;box-shadow:var(--sh);margin-bottom:14px">
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px">
+    ${ps.plans.map(p=>`
+    <div style="display:flex;align-items:flex-start;gap:9px;padding:9px 12px;background:var(--off);border-radius:var(--r-md);border-left:3px solid var(--teal)">
+      <div>
+        <div style="font-size:9.5px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px">${p.cat}</div>
+        <div style="font-size:12px;color:var(--c3);line-height:1.4">${p.action}</div>
+      </div>
+    </div>`).join('')}
+  </div>
+</div>` : ''}`;
 
   // Append Mastercard section separately
   document.getElementById('dash').innerHTML += `
@@ -1065,7 +1513,19 @@ const MONTHS=[
   {name:'April', short:'Apr', weeks:W.filter(w=>w.lbl.startsWith('Apr'))},
   {name:'May', short:'May', weeks:W.filter(w=>w.lbl.startsWith('May'))},
   {name:'June', short:'Jun', weeks:W.filter(w=>w.lbl.startsWith('Jun'))},
+  {name:'July', short:'Jul', weeks:W.filter(w=>w.lbl.startsWith('Jul')||w.lbl.includes('Jul'))},
+  {name:'August', short:'Aug', weeks:W.filter(w=>w.lbl.startsWith('Aug')||w.lbl.includes('Aug'))},
 ].filter(m=>m.weeks.length>0);
+
+// Real monthly KPI figures from KPI Real workings (Jan–June actuals)
+const REAL_MONTHLY = {
+  Jan: { iss:1319, spend:23198,   rev:2144, dr:4.0  },
+  Feb: { iss:882,  spend:43063,   rev:2160, dr:4.0  },
+  Mar: { iss:922,  spend:79192,   rev:3274, dr:3.0  },
+  Apr: { iss:343,  spend:238518,  rev:5541, dr:4.0  },
+  May: { iss:284,  spend:139709,  rev:3379, dr:14.0 },
+  Jun: { iss:222,  spend:69106,   rev:1822, dr:8.0  },
+};
 
 function moSum(weeks, key){ return weeks.reduce((a,w)=>a+(w[key]||0),0); }
 function moAvg(weeks, key){ const v=weeks.filter(w=>w[key]!=null); return v.length?v.reduce((a,w)=>a+w[key],0)/v.length:null; }
@@ -1091,17 +1551,25 @@ const baseOpts=(ytick)=>({
 function buildTrendData(){
   if(trendMode==='monthly'){
     const labels=MONTHS.map(m=>m.short);
-    const spend=MONTHS.map(m=>moSum(m.weeks,'spend'));
-    const rev=MONTHS.map(m=>moSum(m.weeks,'rev'));
-    const iss=MONTHS.map(m=>moSum(m.weeks,'iss'));
-    const dr=MONTHS.map(m=>{ const v=moAvg(m.weeks,'dr'); return v!=null?parseFloat((v*100).toFixed(1)):null; });
+    const spend=MONTHS.map(m=>{
+      const r=REAL_MONTHLY[m.short]; return r?r.spend:moSum(m.weeks,'spend');
+    });
+    const rev=MONTHS.map(m=>{
+      const r=REAL_MONTHLY[m.short]; return r?r.rev:moSum(m.weeks,'rev');
+    });
+    const iss=MONTHS.map(m=>{
+      const r=REAL_MONTHLY[m.short]; return r?r.iss:moSum(m.weeks,'iss');
+    });
+    const dr=MONTHS.map(m=>{
+      const r=REAL_MONTHLY[m.short]; return r?r.dr:(() =>{ const v=moAvg(m.weeks,'dr'); return v!=null?parseFloat((v*100).toFixed(1)):null; })();
+    });
     return {labels,spend,rev,iss,dr,
       spendBg:MONTHS.map(()=>'#0AA8B8'),
-      issBg:MONTHS.map(m=>{ const v=moSum(m.weeks,'iss'); return issColor(v); }),
+      issBg:iss.map(v=>issColor(v)),
       drBg:dr.map(v=>drColor(v!=null?v/100:null))};
   } else {
     const ws=trendMo.weeks;
-    const labels=ws.map(w=>w.lbl.replace(trendMo.short+' ','').replace(/Jan |Feb |Mar |Apr |May |Jun /,''));
+    const labels=ws.map(w=>w.lbl.replace(trendMo.short+' ','').replace(/Jan |Feb |Mar |Apr |May |Jun |Jul |Aug /,''));
     const spend=ws.map(w=>w.spend||0);
     const rev=ws.map(w=>w.rev);
     const iss=ws.map(w=>w.iss);
@@ -1191,7 +1659,186 @@ function renderTrends(){
   });
 }
 
+// ── Tab switching ──────────────────────────────────
+function switchTab(tab, btn) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('tab-active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  btn.classList.add('tab-active');
+  if(tab==='executive') setTimeout(renderTrends, 50);
+}
+
 renderTrends();
+
+// ── Monthly KPI Table ──────────────────────────────
+(function(){
+  const kpiRows = [
+    { label:'Weekly Issuance',       vals:[1319,882,922,343,284,222],            target:'2,083/wk', fmt:v=>v.toLocaleString(),           good:v=>v>=2083 },
+    { label:'Total Spend (USD)',      vals:[23198,43063,79192,238518,139709,69106],target:'$833k/mo', fmt:v=>'$'+Math.round(v).toLocaleString(), good:v=>v>=833000 },
+    { label:'Total Revenue (USD)',    vals:[2144,2160,3274,5541,3379,1822],       target:'$16k/mo',  fmt:v=>'$'+Math.round(v).toLocaleString(), good:v=>v>=16000 },
+    { label:'Phys. Activation',       vals:[0.49,0.43,0.56,0.44,0.50,0.42],      target:'≥20%',     fmt:v=>Math.round(v*100)+'%',         good:v=>v>=0.20 },
+    { label:'Virtual Activation',     vals:[0.96,0.97,0.61,0.91,0.70,1.00],      target:'≥20%',     fmt:v=>Math.round(v*100)+'%',         good:v=>v>=0.20 },
+    { label:'Dormant Cards',          vals:[0.57,0.57,0.54,0.52,0.49,0.58],      target:'≤10%',     fmt:v=>Math.round(v*100)+'%',         good:v=>v<=0.10 },
+    { label:'Avg Spend/Card (USD)',    vals:[61,90,187,425,180,82],               target:'$667',     fmt:v=>'$'+Math.round(v),             good:v=>v>=667 },
+    { label:'Transactions/Month',     vals:[9,12,13,9,6,8],                       target:'6–10',     fmt:v=>v,                             good:v=>v>=6&&v<=10 },
+    { label:'Revenue/Card (USD)',     vals:[0,2.1,4.1,15.61,11.60,10.83],        target:'$40',      fmt:v=>'$'+v.toFixed(1),              good:v=>v>=40 },
+    { label:'Decline Rate',           vals:[0.04,0.04,0.03,0.04,0.14,0.08],      target:'≤4%',      fmt:v=>(v*100).toFixed(0)+'%',        good:v=>v<=0.04 },
+    { label:'Chargeback Ratio',       vals:[0.01,0,0.01,0,0,0.01],               target:'≤0.7%',    fmt:v=>(v*100).toFixed(1)+'%',        good:v=>v<=0.007 },
+    { label:'Fraud Rate',             vals:[0.01,0,0.001,0,0,0],                 target:'≤0.12%',   fmt:v=>(v*100).toFixed(1)+'%',        good:v=>v<=0.0012 },
+  ];
+  const tbody = document.getElementById('monthlyKpiBody');
+  if(!tbody) return;
+  kpiRows.forEach((r, ri) => {
+    const tr = document.createElement('tr');
+    tr.style.background = ri%2===0 ? '#ffffff' : '#f8f9fb';
+    const cell = (content, right) =>
+      `<td style="padding:7px 10px;text-align:${right?'right':'left'};border-bottom:1px solid #E2E2E2">${content}</td>`;
+    let html = cell(`<span style="font-size:11px;font-weight:500;color:#1A1A1A">${r.label}</span>`);
+    html += cell(`<span style="font-size:10px;color:#6E6E6E">${r.target}</span>`, true);
+    r.vals.forEach(v => {
+      const ok = r.good(v);
+      const color = ok ? '#12A05C' : '#D63B3B';
+      html += cell(`<span style="font-size:11px;font-weight:600;color:${color}">${r.fmt(v)}</span>`, true);
+    });
+    tr.innerHTML = html;
+    tbody.appendChild(tr);
+  });
+})();
+
+// ── Transaction Count & Spend Table ────────────────
+(function(){
+  const rows = [
+    { mo:'Jun 2025',  tot:6,      usdC:6,     usdA:765.54,     ngnC:0,     ngnA:0 },
+    { mo:'Jul 2025',  tot:71,     usdC:70,    usdA:2093.13,    ngnC:1,     ngnA:4000 },
+    { mo:'Aug 2025',  tot:113,    usdC:104,   usdA:6052.24,    ngnC:9,     ngnA:55645.77 },
+    { mo:'Sep 2025',  tot:8,      usdC:5,     usdA:10.02,      ngnC:2,     ngnA:12800 },
+    { mo:'Oct 2025',  tot:75,     usdC:72,    usdA:4866.67,    ngnC:3,     ngnA:30650 },
+    { mo:'Nov 2025',  tot:124,    usdC:64,    usdA:5539.60,    ngnC:60,    ngnA:578614.31 },
+    { mo:'Dec 2025',  tot:953,    usdC:539,   usdA:19549.11,   ngnC:399,   ngnA:6045795.69 },
+    { mo:'Jan 2026',  tot:1412,   usdC:195,   usdA:6158.71,    ngnC:1217,  ngnA:26298067.92 },
+    { mo:'Feb 2026',  tot:2022,   usdC:304,   usdA:23751.63,   ngnC:1718,  ngnA:30595566.55 },
+    { mo:'Mar 2026',  tot:2213,   usdC:574,   usdA:47295.85,   ngnC:1639,  ngnA:37682397.25 },
+    { mo:'Apr 2026',  tot:3136,   usdC:1382,  usdA:199961.54,  ngnC:1753,  ngnA:51197841.52 },
+    { mo:'May 2026',  tot:4247,   usdC:1163,  usdA:109936.40,  ngnC:3084,  ngnA:40525008.15 },
+    { mo:'Jun 2026',  tot:3330,   usdC:718,   usdA:37193.20,   ngnC:2612,  ngnA:34645382.88 },
+    { mo:'Jul 2026',  tot:5141,   usdC:1217,  usdA:85424.61,   ngnC:3917,  ngnA:49849266.68 },
+    { mo:'Aug 2026',  tot:132,    usdC:49,    usdA:873.00,     ngnC:83,    ngnA:2330458.99 },
+  ];
+  const fmtN = n => n===0?'—':n.toLocaleString();
+  const fmtU = v => v===0?'—':'$'+v.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+  const fmtNG = v => v===0?'—':'₦'+Math.round(v).toLocaleString();
+  const tbody = document.getElementById('txnTableBody');
+  if(!tbody) return;
+  rows.forEach((r, i) => {
+    const is26 = r.mo.includes('2026');
+    const bg = i%2===0 ? '#ffffff' : '#f8f9fb';
+    const tr = document.createElement('tr');
+    tr.style.background = bg;
+    const bdr = 'border-bottom:1px solid #E2E2E2';
+    const bdrL = 'border-left:1px solid #E2E2E2';
+    tr.innerHTML = `
+      <td style="padding:7px 12px;font-size:11px;font-weight:${is26?'600':'400'};color:${is26?'#07478C':'#374151'};${bdr};white-space:nowrap">${r.mo}</td>
+      <td style="padding:7px 10px;text-align:right;font-size:11px;font-weight:600;color:#1A1A1A;${bdr}">${r.tot.toLocaleString()}</td>
+      <td style="padding:7px 10px;text-align:right;font-size:11px;color:#374151;${bdr};${bdrL}">${fmtN(r.usdC)}</td>
+      <td style="padding:7px 10px;text-align:right;font-size:11px;color:#12A05C;${bdr}">${fmtU(r.usdA)}</td>
+      <td style="padding:7px 10px;text-align:right;font-size:11px;color:#374151;${bdr};${bdrL}">${fmtN(r.ngnC)}</td>
+      <td style="padding:7px 10px;text-align:right;font-size:11px;color:#0AA8B8;${bdr}">${fmtNG(r.ngnA)}</td>`;
+    tbody.appendChild(tr);
+  });
+})();
+
+// ── Card Issuance Performance Table ────────────────
+(function(){
+  const sections = [
+    {
+      label: 'CARDS ISSUED',
+      totalLabel: 'CARDS ISSUED — total',
+      totalVals: [36,577,323,364,409,462,351,196,222,556,16],
+      totalRow: '3,512',
+      rows: [
+        { label:'Physical Naira — Mastercard Standard', vals:[8,316,120,272,233,157,83,87,47,52,1],    total:'1,376', color:'#374151' },
+        { label:'Virtual Naira — Mastercard Standard',  vals:[13,60,31,9,9,19,10,35,41,374,0],         total:'601',   color:'#374151' },
+        { label:'Virtual USD — Mastercard Platinum',    vals:[13,51,116,30,56,159,179,24,16,38,13],     total:'695',   color:'#374151' },
+        { label:'Physical USD — Mastercard Platinum',   vals:[1,121,40,49,103,121,65,35,94,57,2],       total:'688',   color:'#374151' },
+        { label:'Physical USD — Mastercard World',      vals:[1,29,16,4,8,6,14,15,24,35,0],             total:'152',   color:'#374151' },
+        { label:'Virtual share of issuance',            vals:['72.2%','19.2%','45.5%','10.7%','15.9%','38.5%','53.8%','30.1%','25.7%','74.1%','81.3%'], total:'36.9%', color:'#0AA8B8', pct:true },
+        { label:'Physical share of issuance',           vals:['27.8%','80.8%','54.5%','89.3%','84.1%','61.5%','46.2%','69.9%','74.3%','25.9%','18.8%'], total:'63.1%', color:'#12A05C', pct:true },
+        { label:'MoM change — issuance',                vals:['—','1502.8%','(44.0%)','12.7%','12.4%','13.0%','(24.0%)','(44.2%)','13.3%','150.5%','(97.1%)'], total:'—', color:'#E8920A', pct:true },
+      ]
+    },
+    {
+      label: 'EVER ACTIVATED (status-based, by issue cohort)',
+      totalLabel: 'EVER ACTIVATED — total',
+      totalVals: [33,438,266,200,202,306,305,161,144,490,15],
+      totalRow: '2,560',
+      rows: [
+        { label:'Physical Naira — Mastercard Standard',         vals:[8,209,77,129,87,75,70,71,38,35,0],    total:'799',   color:'#374151' },
+        { label:'Virtual Naira — Mastercard Standard',          vals:[11,60,31,9,9,19,9,35,41,374,0],       total:'598',   color:'#374151' },
+        { label:'Virtual USD — Mastercard Platinum',            vals:[12,51,116,30,56,159,177,24,16,38,13],  total:'692',   color:'#374151' },
+        { label:'Physical USD — Mastercard Platinum',           vals:[1,91,30,30,46,50,41,25,35,22,2],       total:'373',   color:'#374151' },
+        { label:'Physical USD — Mastercard World',              vals:[1,27,12,2,4,3,8,6,14,21,0],            total:'98',    color:'#374151' },
+        { label:'Activation rate (cohort)',                     vals:['91.7%','75.9%','82.4%','54.9%','49.4%','66.2%','86.9%','82.1%','64.9%','88.1%','93.8%'], total:'72.9%', color:'#E8920A', rate:true },
+        { label:'Currently active (status today)',              vals:[24,357,161,170,181,261,294,136,134,419,15], total:'2,152', color:'#12A05C' },
+        { label:'Still pending activation',                     vals:[3,139,57,164,207,156,46,35,78,66,1],   total:'952',   color:'#D63B3B' },
+      ]
+    }
+  ];
+
+  const tbody = document.getElementById('perfTableBody');
+  if(!tbody) return;
+
+  const bdr  = 'border-bottom:1px solid #E2E2E2';
+  const bdrT = 'border-top:2px solid #07478C';
+  let rowIdx = 0;
+
+  sections.forEach(sec => {
+    // Section header row
+    const th = document.createElement('tr');
+    th.style.background = '#EEF5FF';
+    th.innerHTML = `<td colspan="13" style="padding:5px 12px;font-size:10px;font-weight:700;color:#07478C;letter-spacing:.06em;text-transform:uppercase;${bdr};${bdrT}">${sec.label}</td>`;
+    tbody.appendChild(th);
+
+    // Section total row
+    const tt = document.createElement('tr');
+    tt.style.background = '#F0F5FF';
+    let ttHtml = `<td style="padding:7px 12px;font-size:11px;font-weight:700;color:#07478C;${bdr}">${sec.totalLabel}</td>`;
+    sec.totalVals.forEach((v, i) => {
+      const isJul = i===9;
+      const dv = v===0 ? '—' : v.toLocaleString();
+      ttHtml += `<td style="padding:7px 8px;text-align:right;font-size:11px;font-weight:${isJul?'700':'600'};color:${isJul?'#07478C':'#1A1A1A'};${bdr}">${dv}</td>`;
+    });
+    ttHtml += `<td style="padding:7px 10px;text-align:right;font-size:12px;font-weight:700;color:#07478C;${bdr};background:#EEF5FF">${sec.totalRow}</td>`;
+    tt.innerHTML = ttHtml;
+    tbody.appendChild(tt);
+
+    // Sub-rows
+    sec.rows.forEach(r => {
+      const isPct  = !!r.pct;
+      const isRate = !!r.rate;
+      const bg = rowIdx%2===0 ? '#ffffff' : '#f8f9fb';
+      const tr = document.createElement('tr');
+      tr.style.background = bg;
+
+      let html = `<td style="padding:5px 12px;font-size:11px;font-weight:400;color:${r.color};${bdr};padding-left:22px">${r.label}</td>`;
+
+      r.vals.forEach((v, i) => {
+        const isJul = i===9;
+        const dv = typeof v==='string' ? v : (v===0 ? '—' : v.toLocaleString());
+        const fw = isJul ? '700' : '400';
+        const isNeg = typeof v==='string' && v.startsWith('(');
+        const col = isRate ? (parseFloat(v)>=100?'#12A05C':parseFloat(v)>=70?'#E8920A':'#D63B3B')
+                  : isPct  ? (isNeg?'#D63B3B':isJul?r.color:'#374151')
+                  : isJul  ? r.color : '#374151';
+        html += `<td style="padding:5px 8px;text-align:right;font-size:11px;font-weight:${fw};color:${col};${bdr}">${dv}</td>`;
+      });
+
+      html += `<td style="padding:5px 10px;text-align:right;font-size:11px;font-weight:600;color:${r.color};${bdr};background:#EEF5FF">${r.total}</td>`;
+      tr.innerHTML = html;
+      tbody.appendChild(tr);
+      rowIdx++;
+    });
+  });
+})();
 
 // Initial render
 renderWeek(W[W.length-1]);
