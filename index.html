@@ -116,7 +116,7 @@ body{font-family:'DM Sans',sans-serif;background:#ffffff;color:var(--c1);font-si
 <div class="week-nav">
   <div class="wnav-top">
     <span class="wnav-label">Select week</span>
-    <span class="wnav-current" id="navCurrent">Aug 23–29, 2026</span>
+    <span class="wnav-current" id="navCurrent">Sep 13–19, 2026</span>
   </div>
   <div class="month-row" id="monthBtns"></div>
   <div class="week-row" id="weekBtns"></div>
@@ -129,60 +129,141 @@ body{font-family:'DM Sans',sans-serif;background:#ffffff;color:var(--c1);font-si
 <!-- TAB 2: Executive Dashboard -->
 <div id="tab-executive" class="tab-pane">
 
-<div class="slabel">Monthly Transaction Count & Spend — Inception to Date</div>
-<div class="card" style="margin-bottom:14px;padding:0;overflow:hidden">
-  <table style="width:100%;border-collapse:collapse;font-size:11px;font-family:'DM Sans',sans-serif">
+<!-- Executive sub-tab bar -->
+<div style="display:flex;gap:0;margin-bottom:14px;background:#fff;border-radius:var(--r-lg);border:1px solid var(--g3);overflow:hidden;box-shadow:var(--sh)">
+  <button class="exec-tab-btn exec-tab-active" onclick="switchExecTab('spend',this)" style="flex:1;padding:9px 14px;font-size:11px;font-weight:600;border:none;background:#07478C;color:#fff;cursor:pointer;border-right:1px solid #0A5A9C;font-family:'DM Sans',sans-serif">💳 Card Spend</button>
+  <button class="exec-tab-btn" onclick="switchExecTab('issuance',this)" style="flex:1;padding:9px 14px;font-size:11px;font-weight:600;border:none;background:#fff;color:#6E6E6E;cursor:pointer;border-right:1px solid var(--g3);font-family:'DM Sans',sans-serif">📦 Card Issuance</button>
+  <button class="exec-tab-btn" onclick="switchExecTab('revenue',this)" style="flex:1;padding:9px 14px;font-size:11px;font-weight:600;border:none;background:#fff;color:#6E6E6E;cursor:pointer;border-right:1px solid var(--g3);font-family:'DM Sans',sans-serif">💰 Revenue</button>
+  <button class="exec-tab-btn" onclick="switchExecTab('kpi',this)" style="flex:1;padding:9px 14px;font-size:11px;font-weight:600;border:none;background:#fff;color:#6E6E6E;cursor:pointer;border-right:1px solid var(--g3);font-family:'DM Sans',sans-serif">📊 KPI & Trends</button>
+  <button class="exec-tab-btn" onclick="switchExecTab('activity',this)" style="flex:1;padding:9px 14px;font-size:11px;font-weight:600;border:none;background:#fff;color:#6E6E6E;cursor:pointer;font-family:'DM Sans',sans-serif">📋 Activity Summary</button>
+</div>
+
+<!-- SUB-TAB: Card Spend -->
+<div id="exec-spend" class="exec-pane" style="display:block">
+<div class="slabel">Monthly Card Spend (Debit / Successful) — Inception to Date</div>
+<div class="card" style="margin-bottom:14px;padding:0;overflow:hidden;overflow-x:auto">
+  <table style="width:100%;min-width:900px;border-collapse:collapse;font-size:11px;font-family:'DM Sans',sans-serif">
     <thead>
       <tr style="background:#07478C;color:#fff">
-        <th style="padding:9px 12px;text-align:left;font-weight:600;font-size:10px;letter-spacing:.06em;white-space:nowrap" rowspan="2">Month</th>
-        <th style="padding:9px 10px;text-align:right;font-weight:600;font-size:10px;white-space:nowrap;border-bottom:1px solid #0A5A9C" rowspan="2">Total Txn Count</th>
-        <th colspan="2" style="padding:9px 10px;text-align:center;font-weight:700;font-size:10px;border-bottom:1px solid #0A5A9C;border-left:1px solid #0A5A9C">USD</th>
-        <th colspan="2" style="padding:9px 10px;text-align:center;font-weight:700;font-size:10px;border-bottom:1px solid #0A5A9C;border-left:1px solid #0A5A9C">NGN</th>
+        <th style="padding:9px 12px;text-align:left;font-weight:600;font-size:10px;white-space:nowrap" rowspan="2">Month</th>
+        <th colspan="3" style="padding:7px 10px;text-align:center;font-weight:700;font-size:10px;border-bottom:1px solid #0A5A9C;border-left:1px solid #0A5A9C">Naira Card (BIN 544937) — NGN Settled</th>
+        <th colspan="5" style="padding:7px 10px;text-align:center;font-weight:700;font-size:10px;border-bottom:1px solid #0A5A9C;border-left:1px solid #0A5A9C">USD Cards (BIN 526984 / 544923) — USD Settled</th>
       </tr>
       <tr style="background:#0A5A9C;color:#fff">
-        <th style="padding:6px 10px;text-align:right;font-weight:600;font-size:9.5px;border-left:1px solid #1A6AAC">Count</th>
-        <th style="padding:6px 10px;text-align:right;font-weight:600;font-size:9.5px">Settlement Amt</th>
-        <th style="padding:6px 10px;text-align:right;font-weight:600;font-size:9.5px;border-left:1px solid #1A6AAC">Count</th>
-        <th style="padding:6px 10px;text-align:right;font-weight:600;font-size:9.5px">Settlement Amt (₦)</th>
+        <th style="padding:6px 10px;text-align:right;font-weight:600;font-size:9.5px;border-left:1px solid #1A6AAC;white-space:nowrap">Txn Count</th>
+        <th style="padding:6px 10px;text-align:right;font-weight:600;font-size:9.5px;white-space:nowrap">NGN Settled Value</th>
+        <th style="padding:6px 10px;text-align:right;font-weight:600;font-size:9.5px;white-space:nowrap">MoM %</th>
+        <th style="padding:6px 10px;text-align:right;font-weight:600;font-size:9.5px;border-left:1px solid #1A6AAC;white-space:nowrap">Platinum (USD)</th>
+        <th style="padding:6px 10px;text-align:right;font-weight:600;font-size:9.5px;white-space:nowrap">World Elite (USD)</th>
+        <th style="padding:6px 10px;text-align:right;font-weight:600;font-size:9.5px;white-space:nowrap">Total USD</th>
+        <th style="padding:6px 10px;text-align:right;font-weight:600;font-size:9.5px;white-space:nowrap">Txn Count</th>
+        <th style="padding:6px 10px;text-align:right;font-weight:600;font-size:9.5px;white-space:nowrap">MoM %</th>
       </tr>
     </thead>
     <tbody id="txnTableBody"></tbody>
     <tfoot>
       <tr style="background:#07478C;color:#fff;font-weight:700">
-        <td style="padding:9px 12px;font-size:11px">Grand Total</td>
-        <td style="padding:9px 10px;text-align:right;font-size:12px">22,983</td>
-        <td style="padding:9px 10px;text-align:right;font-size:12px;border-left:1px solid #0A5A9C">6,462</td>
-        <td style="padding:9px 10px;text-align:right;font-size:12px">$549,471</td>
-        <td style="padding:9px 10px;text-align:right;font-size:12px;border-left:1px solid #0A5A9C">16,497</td>
-        <td style="padding:9px 10px;text-align:right;font-size:12px">₦279,851,496</td>
+        <td style="padding:9px 12px;font-size:11px">Total</td>
+        <td style="padding:9px 10px;text-align:right;font-size:11px;border-left:1px solid #0A5A9C">22,445</td>
+        <td style="padding:9px 10px;text-align:right;font-size:12px">₦401,131,967</td>
+        <td style="padding:9px 10px;text-align:right;font-size:11px">—</td>
+        <td style="padding:9px 10px;text-align:right;font-size:12px;border-left:1px solid #0A5A9C">$687,490</td>
+        <td style="padding:9px 10px;text-align:right;font-size:12px">$212,919</td>
+        <td style="padding:9px 10px;text-align:right;font-size:12px">$900,409</td>
+        <td style="padding:9px 10px;text-align:right;font-size:11px">9,942</td>
+        <td style="padding:9px 10px;text-align:right;font-size:11px">—</td>
       </tr>
     </tfoot>
   </table>
 </div>
+<div class="slabel" style="margin-top:6px">Monthly Card Funding — Inception to Date</div>
+<div class="card" style="margin-bottom:14px;padding:0;overflow:hidden">
+  <table style="width:100%;border-collapse:collapse;font-size:11px;font-family:'DM Sans',sans-serif">
+    <thead>
+      <tr style="background:#07478C;color:#fff">
+        <th style="padding:9px 12px;text-align:left;font-weight:600;font-size:10px;white-space:nowrap" rowspan="2">Month</th>
+        <th colspan="2" style="padding:7px 10px;text-align:center;font-weight:700;font-size:10px;border-bottom:1px solid #0A5A9C;border-left:1px solid #0A5A9C">USD Funding</th>
+        <th colspan="2" style="padding:7px 10px;text-align:center;font-weight:700;font-size:10px;border-bottom:1px solid #0A5A9C;border-left:1px solid #0A5A9C">NGN Funding</th>
+      </tr>
+      <tr style="background:#0A5A9C;color:#fff">
+        <th style="padding:6px 10px;text-align:right;font-weight:600;font-size:9.5px;border-left:1px solid #1A6AAC;white-space:nowrap">Count</th>
+        <th style="padding:6px 10px;text-align:right;font-weight:600;font-size:9.5px;white-space:nowrap">Amount (USD)</th>
+        <th style="padding:6px 10px;text-align:right;font-weight:600;font-size:9.5px;border-left:1px solid #1A6AAC;white-space:nowrap">Count</th>
+        <th style="padding:6px 10px;text-align:right;font-weight:600;font-size:9.5px;white-space:nowrap">Amount (₦)</th>
+      </tr>
+    </thead>
+    <tbody id="fundingTableBody"></tbody>
+    <tfoot>
+      <tr style="background:#07478C;color:#fff;font-weight:700">
+        <td style="padding:9px 12px;font-size:11px">Total</td>
+        <td style="padding:9px 10px;text-align:right;font-size:11px;border-left:1px solid #0A5A9C">4,553</td>
+        <td style="padding:9px 10px;text-align:right;font-size:12px">$853,510</td>
+        <td style="padding:9px 10px;text-align:right;font-size:11px;border-left:1px solid #0A5A9C">8,971</td>
+        <td style="padding:9px 10px;text-align:right;font-size:12px">₦417,256,329</td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+</div><!-- end exec-spend -->
 
-<div class="slabel">Card Issuance Performance Table — Inception to Date</div>
+<!-- SUB-TAB: Card Issuance -->
+<div id="exec-issuance" class="exec-pane" style="display:none">
+<div class="slabel">Card Issuance Performance Table — Executive Summary (Oct 2025 – Sep 2026)</div>
 <div class="card" style="margin-bottom:14px;padding:0;overflow:hidden">
   <table style="width:100%;border-collapse:collapse;font-size:11px;font-family:'DM Sans',sans-serif">
     <thead>
       <tr style="background:#07478C;color:#fff">
         <th style="padding:9px 12px;text-align:left;font-weight:600;font-size:10px;letter-spacing:.06em;white-space:nowrap">Metric</th>
-        <th style="padding:9px 8px;text-align:right;font-weight:600;font-size:10px;white-space:nowrap">Oct '25</th>
-        <th style="padding:9px 8px;text-align:right;font-weight:600;font-size:10px;white-space:nowrap">Nov '25</th>
-        <th style="padding:9px 8px;text-align:right;font-weight:600;font-size:10px;white-space:nowrap">Dec '25</th>
-        <th style="padding:9px 8px;text-align:right;font-weight:600;font-size:10px;white-space:nowrap">Jan '26</th>
-        <th style="padding:9px 8px;text-align:right;font-weight:600;font-size:10px;white-space:nowrap">Feb '26</th>
-        <th style="padding:9px 8px;text-align:right;font-weight:600;font-size:10px;white-space:nowrap">Mar '26</th>
-        <th style="padding:9px 8px;text-align:right;font-weight:600;font-size:10px;white-space:nowrap">Apr '26</th>
-        <th style="padding:9px 8px;text-align:right;font-weight:600;font-size:10px;white-space:nowrap">May '26</th>
-        <th style="padding:9px 8px;text-align:right;font-weight:600;font-size:10px;white-space:nowrap">Jun '26</th>
-        <th style="padding:9px 8px;text-align:right;font-weight:600;font-size:10px;white-space:nowrap">Jul '26</th>
-        <th style="padding:9px 8px;text-align:right;font-weight:600;font-size:10px;white-space:nowrap">Aug '26</th>
-        <th style="padding:9px 10px;text-align:right;font-weight:700;font-size:10px;white-space:nowrap;background:#0A5A9C">Total</th>
       </tr>
     </thead>
     <tbody id="perfTableBody"></tbody>
   </table>
 </div>
+</div><!-- end exec-issuance -->
+
+<!-- SUB-TAB: Revenue -->
+<div id="exec-revenue" class="exec-pane" style="display:none">
+<div class="slabel">Monthly Revenue Breakdown — Inception to Date (₦)</div>
+<div class="card" style="margin-bottom:14px;padding:0;overflow:hidden">
+  <table style="width:100%;border-collapse:collapse;font-size:11px;font-family:'DM Sans',sans-serif">
+    <thead>
+      <tr style="background:#07478C;color:#fff">
+        <th style="padding:9px 12px;text-align:left;font-weight:600;font-size:10px;white-space:nowrap">Period</th>
+        <th style="padding:9px 10px;text-align:right;font-weight:600;font-size:10px;white-space:nowrap">Card Sales</th>
+        <th style="padding:9px 10px;text-align:right;font-weight:600;font-size:10px;white-space:nowrap">Add-on Sales</th>
+        <th style="padding:9px 10px;text-align:right;font-weight:600;font-size:10px;white-space:nowrap">Card Fees</th>
+        <th style="padding:9px 10px;text-align:right;font-weight:600;font-size:10px;white-space:nowrap">B2B Fees</th>
+        <th style="padding:9px 10px;text-align:right;font-weight:600;font-size:10px;white-space:nowrap">FX Margin</th>
+        <th style="padding:9px 10px;text-align:right;font-weight:700;font-size:10px;white-space:nowrap;background:#0A5A9C">Total Revenue</th>
+      </tr>
+    </thead>
+    <tbody id="revenueTableBody"></tbody>
+    <tfoot>
+      <tr style="background:#07478C;color:#fff;font-weight:700">
+        <td style="padding:9px 12px;font-size:11px">Total</td>
+        <td style="padding:9px 10px;text-align:right;font-size:11px">₦11,626,239</td>
+        <td style="padding:9px 10px;text-align:right;font-size:11px">₦7,076,500</td>
+        <td style="padding:9px 10px;text-align:right;font-size:11px">₦15,407,249</td>
+        <td style="padding:9px 10px;text-align:right;font-size:11px">₦796,338</td>
+        <td style="padding:9px 10px;text-align:right;font-size:11px">₦17,061,279</td>
+        <td style="padding:9px 10px;text-align:right;font-size:12px;background:#0A5A9C">₦51,967,605</td>
+      </tr>
+      <tr style="background:#1A3A6A;color:#B0C8E8;font-size:10px">
+        <td style="padding:6px 12px">% of total</td>
+        <td style="padding:6px 10px;text-align:right">25.0%</td>
+        <td style="padding:6px 10px;text-align:right">15.2%</td>
+        <td style="padding:6px 10px;text-align:right">27.4%</td>
+        <td style="padding:6px 10px;text-align:right">1.7%</td>
+        <td style="padding:6px 10px;text-align:right">n/a</td>
+        <td style="padding:6px 10px;text-align:right;background:#0A5A9C">100.0%</td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+</div><!-- end exec-revenue -->
+
+<!-- SUB-TAB: KPI & Trends -->
+<div id="exec-kpi" class="exec-pane" style="display:none">
 
 
 <div class="slabel">Monthly KPI Summary — Actuals (Jan–Jun 2026)</div>
@@ -225,6 +306,13 @@ body{font-family:'DM Sans',sans-serif;background:#ffffff;color:var(--c1);font-si
   </div>
 </div>
 
+</div><!-- end exec-kpi -->
+
+<!-- SUB-TAB: Activity Summary -->
+<div id="exec-activity" class="exec-pane" style="display:none">
+<div class="slabel">Executive Activity Summary — Monthly & Weekly Highlights</div>
+<div id="activitySummaryBody"></div>
+</div><!-- end exec-activity -->
 </div><!-- end tab-executive -->
 
 <div class="footer">Kalabash Cards &nbsp;·&nbsp; Dashboard &nbsp;·&nbsp; 2026 &nbsp;·&nbsp; Confidential</div>
@@ -264,7 +352,10 @@ const W=[
   {id:"w30",lbl:"Aug 2–8",dt:"Aug 2–8, 2026",iss:72,issPrev:37,phys:0.53,physPrev:0.534,virt:0.74,merch:0.31,dorm:0.41,spend:42305,spendPrev:19796,rev:1075,revPrev:1147,dr:0.03,drPrev:0.04,fraud:0,cb:2,status:"aug8th"},
   {id:"w31",lbl:"Aug 9–15",dt:"Aug 9–15, 2026",iss:101,issPrev:72,phys:0.572,physPrev:0.53,virt:0.75,merch:0.31,dorm:0.40,spend:65027,spendPrev:42305,rev:1290,revPrev:1075,dr:0.11,drPrev:0.03,fraud:0,cb:1,status:"aug15th"},
   {id:"w32",lbl:"Aug 16–22",dt:"Aug 16–22, 2026",iss:55,issPrev:101,phys:0.57,physPrev:0.572,virt:0.75,merch:0.31,dorm:0.42,spend:102845,spendPrev:65027,rev:1486,revPrev:1290,dr:0.04,drPrev:0.11,fraud:0,cb:1,status:"aug22nd"},
-  {id:"w33",lbl:"Aug 23–29",dt:"Aug 23–29, 2026",iss:79,issPrev:55,phys:0.58,physPrev:0.57,virt:0.75,merch:0.31,dorm:0.38,spend:56528,spendPrev:102845,rev:33,revPrev:1486,dr:0.04,drPrev:0.04,fraud:0,cb:1,status:"aug29th",curr:true}
+  {id:"w33",lbl:"Aug 23–29",dt:"Aug 23–29, 2026",iss:79,issPrev:55,phys:0.58,physPrev:0.57,virt:0.75,merch:0.31,dorm:0.38,spend:56528,spendPrev:102845,rev:1671,revPrev:1486,dr:0.04,drPrev:0.04,fraud:0,cb:1,status:"aug29th"},
+  {id:"w34",lbl:"Aug 30–Sep 5",dt:"Aug 30–Sep 5, 2026",iss:89,issPrev:79,phys:0.57,physPrev:0.58,virt:0.75,merch:0.32,dorm:0.41,spend:48486,spendPrev:56528,rev:614,revPrev:1671,dr:0.04,drPrev:0.04,fraud:0,cb:1,status:"sep5th"},
+  {id:"w35",lbl:"Sep 6–12",dt:"Sep 6–12, 2026",iss:137,issPrev:89,phys:0.54,physPrev:0.57,virt:0.72,merch:0.34,dorm:0.44,spend:47187,spendPrev:48486,rev:550,revPrev:614,dr:0.04,drPrev:0.04,fraud:0,cb:0,status:"sep12th"},
+  {id:"w36",lbl:"Sep 13–19",dt:"Sep 13–19, 2026",iss:109,issPrev:137,phys:0.55,physPrev:0.54,virt:0.72,merch:0.34,dorm:0.36,spend:73959,spendPrev:47187,rev:1157,revPrev:550,dr:0.03,drPrev:0.04,fraud:0,cb:0,status:"sep19th",curr:true}
 ];
 
 const PS={
@@ -1197,6 +1288,7 @@ const PS={
     {t:"Waiver Claim / IDP",n:"$100k IDP refund from Mastercard still pending. Continue to follow up.",s:"In Progress",p:false},
   ],wins:[
     "Issuance up 44% WoW (55 → 79)",
+    "Revenue up 12% WoW: $1,486 → $1,671",
     "Dormant cards improved significantly: 42% → 38%",
     "Physical activation improved to 58%",
     "Transactions improved: 8 → 8.5 per month",
@@ -1204,7 +1296,6 @@ const PS={
     "FAAN recce COMPLETED — kiosk deployment commenced",
     "Waka Prime — KIV: to commence issuance with Kalabash World Travel Card",
   ],watch:[
-    "Revenue dropped sharply: $1,486 → $33 — investigate urgently",
     "Total spend down 45% WoW: $102,845 → $56,528",
     "Chargeback: 1% — above ≤0.7% target",
     "Ghana card production: Sep 21 completion, 50% payment still pending",
@@ -1212,6 +1303,120 @@ const PS={
     "$100k IDP refund still outstanding",
   ],plans:[
     {cat:"Activation & Spend", action:"Growth Activation and dormant card engagement — targeted comms via Cardunit in collaboration with Marketing"},
+    {cat:"Pilgrim Card", action:"Engage independently sourced partners. Check-in with Gabriel for CVP sourcing update"},
+  ]},
+  sep5th:{ng:[
+    {t:"Blusalt CMS Optimisation",n:"Report dashboard review — follow-up for completion. Mastercard Connect Access in progress.",s:"In Progress"},
+    {t:"MPI Engagement",n:"NDA and SLA shared with Legal team for review.",s:"In Progress"},
+    {t:"Credit Card Implementation",n:"Credit Card is LIVE. SOP completed. Dashboard live. Await go-live approval.",s:"Completed"},
+  ],gh:[
+    {t:"ICA, BIN, CNS, 3DS, Certs, MDP, PPM, Mastercard Setup",n:"All milestones COMPLETED.",s:"Completed"},
+    {t:"Physical Card Production — MDP",n:"Production to be completed September 21st. 50% payment still pending.",s:"In Progress"},
+    {t:"Final Testing (Funded Transaction)",n:"Card funding and transaction testing (positive/negative) in progress.",s:"In Progress"},
+    {t:"Pilot Card Personalisation",n:"Perso vendor engagement ongoing. Kalabash perso script being created. 2–3 weeks to implement.",s:"In Progress"},
+    {t:"Addition of Kalabash Card Design",n:"Raised with Zenith Bank. Corporate communications reviewing request.",s:"In Progress"},
+    {t:"Zenith Bank — Production Validation Testing",n:"All internal activities by Zenith Bank.",s:"In Progress"},
+  ],mc:[
+    {t:"IDTP Fraud Protection Tool",n:"Awaiting feedback from Product Team.",s:"In Progress",p:false},
+    {t:"Nigeria Travel Card Contract",n:"Awaiting updated time and date for the meeting.",s:"In Progress",p:false},
+    {t:"CVP — Ghana Card Sign-on Bonus",n:"Sign-on bonus in progress. Followed up with team for update.",s:"In Progress",p:false},
+    {t:"Business Payment Controls",n:"Schedule dedicated B2B virtual card session covering payments, economics, technology and operating model.",s:"In Progress",p:false},
+    {t:"DragonPass & Priceless API",n:"Mastercard working with Blusalt on DragonPass and Priceless API integration into Kalabash app.",s:"In Progress",p:false},
+    {t:"CVP — World Card (Priceless / Travel Pass)",n:"Priceless / Travel Pass integration into Kalabash App. TBD.",s:"Pending",p:true},
+    {t:"Waiver Claim / IDP",n:"$100k IDP refund from Mastercard still pending. Wema Bank engaged. Continue to follow up.",s:"In Progress",p:false},
+  ],wins:[
+    "MinieMoney API integrations COMPLETED — fully live",
+    "Issuance up 13% WoW (79 → 89)",
+    "Decline rate held at 4% — on target",
+    "Merchant activation improved to 32%",
+    "Fraud rate: 0% maintained",
+    "New Mastercard engagements: Business Payment Controls + DragonPass API",
+  ],watch:[
+    "Revenue dropped: $1,671 → $614 (↓ 63%) — needs investigation",
+    "Total spend: $48,486 — down 14% WoW",
+    "Dormant cards increased: 38% → 41%",
+    "Physical activation dipped slightly: 58% → 57%",
+    "Ghana card production Sep 21 completion — 50% payment still pending",
+    "$100k IDP refund still outstanding",
+  ],plans:[
+    {cat:"Activation & Spend", action:"Growth Activation and dormant card engagement — targeted comms via Cardunit in collaboration with Marketing"},
+    {cat:"Revenue", action:"Follow up with Blusalt on fees reporting dashboard. Interchange discussion with Blusalt and Wema Bank"},
+    {cat:"Pilgrim Card", action:"Engage independently sourced partners. Check-in with Gabriel for CVP sourcing update"},
+  ]},
+  sep12th:{ng:[
+    {t:"Blusalt CMS Optimisation",n:"Report dashboard review — follow-up for completion. Mastercard Connect Access in progress.",s:"In Progress"},
+    {t:"MPI Engagement",n:"NDA and SLA shared with Legal team for review.",s:"In Progress"},
+  ],gh:[
+    {t:"ICA, BIN, CNS, 3DS, Certs, MDP, PPM, Mastercard Setup",n:"All milestones COMPLETED.",s:"Completed"},
+    {t:"Physical Card Production — MDP",n:"Card production COMPLETED. Production completed September 21st.",s:"Completed"},
+    {t:"Final Testing (Funded Transaction)",n:"Card funding and transaction testing (positive/negative) in progress.",s:"In Progress"},
+    {t:"Pilot Card Personalisation",n:"Perso vendor engagement ongoing. Kalabash perso script being created. 2–3 weeks to implement.",s:"In Progress"},
+    {t:"Addition of Kalabash Card Design",n:"Request approved by Zenith Corporate Comms. Card design submitted to Mastercard for approval.",s:"In Progress"},
+    {t:"Zenith Bank — Production Validation Testing",n:"All internal activities by Zenith Bank. Program ID setup for 3DS ongoing.",s:"In Progress"},
+  ],mc:[
+    {t:"IDTP Fraud Protection Tool",n:"Awaiting feedback from Product Team.",s:"In Progress",p:false},
+    {t:"Nigeria Travel Card Contract",n:"Awaiting updated time and date for the meeting.",s:"In Progress",p:false},
+    {t:"CVP — Ghana Card Sign-on Bonus",n:"Sign-on bonus in progress. Followed up with team for update.",s:"In Progress",p:false},
+    {t:"Training AOW / Live Events",n:"Adding Kalabash to AOW and reviewing Live Events with Mastercard.",s:"In Progress",p:false},
+    {t:"Business Payment Controls",n:"Schedule dedicated B2B virtual card working session — payments, economics, technology and operating model.",s:"In Progress",p:false},
+    {t:"DragonPass & Priceless API",n:"Mastercard working with Blusalt on DragonPass and Priceless API integration into Kalabash app.",s:"In Progress",p:false},
+    {t:"CVP — World Card (Priceless / Travel Pass)",n:"Priceless / Travel Pass integration into Kalabash App. TBD.",s:"Pending",p:true},
+    {t:"Waiver Claim / IDP",n:"$100k IDP refund still pending. Wema Bank engaged from Mastercard. Continue to follow up.",s:"In Progress",p:false},
+  ],wins:[
+    "Issuance surged 54% WoW (89 → 137) — best September week yet",
+    "Chargeback cleared to 0% — from 1% last week",
+    "Transactions improved: 5 → 7 per month",
+    "Merchant activation improved to 34%",
+    "Decline rate held at 4% — on target",
+    "Ghana physical card production COMPLETED",
+    "MinieMoney API integrations fully COMPLETED",
+  ],watch:[
+    "Dormant cards increased: 41% → 44% — needs targeted re-engagement",
+    "Revenue: $550 — down 10% WoW",
+    "Virtual activation dipped: 75% → 72%",
+    "Physical activation dipped: 57% → 54%",
+    "$100k IDP refund still outstanding",
+    "Mastercard contract meeting still without confirmed date",
+  ],plans:[
+    {cat:"Activation & Spend", action:"Activation and spend communication continues across all cardholder segments via Cardunit in collaboration with Marketing"},
+    {cat:"Revenue", action:"Follow up with Blusalt on fees reporting dashboard. Interchange discussion with Blusalt and Wema Bank"},
+    {cat:"Pilgrim Card", action:"Engage independently sourced partners. Check-in with Gabriel for CVP sourcing update"},
+  ]},
+  sep19th:{ng:[
+    {t:"Blusalt CMS Optimisation",n:"CMS optimisation — continuous activity. Report dashboard review. Mastercard Connect Access in progress.",s:"In Progress"},
+    {t:"Blusalt / MPI Engagement",n:"NDA and SLA re-shared with GCEO for approval.",s:"In Progress"},
+  ],gh:[
+    {t:"ICA, BIN, CNS, 3DS, Production Certificates, MDP, PPM, Mastercard Setup, Physical Card Production",n:"All milestones COMPLETED. Card production completed Sep 21st.",s:"Completed"},
+    {t:"Kalabash Card Design — Mastercard Approval",n:"Mastercard has approved the Kalabash card design. Next step: decide on quantity and engage MDP for production.",s:"Completed"},
+    {t:"Final Testing (Funded Transaction)",n:"Card funding and transaction testing (positive/negative) in progress.",s:"In Progress"},
+    {t:"Pilot Card Personalisation",n:"Engagement with perso vendor ongoing. Kalabash perso script being created. 2–3 weeks to implement.",s:"In Progress"},
+    {t:"Zenith Bank — Production Validation Testing",n:"All internal activities by Zenith Bank.",s:"In Progress"},
+  ],mc:[
+    {t:"IDTP Fraud Protection Tool",n:"Awaiting feedback from Product Team.",s:"In Progress",p:false},
+    {t:"Nigeria Travel Card Contract",n:"Awaiting updated time and date for the meeting.",s:"In Progress",p:false},
+    {t:"CVP — Ghana Card Sign-on Bonus",n:"Sign-on bonus in progress. Followed up with team for update.",s:"In Progress",p:false},
+    {t:"Training AOW / Live Events",n:"Adding Kalabash to AOW and reviewing Live Events with Mastercard.",s:"In Progress",p:false},
+    {t:"Business Payment Controls",n:"Follow up on correspondence shared. Schedule dedicated B2B virtual card working session.",s:"In Progress",p:false},
+    {t:"DragonPass & Priceless API",n:"Mastercard working with Blusalt on integration options for Priceless and DragonPass within the Kalabash app.",s:"In Progress",p:false},
+    {t:"Waiver Claim / IDP",n:"$100k IDP refund still pending. Wema Bank engaged. Continue to follow up.",s:"In Progress",p:false},
+  ],wins:[
+    "Dormant cards improved dramatically: 44% → 36% — best on record 🎉",
+    "Revenue up 110% WoW: $550 → $1,157",
+    "Total spend up 57%: $47,187 → $73,959",
+    "Avg spend per card: $60 — up from $39",
+    "Decline rate improved to 3% — below ≤4% target",
+    "Ghana Kalabash Card Design APPROVED by Mastercard",
+    "Waka Prime — now processing Elite cards for their customers",
+    "Chargeback at 0% — maintained",
+  ],watch:[
+    "Issuance dipped: 137 → 109 (↓ 20%)",
+    "Transactions: 6 — at lower bound of 6–10 target",
+    "$100k IDP refund still outstanding",
+    "Mastercard contract meeting still without confirmed date",
+    "FAAN card invoice pending GCFO approval",
+  ],plans:[
+    {cat:"Activation & Spend", action:"Targeted comms via Cardunit to all cardholder segments — Growth Activation and dormant cards (commenced)"},
+    {cat:"Revenue", action:"Follow up with Blusalt on fees reporting dashboard. Interchange discussion with Blusalt and Wema Bank"},
     {cat:"Pilgrim Card", action:"Engage independently sourced partners. Check-in with Gabriel for CVP sourcing update"},
   ]},
   may15th:{ng:[
@@ -1269,18 +1474,19 @@ function sCls(v,target,lower){
 }
 
 // ── Build two-tier nav (months + weeks) ──
-const months = ['January','February','March','April','May','June','July','August'];
+const months = ['January','February','March','April','May','June','July','August','September'];
 const monthMap = {
-  'January':  W.filter(w=>w.lbl.startsWith('Jan')),
-  'February': W.filter(w=>w.lbl.startsWith('Feb')),
-  'March':    W.filter(w=>w.lbl.startsWith('Mar')),
-  'April':    W.filter(w=>w.lbl.startsWith('Apr')),
-  'May':      W.filter(w=>w.lbl.startsWith('May')),
-  'June':     W.filter(w=>w.lbl.startsWith('Jun')),
-  'July':     W.filter(w=>w.lbl.startsWith('Jul')||w.lbl.includes('Jul')),
-  'August':   W.filter(w=>w.lbl.startsWith('Aug')||w.lbl.includes('Aug')),
+  'January':   W.filter(w=>w.lbl.startsWith('Jan')),
+  'February':  W.filter(w=>w.lbl.startsWith('Feb')),
+  'March':     W.filter(w=>w.lbl.startsWith('Mar')),
+  'April':     W.filter(w=>w.lbl.startsWith('Apr')),
+  'May':       W.filter(w=>w.lbl.startsWith('May')),
+  'June':      W.filter(w=>w.lbl.startsWith('Jun')),
+  'July':      W.filter(w=>w.lbl.startsWith('Jul')||w.lbl.includes('Jul')),
+  'August':    W.filter(w=>w.lbl.startsWith('Aug')||w.lbl.includes('Aug')),
+  'September': W.filter(w=>w.lbl.startsWith('Sep')||w.lbl.includes('Sep')),
 };
-let activeMo = 'August';
+let activeMo = 'September';
 
 const moEl = document.getElementById('monthBtns');
 const wkEl = document.getElementById('weekBtns');
@@ -1361,19 +1567,31 @@ function renderWeek(w){
   const partners=[
     {name:'MinieMoney', tag:'In Progress', tc:'b-teal', col:'var(--teal)',
      tasks:[],
-     fallback:['RPP approved · Card design approved · Sample cards completed','Card production completed · Card issuance commencing','API integrations still ongoing']},
+     fallback:[
+       {text:'RPP approved · Card design approved · Sample cards completed', done:true},
+       {text:'Card production completed · Card issuance commenced · API integrations completed', done:true},
+       {text:'QA testing and go-live — final stage', done:false},
+     ]},
     {name:'Waka Prime', tag:'KIV', tc:'b-gold', col:'var(--gold)',
      tasks:[],
-     fallback:['RPP approved · Card design reviewed and invoice shared','Waka Prime to commence issuance with existing Kalabash World Travel Card','Card design scheme approval — KIV pending Waka Prime decision']},
-    {name:'Pilgrim Card — CVP', tag:'In Progress', tc:'b-teal', col:'var(--teal)',
-     tasks:[],
-     fallback:['Deck prepared — commence engagement with shortlisted vendors','List collated and finetuned for Saudi Market','Check-in with Gabriel for CVP sourcing update']},
+     fallback:[
+       {text:'RPP approved · Card design reviewed · Invoice shared', done:true},
+       {text:'Processing Elite cards for Waka Prime customers', done:false},
+       {text:'Engaged for further information — awaiting feedback from Waka Prime', done:false},
+     ]},
     {name:'Airport Kiosk Deployments', tag:'In Progress', tc:'b-teal', col:'var(--teal2)',
      tasks:[],
-     fallback:['Card kiosk deployment at designated airport locations','Go-live planning and deployment timeline in progress','Kiosk setup and configuration underway']},
+     fallback:[
+       {text:'FAAN recce completed · Card invoice shared with Finance', done:true},
+       {text:'Laptops provided', done:true},
+       {text:'Kiosk fabrication ongoing · GCFO approval for card payment pending', done:false},
+     ]},
     {name:'Bellagio Airline', tag:'In Progress', tc:'b-teal', col:'var(--teal)',
      tasks:[],
-     fallback:['Corporate expense card — scope and commercial terms in discussion','Loyalty card programme — product structure being defined']},
+     fallback:[
+       {text:'Corporate expense card — scope and commercial terms in discussion', done:false},
+       {text:'Loyalty card programme — product structure being defined', done:false},
+     ]},
   ];
 
   document.getElementById('dash').innerHTML=`
@@ -1452,7 +1670,9 @@ function renderWeek(w){
 <div class="slabel">Partnerships & Co-branded</div>
 <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px">
   ${partners.map(p=>{
-    const items = p.tasks.length ? p.tasks : p.fallback;
+    const items = p.tasks.length
+      ? p.tasks.map(t=>({text:t, done:false}))
+      : p.fallback;
     return `
     <div class="card" style="padding:14px 16px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
@@ -1463,11 +1683,17 @@ function renderWeek(w){
         <span class="badge ${p.tc}" style="font-size:9px">${p.tag}</span>
       </div>
       <div style="display:flex;flex-direction:column;gap:0">
-        ${items.map(task=>`
-        <div style="display:flex;align-items:flex-start;gap:7px;padding:6px 0;border-bottom:1px solid var(--g3)">
-          <div style="width:5px;height:5px;border-radius:50%;background:${p.col};flex-shrink:0;margin-top:5px;opacity:.7"></div>
-          <span style="font-size:11px;color:var(--g1);line-height:1.4">${task}</span>
-        </div>`).join('')}
+        ${items.map(item=>{
+          const isDone = item.done===true;
+          return `
+          <div style="display:flex;align-items:flex-start;gap:7px;padding:6px 0;border-bottom:1px solid var(--g3)">
+            ${isDone
+              ? `<span style="display:inline-flex;align-items:center;gap:3px;background:#E6F7EF;border:1px solid #12A05C;border-radius:4px;padding:1px 6px;font-size:8px;font-weight:700;color:#12A05C;flex-shrink:0;white-space:nowrap;margin-top:1px">✓ Done</span>`
+              : `<div style="width:5px;height:5px;border-radius:50%;background:${p.col};flex-shrink:0;margin-top:5px;opacity:.7"></div>`
+            }
+            <span style="font-size:11px;color:${isDone?'var(--g1)':'var(--g1)'};line-height:1.4;${isDone?'text-decoration:none;':''}">${item.text}</span>
+          </div>`;
+        }).join('')}
       </div>
     </div>`;
   }).join('')}
@@ -1668,6 +1894,107 @@ function switchTab(tab, btn) {
   if(tab==='executive') setTimeout(renderTrends, 50);
 }
 
+// ── Executive sub-tab switching ───────────────────
+function switchExecTab(tab, btn) {
+  document.querySelectorAll('.exec-pane').forEach(p => p.style.display='none');
+  document.querySelectorAll('.exec-tab-btn').forEach(b => {
+    b.style.background='#fff'; b.style.color='#6E6E6E';
+  });
+  document.getElementById('exec-'+tab).style.display='block';
+  btn.style.background='#07478C'; btn.style.color='#fff';
+  if(tab==='kpi') setTimeout(renderTrends, 50);
+}
+
+// ── Revenue Table ──────────────────────────────────
+(function(){
+  const rows = [
+    { mo:'Nov 2025', card:637206,    addon:0,         fees:0,         b2b:0,      fx:495996,    tot:1133202  },
+    { mo:'Dec 2025', card:1320550,   addon:0,         fees:0,         b2b:0,      fx:997894,    tot:2318444  },
+    { mo:'Jan 2026', card:2249813,   addon:481500,    fees:0,         b2b:132586, fx:395158,    tot:3259057  },
+    { mo:'Feb 2026', card:1250638,   addon:1582500,   fees:36765,     b2b:221160, fx:29960,     tot:3121023  },
+    { mo:'Mar 2026', card:1386469,   addon:1840000,   fees:534342,    b2b:73790,  fx:620690,    tot:4455290  },
+    { mo:'Apr 2026', card:322188,    addon:1983000,   fees:4340596,   b2b:126701, fx:2173144,   tot:8945628  },
+    { mo:'May 2026', card:462575,    addon:1189500,   fees:1765995,   b2b:62870,  fx:2006069,   tot:5487008  },
+    { mo:'Jun 2026', card:621287,    addon:0,         fees:792554,    b2b:38163,  fx:891593,    tot:2343598  },
+    { mo:'Jul 2026', card:1319085,   addon:0,         fees:2031876,   b2b:39965,  fx:1782621,   tot:5173546  },
+    { mo:'Aug 2026', card:2056430,   addon:0,         fees:3218960,   b2b:101104, fx:4806746,   tot:10183240 },
+    { mo:'Sep 2026', card:0,          addon:0,         fees:2686161,   b2b:0,      fx:2861408,   tot:5547569,  note:'Partial — Sep 1–19 only' },
+  ];
+  const fmt = v => v===0?'—':'₦'+Math.round(v).toLocaleString();
+  const tbody = document.getElementById('revenueTableBody');
+  if(!tbody) return;
+  rows.forEach((r, i) => {
+    const is26 = r.mo.includes('2026');
+    const isLatest = i===rows.length-1;
+    const bg = isLatest?'#EEF5FF':i%2===0?'#ffffff':'#f8f9fb';
+    const tr = document.createElement('tr');
+    tr.style.background = bg;
+    const bdr = 'border-bottom:1px solid #E2E2E2';
+    const fw = is26?'600':'400';
+    const col = is26?'#07478C':'#374151';
+    const moLabel = r.mo + (r.note?`<br><span style="font-size:9px;color:#6E6E6E;font-weight:400;font-style:italic">${r.note}</span>`:'');
+    tr.innerHTML = `
+      <td style="padding:7px 12px;font-size:11px;font-weight:${fw};color:${col};${bdr};white-space:nowrap">${moLabel}</td>
+      <td style="padding:7px 10px;text-align:right;font-size:11px;color:#374151;${bdr};font-weight:${fw}">${fmt(r.card)}</td>
+      <td style="padding:7px 10px;text-align:right;font-size:11px;color:#374151;${bdr};font-weight:${fw}">${fmt(r.addon)}</td>
+      <td style="padding:7px 10px;text-align:right;font-size:11px;color:#374151;${bdr};font-weight:${fw}">${fmt(r.fees)}</td>
+      <td style="padding:7px 10px;text-align:right;font-size:11px;color:#374151;${bdr};font-weight:${fw}">${fmt(r.b2b)}</td>
+      <td style="padding:7px 10px;text-align:right;font-size:11px;color:#0AA8B8;${bdr};font-weight:${fw}">${fmt(r.fx)}</td>
+      <td style="padding:7px 10px;text-align:right;font-size:12px;font-weight:700;color:#07478C;${bdr};background:#EEF5FF">${fmt(r.tot)}</td>`;
+    tbody.appendChild(tr);
+  });
+})();
+
+// ── Activity Summary ───────────────────────────────
+(function(){
+  const months = [
+    { mo:'Sep 2026', iss:321, act:'58.3%', rev:'₦5.5M*', highlights:[
+      'Kalabash Ghana Card Design approved by Mastercard ✅','MinieMoney API integrations completed — QA testing & go-live remaining','Waka Prime — now processing Elite cards (KIV)','Dormant cards improved to 36% — best on record','Decline rate sustained 3–4% · Spend ₦48.2M (Sep 1–19)','* Partial month data']},
+    { mo:'Aug 2026', iss:328, act:'85.4%', rev:'₦10.2M', highlights:[
+      'Peak revenue month: ₦10.2M — card fees ₦3.2M + FX ₦4.8M','Peak NGN spend: ₦72.4M (3,472 txns) · Peak USD: $226.9k','Credit Card went LIVE','Ghana Card Design approved by Mastercard — PPM done','Physical card production completed Sep 21']},
+    { mo:'Jul 2026', iss:556, act:'88.1%', rev:'₦5.2M', highlights:[
+      '412 virtual cards issued — highest virtual month','MinieMoney sample cards completed, production commenced','Ghana: 20 test cards delivered, e-proof signed off','Decline rate stabilised at 4%']},
+    { mo:'Jun 2026', iss:290, act:'73.1%', rev:'₦2.3M', highlights:[
+      'Kalabash Travel Cards enabled on Paystack and Flutterwave','Pilgrim Card (Hajj) production and fulfilment completed','MinieMoney card design approved']},
+    { mo:'May 2026', iss:370, act:'90.5%', rev:'₦5.5M', highlights:[
+      'MinieMoney RPP approved by Mastercard','90.5% activation rate — best monthly rate ever','Decline rate: 14% — processor issue escalated']},
+    { mo:'Apr 2026', iss:351, act:'86.9%', rev:'₦8.9M', highlights:[
+      'Best revenue month to date: ₦8.9M (card fees ₦4.3M + FX ₦2.2M)','USD spend spike: $200.8k total — new high','Ghana Mastercard ISSM completed']},
+    { mo:'Mar 2026', iss:462, act:'66.2%', rev:'₦4.5M', highlights:[
+      'Card fees scale to ₦534k','USD Platinum spend: $32.4k — highest so far','Ghana production certificates completed']},
+    { mo:'Feb 2026', iss:1041,act:'19.4%', rev:'₦3.1M', highlights:[
+      'Add-on sales: ₦1.6M','Card fees introduced: ₦36.8k','Ghana CNS and 3DS completed']},
+    { mo:'Jan 2026', iss:1355,act:'14.8%', rev:'₦3.3M', highlights:[
+      '1,355 cards issued — largest issuance month (Hajj/Pilgrim programme)','NGN spend: ₦26.4M · 1,218 txns','Ghana ICA and BIN assigned']},
+    { mo:'Dec 2025', iss:323, act:'82.4%', rev:'₦2.3M', highlights:[
+      'Naira card scale-up begins — 416 successful NGN txns','Revenue doubles to ₦2.3M','3DS setup and BIN testing completed']},
+    { mo:'Nov 2025', iss:577, act:'75.9%', rev:'₦1.1M', highlights:[
+      '577 cards issued — first major issuance month','FX margin revenue: ₦496k','Naira and USD card spend growing']},
+    { mo:'Oct 2025', iss:36,  act:'91.7%', rev:'₦1.1M', highlights:[
+      'First World Elite cards activated','33 cards activated — 91.7% activation rate','Naira card programme launched']},
+  ];
+  const el = document.getElementById('activitySummaryBody');
+  if(!el) return;
+  months.forEach(m => {
+    const is26 = m.mo.includes('2026');
+    const div = document.createElement('div');
+    div.style.cssText = 'margin-bottom:10px;background:#fff;border-radius:10px;border:1px solid #E2E2E2;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05)';
+    div.innerHTML =
+      '<div style="background:' + (is26?'#07478C':'#1A3A6A') + ';padding:9px 16px;display:flex;align-items:center;justify-content:space-between">' +
+        '<span style="font-size:13px;font-weight:700;color:#fff">' + m.mo + '</span>' +
+        '<div style="display:flex;gap:14px">' +
+          '<span style="font-size:10px;color:#B0C8E8">Issued: <strong style="color:#fff">' + m.iss.toLocaleString() + '</strong></span>' +
+          '<span style="font-size:10px;color:#B0C8E8">Activation: <strong style="color:#54D8FF">' + m.act + '</strong></span>' +
+          '<span style="font-size:10px;color:#B0C8E8">Revenue: <strong style="color:#0AA8B8">' + m.rev + '</strong></span>' +
+        '</div>' +
+      '</div>' +
+      '<div style="padding:10px 16px">' +
+        m.highlights.map(function(h){ return '<div style="display:flex;align-items:flex-start;gap:7px;padding:4px 0;border-bottom:1px solid #f5f5f5"><span style="color:' + (is26?'#07478C':'#0AA8B8') + ';font-size:12px;flex-shrink:0;margin-top:1px">●</span><span style="font-size:11.5px;color:#374151">' + h + '</span></div>'; }).join('') +
+      '</div>';
+    el.appendChild(div);
+  });
+})();
+
 renderTrends();
 
 // ── Monthly KPI Table ──────────────────────────────
@@ -1680,7 +2007,7 @@ renderTrends();
     { label:'Virtual Activation',     vals:[0.96,0.97,0.61,0.91,0.70,1.00],      target:'≥20%',     fmt:v=>Math.round(v*100)+'%',         good:v=>v>=0.20 },
     { label:'Dormant Cards',          vals:[0.57,0.57,0.54,0.52,0.49,0.58],      target:'≤10%',     fmt:v=>Math.round(v*100)+'%',         good:v=>v<=0.10 },
     { label:'Avg Spend/Card (USD)',    vals:[61,90,187,425,180,82],               target:'$667',     fmt:v=>'$'+Math.round(v),             good:v=>v>=667 },
-    { label:'Transactions/Month',     vals:[9,12,13,9,6,8],                       target:'6–10',     fmt:v=>v,                             good:v=>v>=6&&v<=10 },
+    { label:'Transactions/Month',     vals:[9,12,13,9,6,8],                      target:'6–10',     fmt:v=>v,                             good:v=>v>=6&&v<=10 },
     { label:'Revenue/Card (USD)',     vals:[0,2.1,4.1,15.61,11.60,10.83],        target:'$40',      fmt:v=>'$'+v.toFixed(1),              good:v=>v>=40 },
     { label:'Decline Rate',           vals:[0.04,0.04,0.03,0.04,0.14,0.08],      target:'≤4%',      fmt:v=>(v*100).toFixed(0)+'%',        good:v=>v<=0.04 },
     { label:'Chargeback Ratio',       vals:[0.01,0,0.01,0,0,0.01],               target:'≤0.7%',    fmt:v=>(v*100).toFixed(1)+'%',        good:v=>v<=0.007 },
@@ -1705,81 +2032,154 @@ renderTrends();
   });
 })();
 
-// ── Transaction Count & Spend Table ────────────────
+// ── Card Spend Table ───────────────────────────────
 (function(){
   const rows = [
-    { mo:'Jun 2025',  tot:6,      usdC:6,     usdA:765.54,     ngnC:0,     ngnA:0 },
-    { mo:'Jul 2025',  tot:71,     usdC:70,    usdA:2093.13,    ngnC:1,     ngnA:4000 },
-    { mo:'Aug 2025',  tot:113,    usdC:104,   usdA:6052.24,    ngnC:9,     ngnA:55645.77 },
-    { mo:'Sep 2025',  tot:8,      usdC:5,     usdA:10.02,      ngnC:2,     ngnA:12800 },
-    { mo:'Oct 2025',  tot:75,     usdC:72,    usdA:4866.67,    ngnC:3,     ngnA:30650 },
-    { mo:'Nov 2025',  tot:124,    usdC:64,    usdA:5539.60,    ngnC:60,    ngnA:578614.31 },
-    { mo:'Dec 2025',  tot:953,    usdC:539,   usdA:19549.11,   ngnC:399,   ngnA:6045795.69 },
-    { mo:'Jan 2026',  tot:1412,   usdC:195,   usdA:6158.71,    ngnC:1217,  ngnA:26298067.92 },
-    { mo:'Feb 2026',  tot:2022,   usdC:304,   usdA:23751.63,   ngnC:1718,  ngnA:30595566.55 },
-    { mo:'Mar 2026',  tot:2213,   usdC:574,   usdA:47295.85,   ngnC:1639,  ngnA:37682397.25 },
-    { mo:'Apr 2026',  tot:3136,   usdC:1382,  usdA:199961.54,  ngnC:1753,  ngnA:51197841.52 },
-    { mo:'May 2026',  tot:4247,   usdC:1163,  usdA:109936.40,  ngnC:3084,  ngnA:40525008.15 },
-    { mo:'Jun 2026',  tot:3330,   usdC:718,   usdA:37193.20,   ngnC:2612,  ngnA:34645382.88 },
-    { mo:'Jul 2026',  tot:5141,   usdC:1217,  usdA:85424.61,   ngnC:3917,  ngnA:49849266.68 },
-    { mo:'Aug 2026',  tot:132,    usdC:49,    usdA:873.00,     ngnC:83,    ngnA:2330458.99 },
+    { mo:'Jun 2025',  ngnC:0,    ngn:0,            ngnM:null,   platU:765.54,    wldU:0,       totU:765.54,    usdC:6,    usdM:null,   note:'First debit activity (USD cards only)' },
+    { mo:'Jul 2025',  ngnC:1,    ngn:4000,         ngnM:null,   platU:2093.13,   wldU:0,       totU:2093.13,   usdC:70,   usdM:10.667, note:'Naira card first debit txn' },
+    { mo:'Aug 2025',  ngnC:9,    ngn:55645.77,     ngnM:12.911, platU:6052.24,   wldU:0,       totU:6052.24,   usdC:104,  usdM:0.486,  note:'' },
+    { mo:'Sep 2025',  ngnC:2,    ngn:12800,        ngnM:-0.770, platU:10.02,     wldU:0,       totU:10.02,     usdC:6,    usdM:-0.942, note:'' },
+    { mo:'Oct 2025',  ngnC:3,    ngn:30650,        ngnM:1.395,  platU:3441.73,   wldU:1424.94, totU:4866.67,   usdC:72,   usdM:11.00,  note:'World Elite live from Oct-25' },
+    { mo:'Nov 2025',  ngnC:60,   ngn:578614.31,    ngnM:17.878, platU:1401.98,   wldU:4155.24, totU:5557.22,   usdC:66,   usdM:-0.083, note:'' },
+    { mo:'Dec 2025',  ngnC:416,  ngn:6117945.69,   ngnM:9.573,  platU:10256.81,  wldU:9292.30, totU:19549.11,  usdC:539,  usdM:7.167,  note:'Naira card scale-up begins' },
+    { mo:'Jan 2026',  ngnC:1218, ngn:26387979.70,  ngnM:3.313,  platU:1242.02,   wldU:4916.69, totU:6158.71,   usdC:195,  usdM:-0.638, note:'NGN volume steps up to 1,218 txns' },
+    { mo:'Feb 2026',  ngnC:1718, ngn:30595566.55,  ngnM:0.159,  platU:15643.05,  wldU:8108.58, totU:23751.63,  usdC:304,  usdM:0.559,  note:'' },
+    { mo:'Mar 2026',  ngnC:1640, ngn:37683092.47,  ngnM:0.232,  platU:32418.08,  wldU:14878.17,totU:47296.25,  usdC:575,  usdM:0.891,  note:'' },
+    { mo:'Apr 2026',  ngnC:1753, ngn:51197841.52,  ngnM:0.359,  platU:152774.19, wldU:48291.14,totU:201065.33, usdC:1389, usdM:1.416,  note:'USD spend spike — Platinum USD $152.8k' },
+    { mo:'May 2026',  ngnC:3090, ngn:40818708.15,  ngnM:-0.203, platU:65780.31,  wldU:44156.09,totU:109936.40, usdC:1163, usdM:-0.163, note:'' },
+    { mo:'Jun 2026',  ngnC:2760, ngn:37126929.39,  ngnM:-0.090, platU:30341.85,  wldU:11861.04,totU:42202.89,  usdC:778,  usdM:-0.331, note:'' },
+    { mo:'Jul 2026',  ngnC:3923, ngn:49856876.68,  ngnM:0.343,  platU:71383.60,  wldU:14039.53,totU:85423.13,  usdC:1219, usdM:0.567,  note:'' },
+    { mo:'Aug 2026',  ngnC:3472, ngn:72426796.41,  ngnM:0.453,  platU:198837.05, wldU:28160.91,totU:226997.96, usdC:2023, usdM:0.660,  note:'Full month data' },
+    { mo:'Sep 2026',  ngnC:2380, ngn:48238520.75,  ngnM:-0.334, platU:95048.89,  wldU:23634.36,totU:118683.25, usdC:1433, usdM:-0.292, note:'Partial — Sep 1-19 only' },
   ];
-  const fmtN = n => n===0?'—':n.toLocaleString();
-  const fmtU = v => v===0?'—':'$'+v.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
-  const fmtNG = v => v===0?'—':'₦'+Math.round(v).toLocaleString();
-  const tbody = document.getElementById('txnTableBody');
+  var fmtNGN = function(v){ return v===0?'--':'&#8358;'+Math.round(v).toLocaleString(); };
+  var fmtUSD = function(v){ return v===0?'--':'$'+v.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}); };
+  var fmtCnt = function(v){ return v===0?'--':v.toLocaleString(); };
+  var fmtMoM = function(v){ if(v===null) return '--'; var p=(v*100).toFixed(1); return v<0?'('+Math.abs(v*100).toFixed(1)+'%)':p+'%'; };
+  var momCol = function(v){ return v===null?'#374151':v>=0?'#12A05C':'#D63B3B'; };
+  var tbody = document.getElementById('txnTableBody');
   if(!tbody) return;
-  rows.forEach((r, i) => {
-    const is26 = r.mo.includes('2026');
-    const bg = i%2===0 ? '#ffffff' : '#f8f9fb';
-    const tr = document.createElement('tr');
-    tr.style.background = bg;
-    const bdr = 'border-bottom:1px solid #E2E2E2';
-    const bdrL = 'border-left:1px solid #E2E2E2';
-    tr.innerHTML = `
-      <td style="padding:7px 12px;font-size:11px;font-weight:${is26?'600':'400'};color:${is26?'#07478C':'#374151'};${bdr};white-space:nowrap">${r.mo}</td>
-      <td style="padding:7px 10px;text-align:right;font-size:11px;font-weight:600;color:#1A1A1A;${bdr}">${r.tot.toLocaleString()}</td>
-      <td style="padding:7px 10px;text-align:right;font-size:11px;color:#374151;${bdr};${bdrL}">${fmtN(r.usdC)}</td>
-      <td style="padding:7px 10px;text-align:right;font-size:11px;color:#12A05C;${bdr}">${fmtU(r.usdA)}</td>
-      <td style="padding:7px 10px;text-align:right;font-size:11px;color:#374151;${bdr};${bdrL}">${fmtN(r.ngnC)}</td>
-      <td style="padding:7px 10px;text-align:right;font-size:11px;color:#0AA8B8;${bdr}">${fmtNG(r.ngnA)}</td>`;
+  rows.forEach(function(r,i){
+    var is26=r.mo.includes('2026'), isLatest=r.mo==='Sep 2026';
+    var bg=isLatest?'#EEF5FF':i%2===0?'#ffffff':'#f8f9fb';
+    var tr=document.createElement('tr'); tr.style.background=bg;
+    var bdr='border-bottom:1px solid #E2E2E2', bdrL='border-left:1px solid #E2E2E2', fw=is26?'600':'400', mc=is26?'#07478C':'#374151';
+    var moLabel=r.mo+(r.note?'<br><span style="font-size:9px;color:#6E6E6E;font-weight:400;font-style:italic">'+r.note+'</span>':'');
+    tr.innerHTML='<td style="padding:7px 12px;font-size:11px;font-weight:'+fw+';color:'+mc+';'+bdr+';white-space:nowrap">'+moLabel+'</td>'+
+      '<td style="padding:7px 10px;text-align:right;font-size:11px;color:#374151;'+bdr+';'+bdrL+';font-weight:'+fw+'">'+fmtCnt(r.ngnC)+'</td>'+
+      '<td style="padding:7px 10px;text-align:right;font-size:11px;color:#0AA8B8;'+bdr+';font-weight:'+fw+'">'+fmtNGN(r.ngn)+'</td>'+
+      '<td style="padding:7px 10px;text-align:right;font-size:11px;color:'+momCol(r.ngnM)+';'+bdr+'">'+fmtMoM(r.ngnM)+'</td>'+
+      '<td style="padding:7px 10px;text-align:right;font-size:11px;color:#12A05C;'+bdr+';'+bdrL+';font-weight:'+fw+'">'+fmtUSD(r.platU)+'</td>'+
+      '<td style="padding:7px 10px;text-align:right;font-size:11px;color:#12A05C;'+bdr+';font-weight:'+fw+'">'+fmtUSD(r.wldU)+'</td>'+
+      '<td style="padding:7px 10px;text-align:right;font-size:11px;font-weight:700;color:'+(is26?'#07478C':'#1A1A1A')+';'+bdr+'">'+fmtUSD(r.totU)+'</td>'+
+      '<td style="padding:7px 10px;text-align:right;font-size:11px;color:#374151;'+bdr+';font-weight:'+fw+'">'+fmtCnt(r.usdC)+'</td>'+
+      '<td style="padding:7px 10px;text-align:right;font-size:11px;color:'+momCol(r.usdM)+';'+bdr+'">'+fmtMoM(r.usdM)+'</td>';
     tbody.appendChild(tr);
+  });
+})();
+
+// ── Funding Table ──────────────────────────────────
+(function(){
+  var frows=[
+    {mo:'Jul 2025', usdC:4,    usd:5000,       ngnC:0,    ngn:0},
+    {mo:'Aug 2025', usdC:2,    usd:2000,       ngnC:3,    ngn:150000},
+    {mo:'Sep 2025', usdC:1,    usd:1500,       ngnC:0,    ngn:0},
+    {mo:'Oct 2025', usdC:8,    usd:2409,       ngnC:12,   ngn:2210.57},
+    {mo:'Nov 2025', usdC:53,   usd:11679.95,   ngnC:87,   ngn:740689},
+    {mo:'Dec 2025', usdC:224,  usd:20811.14,   ngnC:254,  ngn:7555363.36},
+    {mo:'Jan 2026', usdC:89,   usd:10481.65,   ngnC:514,  ngn:29508366.18},
+    {mo:'Feb 2026', usdC:162,  usd:44139.37,   ngnC:737,  ngn:38395601.67},
+    {mo:'Mar 2026', usdC:345,  usd:61997.99,   ngnC:791,  ngn:36182980.11},
+    {mo:'Apr 2026', usdC:446,  usd:121560.05,  ngnC:793,  ngn:56156722.41},
+    {mo:'May 2026', usdC:443,  usd:90979.39,   ngnC:1125, ngn:35555042.50},
+    {mo:'Jun 2026', usdC:383,  usd:44578.33,   ngnC:957,  ngn:41344721.09},
+    {mo:'Jul 2026', usdC:495,  usd:89508.23,   ngnC:1741, ngn:51167563.41},
+    {mo:'Aug 2026', usdC:1075, usd:245324.67,  ngnC:1118, ngn:69897095.99},
+    {mo:'Sep 2026', usdC:823,  usd:101540.39,  ngnC:839,  ngn:50599972.41, note:'Sep 1-19 only'},
+  ];
+  var fmtU=function(v){return '$'+v.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});};
+  var fmtN=function(v){return v===0?'--':'&#8358;'+Math.round(v).toLocaleString();};
+  var el=document.getElementById('fundingTableBody');
+  if(!el) return;
+  frows.forEach(function(r,i){
+    var is26=r.mo.includes('2026'),isLatest=r.mo==='Sep 2026';
+    var bg=isLatest?'#EEF5FF':i%2===0?'#ffffff':'#f8f9fb';
+    var tr=document.createElement('tr'); tr.style.background=bg;
+    var bdr='border-bottom:1px solid #E2E2E2',fw=is26?'600':'400',mc=is26?'#07478C':'#374151';
+    var moLabel=r.mo+(r.note?'<br><span style="font-size:9px;color:#6E6E6E;font-style:italic">'+r.note+'</span>':'');
+    tr.innerHTML='<td style="padding:7px 12px;font-size:11px;font-weight:'+fw+';color:'+mc+';'+bdr+';white-space:nowrap">'+moLabel+'</td>'+
+      '<td style="padding:7px 10px;text-align:right;font-size:11px;color:#12A05C;'+bdr+';font-weight:'+fw+'">'+r.usdC.toLocaleString()+'</td>'+
+      '<td style="padding:7px 10px;text-align:right;font-size:11px;color:#12A05C;'+bdr+';font-weight:'+fw+'">'+fmtU(r.usd)+'</td>'+
+      '<td style="padding:7px 10px;text-align:right;font-size:11px;color:#0AA8B8;'+bdr+';font-weight:'+fw+'">'+r.ngnC.toLocaleString()+'</td>'+
+      '<td style="padding:7px 10px;text-align:right;font-size:11px;color:#0AA8B8;'+bdr+';font-weight:'+fw+'">'+fmtN(r.ngn)+'</td>';
+    el.appendChild(tr);
   });
 })();
 
 // ── Card Issuance Performance Table ────────────────
 (function(){
+  const months = ['Oct-25','Nov-25','Dec-25','Jan-26','Feb-26','Mar-26','Apr-26','May-26','Jun-26','Jul-26','Aug-26','Sep-26'];
+
+  const iss   = [36,577,323,1355,1041,462,351,370,290,556,328,321];
+  const act   = [33,438,266,200, 202, 306,305,335,212,490,280,187];
+  const virt  = [26,111,147,39,  65,  178,189,233,125,412,186,168];
+  const phys  = [10,466,176,1316,976, 284,162,137,165,144,142,153];
+  const stdN  = [21,376,151,1217,841, 176,93, 203,88, 426,50, 67];
+  const platU = [14,172,156,134, 192, 280,244,152,178,95, 258,229];
+  const wldU  = [1, 29, 16, 4,   8,   6,  14, 15, 24, 35, 20, 25];
+  const actRate   = ['91.7%','75.9%','82.4%','14.8%','19.4%','66.2%','86.9%','90.5%','73.1%','88.1%','85.4%','58.3%'];
+  const virtShare = ['72.2%','19.2%','45.5%','2.9%', '6.2%', '38.5%','53.8%','63.0%','43.1%','74.1%','56.7%','52.3%'];
+
+  const abIss     = [36,577,323,364,409,462,351,196,222,556,328,321];
+  const abAct     = [24,356,160,171,179,261,294,137,135,425,231,187];
+  const abRate    = ['66.7%','61.7%','49.5%','47.0%','43.8%','56.5%','83.8%','69.9%','60.8%','76.4%','70.4%','58.3%'];
+  const abMoM     = ['--','(5.0%)','(12.2%)','(2.6%)','(3.2%)','12.7%','27.3%','(13.9%)','(9.1%)','15.6%','(6.0%)','(12.2%)'];
+  const abPend    = [3,  137,57, 162,207,156,45, 34, 73, 49, 45, 72];
+  const abBlk     = [9,  84, 106,31, 23, 45, 12, 25, 14, 82, 52, 62];
+  const abVirtAct = [15, 62, 51, 20, 48, 146,183,40, 50, 338,137,108];
+  const abVirtR   = ['57.7%','50.8%','33.8%','51.3%','73.8%','82.0%','96.8%','67.8%','87.7%','82.0%','73.7%','64.3%'];
+  const abPhysAct = [9,  294,109,151,131,115,111,97, 85, 87, 94, 79];
+  const abPhysR   = ['90.0%','64.6%','63.4%','46.5%','38.1%','40.5%','68.5%','70.8%','51.5%','60.4%','66.2%','51.6%'];
+  const abStdN    = [15, 222,97, 126,89, 78, 74, 88, 74, 345,38, 39];
+  const abPlatU   = [8,  111,54, 43, 86, 181,212,43, 48, 57, 179,137];
+  const abWldU    = [1,  23, 9,  2,  4,  2,  8,  6,  13, 23, 14, 11];
+
   const sections = [
     {
-      label: 'CARDS ISSUED',
-      totalLabel: 'CARDS ISSUED — total',
-      totalVals: [36,577,323,364,409,462,351,196,222,556,16],
-      totalRow: '3,512',
-      rows: [
-        { label:'Physical Naira — Mastercard Standard', vals:[8,316,120,272,233,157,83,87,47,52,1],    total:'1,376', color:'#374151' },
-        { label:'Virtual Naira — Mastercard Standard',  vals:[13,60,31,9,9,19,10,35,41,374,0],         total:'601',   color:'#374151' },
-        { label:'Virtual USD — Mastercard Platinum',    vals:[13,51,116,30,56,159,179,24,16,38,13],     total:'695',   color:'#374151' },
-        { label:'Physical USD — Mastercard Platinum',   vals:[1,121,40,49,103,121,65,35,94,57,2],       total:'688',   color:'#374151' },
-        { label:'Physical USD — Mastercard World',      vals:[1,29,16,4,8,6,14,15,24,35,0],             total:'152',   color:'#374151' },
-        { label:'Virtual share of issuance',            vals:['72.2%','19.2%','45.5%','10.7%','15.9%','38.5%','53.8%','30.1%','25.7%','74.1%','81.3%'], total:'36.9%', color:'#0AA8B8', pct:true },
-        { label:'Physical share of issuance',           vals:['27.8%','80.8%','54.5%','89.3%','84.1%','61.5%','46.2%','69.9%','74.3%','25.9%','18.8%'], total:'63.1%', color:'#12A05C', pct:true },
-        { label:'MoM change — issuance',                vals:['—','1502.8%','(44.0%)','12.7%','12.4%','13.0%','(24.0%)','(44.2%)','13.3%','150.5%','(97.1%)'], total:'—', color:'#E8920A', pct:true },
+      label:'CARDS ISSUED — EXECUTIVE SUMMARY (MONTHLY GRAIN)',
+      totalLabel:'Cards Issued — Total', totalVals:iss, totalRow:'6,010',
+      rows:[
+        { label:'Virtual issued',            vals:virt,      total:'1,879', color:'#0AA8B8' },
+        { label:'Physical issued',           vals:phys,      total:'4,131', color:'#12A05C' },
+        { label:'Virtual share of issuance', vals:virtShare, total:'31.3%', color:'#0AA8B8', pct:true },
+        { label:'Standard Naira',            vals:stdN,      total:'3,709', color:'#374151' },
+        { label:'Platinum USD',              vals:platU,     total:'2,104', color:'#374151' },
+        { label:'World USD',                 vals:wldU,      total:'197',   color:'#374151' },
       ]
     },
     {
-      label: 'EVER ACTIVATED (status-based, by issue cohort)',
-      totalLabel: 'EVER ACTIVATED — total',
-      totalVals: [33,438,266,200,202,306,305,161,144,490,15],
-      totalRow: '2,560',
-      rows: [
-        { label:'Physical Naira — Mastercard Standard',         vals:[8,209,77,129,87,75,70,71,38,35,0],    total:'799',   color:'#374151' },
-        { label:'Virtual Naira — Mastercard Standard',          vals:[11,60,31,9,9,19,9,35,41,374,0],       total:'598',   color:'#374151' },
-        { label:'Virtual USD — Mastercard Platinum',            vals:[12,51,116,30,56,159,177,24,16,38,13],  total:'692',   color:'#374151' },
-        { label:'Physical USD — Mastercard Platinum',           vals:[1,91,30,30,46,50,41,25,35,22,2],       total:'373',   color:'#374151' },
-        { label:'Physical USD — Mastercard World',              vals:[1,27,12,2,4,3,8,6,14,21,0],            total:'98',    color:'#374151' },
-        { label:'Activation rate (cohort)',                     vals:['91.7%','75.9%','82.4%','54.9%','49.4%','66.2%','86.9%','82.1%','64.9%','88.1%','93.8%'], total:'72.9%', color:'#E8920A', rate:true },
-        { label:'Currently active (status today)',              vals:[24,357,161,170,181,261,294,136,134,419,15], total:'2,152', color:'#12A05C' },
-        { label:'Still pending activation',                     vals:[3,139,57,164,207,156,46,35,78,66,1],   total:'952',   color:'#D63B3B' },
+      label:'CARD ACTIVATION — MONTHLY GRAIN',
+      totalLabel:'Ever Activated — Total', totalVals:act, totalRow:'3,254',
+      rows:[
+        { label:'Activation rate (cohort)', vals:actRate, total:'54.1%', color:'#E8920A', rate:true },
+      ]
+    },
+    {
+      label:'ACTIVATION BREAKDOWN — BY MONTH OF ISSUANCE',
+      totalLabel:'Cards Issued (tracked cohort)', totalVals:abIss, totalRow:'4,145',
+      rows:[
+        { label:'Ever Activated',             vals:abAct,     total:'2,560', color:'#07478C' },
+        { label:'Activation Rate',            vals:abRate,    total:'61.8%', color:'#E8920A', rate:true },
+        { label:'MoM Change (rate)',          vals:abMoM,     total:'--',    color:'#6E6E6E', pct:true },
+        { label:'Pending Activation',         vals:abPend,    total:'1,040', color:'#D63B3B' },
+        { label:'Blocked / Lost / Restricted',vals:abBlk,    total:'545',   color:'#B0B0B0' },
+        { label:'Virtual Activated',          vals:abVirtAct, total:'1,198', color:'#0AA8B8' },
+        { label:'Virtual Activation Rate',    vals:abVirtR,   total:'72.5%', color:'#0AA8B8', rate:true },
+        { label:'Physical Activated',         vals:abPhysAct, total:'1,362', color:'#12A05C' },
+        { label:'Physical Activation Rate',   vals:abPhysR,   total:'54.6%', color:'#12A05C', rate:true },
+        { label:'Standard NGN Activated',     vals:abStdN,    total:'1,285', color:'#374151' },
+        { label:'Platinum USD Activated',     vals:abPlatU,   total:'1,159', color:'#374151' },
+        { label:'World USD Activated',        vals:abWldU,    total:'116',   color:'#374151' },
       ]
     }
   ];
@@ -1787,52 +2187,59 @@ renderTrends();
   const tbody = document.getElementById('perfTableBody');
   if(!tbody) return;
 
-  const bdr  = 'border-bottom:1px solid #E2E2E2';
+  const thead = tbody.closest('table').querySelector('thead tr');
+  if(thead && thead.children.length < 3){
+    months.forEach(m=>{
+      const th = document.createElement('th');
+      th.style.cssText = 'padding:9px 8px;text-align:right;font-weight:600;font-size:10px;white-space:nowrap;color:#fff';
+      th.textContent = m;
+      thead.appendChild(th);
+    });
+    const thTot = document.createElement('th');
+    thTot.style.cssText = 'padding:9px 10px;text-align:right;font-weight:700;font-size:10px;white-space:nowrap;background:#0A5A9C;color:#fff';
+    thTot.textContent = 'Total';
+    thead.appendChild(thTot);
+  }
+
+  const bdr = 'border-bottom:1px solid #E2E2E2';
   const bdrT = 'border-top:2px solid #07478C';
   let rowIdx = 0;
 
   sections.forEach(sec => {
-    // Section header row
     const th = document.createElement('tr');
     th.style.background = '#EEF5FF';
-    th.innerHTML = `<td colspan="13" style="padding:5px 12px;font-size:10px;font-weight:700;color:#07478C;letter-spacing:.06em;text-transform:uppercase;${bdr};${bdrT}">${sec.label}</td>`;
+    th.innerHTML = '<td colspan="' + (months.length+2) + '" style="padding:5px 12px;font-size:10px;font-weight:700;color:#07478C;letter-spacing:.06em;text-transform:uppercase;' + bdr + ';' + bdrT + '">' + sec.label + '</td>';
     tbody.appendChild(th);
 
-    // Section total row
     const tt = document.createElement('tr');
     tt.style.background = '#F0F5FF';
-    let ttHtml = `<td style="padding:7px 12px;font-size:11px;font-weight:700;color:#07478C;${bdr}">${sec.totalLabel}</td>`;
-    sec.totalVals.forEach((v, i) => {
-      const isJul = i===9;
-      const dv = v===0 ? '—' : v.toLocaleString();
-      ttHtml += `<td style="padding:7px 8px;text-align:right;font-size:11px;font-weight:${isJul?'700':'600'};color:${isJul?'#07478C':'#1A1A1A'};${bdr}">${dv}</td>`;
+    let ttHtml = '<td style="padding:7px 12px;font-size:11px;font-weight:700;color:#07478C;' + bdr + '">' + sec.totalLabel + '</td>';
+    sec.totalVals.forEach(function(v,i){
+      const isSep = i===11;
+      ttHtml += '<td style="padding:7px 8px;text-align:right;font-size:11px;font-weight:' + (isSep?'700':'600') + ';color:' + (isSep?'#07478C':'#1A1A1A') + ';' + bdr + '">' + v.toLocaleString() + '</td>';
     });
-    ttHtml += `<td style="padding:7px 10px;text-align:right;font-size:12px;font-weight:700;color:#07478C;${bdr};background:#EEF5FF">${sec.totalRow}</td>`;
+    ttHtml += '<td style="padding:7px 10px;text-align:right;font-size:12px;font-weight:700;color:#07478C;' + bdr + ';background:#EEF5FF">' + sec.totalRow + '</td>';
     tt.innerHTML = ttHtml;
     tbody.appendChild(tt);
 
-    // Sub-rows
-    sec.rows.forEach(r => {
+    sec.rows.forEach(function(r){
       const isPct  = !!r.pct;
       const isRate = !!r.rate;
       const bg = rowIdx%2===0 ? '#ffffff' : '#f8f9fb';
       const tr = document.createElement('tr');
       tr.style.background = bg;
-
-      let html = `<td style="padding:5px 12px;font-size:11px;font-weight:400;color:${r.color};${bdr};padding-left:22px">${r.label}</td>`;
-
-      r.vals.forEach((v, i) => {
-        const isJul = i===9;
-        const dv = typeof v==='string' ? v : (v===0 ? '—' : v.toLocaleString());
-        const fw = isJul ? '700' : '400';
-        const isNeg = typeof v==='string' && v.startsWith('(');
-        const col = isRate ? (parseFloat(v)>=100?'#12A05C':parseFloat(v)>=70?'#E8920A':'#D63B3B')
-                  : isPct  ? (isNeg?'#D63B3B':isJul?r.color:'#374151')
-                  : isJul  ? r.color : '#374151';
-        html += `<td style="padding:5px 8px;text-align:right;font-size:11px;font-weight:${fw};color:${col};${bdr}">${dv}</td>`;
+      let html = '<td style="padding:5px 12px;font-size:11px;color:' + r.color + ';' + bdr + ';padding-left:22px">' + r.label + '</td>';
+      r.vals.forEach(function(v,i){
+        const isSep = i===11;
+        const dv = typeof v==='string' ? v : v.toLocaleString();
+        const isNeg = typeof v==='string' && v.charAt(0)==='(';
+        const col = isRate ? (parseFloat(v)>=70?'#12A05C':parseFloat(v)>=50?'#E8920A':'#D63B3B')
+                  : isPct  ? (isNeg ? '#D63B3B' : r.color)
+                  : isSep  ? r.color : '#374151';
+        const fw = isSep ? '700' : '400';
+        html += '<td style="padding:5px 8px;text-align:right;font-size:11px;font-weight:' + fw + ';color:' + (isNeg?'#D63B3B':col) + ';' + bdr + '">' + dv + '</td>';
       });
-
-      html += `<td style="padding:5px 10px;text-align:right;font-size:11px;font-weight:600;color:${r.color};${bdr};background:#EEF5FF">${r.total}</td>`;
+      html += '<td style="padding:5px 10px;text-align:right;font-size:11px;font-weight:600;color:' + r.color + ';' + bdr + ';background:#EEF5FF">' + r.total + '</td>';
       tr.innerHTML = html;
       tbody.appendChild(tr);
       rowIdx++;
